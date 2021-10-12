@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Participant;
+use App\Entity\Site;
+use App\Repository\SiteRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -11,7 +13,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
-
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 class RegistrationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -24,6 +28,11 @@ class RegistrationFormType extends AbstractType
             ->add('mail')
             ->add('administrateur')
             ->add('actif')
+            /*->add('site', TextType::class)*/
+            ->add('site',EntityType::class,[ 'class'=>Site::class,
+                'choice_label'=>function($site){
+                    return $site->getNomSite();
+                }])
 
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,

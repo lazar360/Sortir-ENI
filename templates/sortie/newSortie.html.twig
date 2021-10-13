@@ -2,7 +2,22 @@
 
 {% block title %}Hello SortieController!{% endblock %}
 
+{% block javascripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.get("/sortie/infosSup/3", function(data, status){
+                console.log(JSON.parse(data)["lat"]);
+            console.log("Data: " + data + "\nStatus: " + status);
+           });
+
+        });
+    </script>
+{% endblock %}
+
 {% block body %}
+
+
 <h1>sortie</h1>
     {{ form(sortieForm) }}
 

@@ -6,6 +6,7 @@ use App\Entity\Sortie;
 use App\Entity\Lieu;
 use App\Form\LieuFormType;
 use App\Form\SortieFormType;
+use App\Repository\LieuRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,6 +42,18 @@ class SortieController extends AbstractController
 
         ]);
     }
+
+
+    /**
+     * @Route("/sortie/infosSup/{id}", name="infosLieu")
+     */
+    public function infosLieu(LieuRepository $repo,$id):Response{
+        $lieu=$repo->find($id);
+
+        return $this->json('{ "lat":'.$lieu->getLatitude().',"long":'.$lieu->getLongitude().' }');
+    }
+
+
 
 
     /**

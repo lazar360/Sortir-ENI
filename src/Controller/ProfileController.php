@@ -36,7 +36,7 @@ class ProfileController extends AbstractController
             $entityManager->flush();
 
         }
-        return $this->render('profile/index.html.twig', [
+        return $this->render('profile/newSortie.html.twig', [
                         'ProfileForm' => $form->createView(),
                     ]);
     }}

@@ -15,8 +15,8 @@ class LieuFormType extends AbstractType
     {
         $builder
             //->add('infosSup',TextType::class)
-
-            /*->add('rue', EntityType::class,[
+/*
+            ->add('rue', EntityType::class,[
                 'class'=>Lieu::class,
                 'choice_label'=>function($lieu) {
                     return $lieu->getRue();

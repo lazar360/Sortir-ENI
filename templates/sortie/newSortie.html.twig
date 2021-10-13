@@ -6,20 +6,32 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function(){
-            $.get("/sortie/infosSup/3", function(data, status){
-                console.log(JSON.parse(data)["lat"]);
-            console.log("Data: " + data + "\nStatus: " + status);
-           });
+           $("#sortie_form_lieu").change(function(){
 
+               var id = $(this).val();
+               $.get("/sortie/infosLieu/"+id, function(data, status){
+                   var infos=JSON.parse(data);
+
+                   $("#lieu_form_rue").val(infos.rue);
+                   $("#lieu_form_lat").val(infos.lat);
+                   $("#lieu_form_long").val(infos.long);
+               });
+           });
         });
     </script>
 {% endblock %}
 
 {% block body %}
-
-
-<h1>sortie</h1>
+    <h1>sortie</h1>
     {{ form(sortieForm) }}
 
     {{ form(lieuForm) }}
+    <label> Rue</label>
+    <input type="text" readonly value="" id="lieu_form_rue"/>
+    <label> Latitude</label>
+    <input type="text" readonly value="" id="lieu_form_lat"/>
+    <label> longitude</label>
+    <input type="text" readonly value="" id="lieu_form_long"/>
+
+
 {% endblock %}

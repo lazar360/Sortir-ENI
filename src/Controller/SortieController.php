@@ -43,18 +43,13 @@ class SortieController extends AbstractController
         ]);
     }
 
-
     /**
-     * @Route("/sortie/infosSup/{id}", name="infosLieu")
+     * @Route("/sortie/infosLieu/{id}", name="infosLieu")
      */
     public function infosLieu(LieuRepository $repo,$id):Response{
         $lieu=$repo->find($id);
-
-        return $this->json('{ "lat":'.$lieu->getLatitude().',"long":'.$lieu->getLongitude().' }');
+        return $this->json('{"rue":"'.$lieu->getRue().'","lat":"'.$lieu->getLatitude().'","long":"'.$lieu->getLongitude().'"}');
     }
-
-
-
 
     /**
      * @Route ("/sortie/update/{id}",name="update")

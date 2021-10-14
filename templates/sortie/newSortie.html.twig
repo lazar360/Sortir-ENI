@@ -25,11 +25,22 @@
                         $.get("/sortie/infosLieu/"+id, function(data, status){
 
                             var infosLieu=JSON.parse(data);
-                            console.log(infosLieu);
+                            //console.log(infosLieu);
                             $("#lieu_form_rue").val(infosLieu.rue);
                             $("#lieu_form_lat").val(infosLieu.lat);
                             $("#lieu_form_long").val(infosLieu.long);
                         });
+
+
+
+                    });
+                    $.get("/sortie/lieu/cp/"+id, function(data, status) {
+
+                        var infosVilleCP = JSON.parse(data);
+
+                        //console.log(infosVilleCP);
+                        $("#ville_cp").val(infosVilleCP.codePostal);
+
                     });
                 })
 
@@ -60,6 +71,8 @@
         {% endfor %}
 
     </select>#}
+    <label>Code Postal</label>
+    <input type="text" readonly value="" id="ville_cp"/>
     <label>lieu</label>
     <select  id="sortie_form_lieu" >
     </select>

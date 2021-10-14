@@ -75,27 +75,31 @@ class SortieController extends AbstractController
        return $this->json(json_encode($tab));
     }
 
-
-
-
-
-
-
-
     /**
+     * @Route("/sortie/lieu/cp/{id}", name="cp")
+     */
+    public function afficherCP(VilleRepository $repo, $id):Response{
+        $ville = $repo->find($id);
+        return $this->json('{"codePostal":"'.$ville->getCodePostal().'"}');
+    }
+
+
+
+
+
+
+
+
+      /**
      * @Route ("/sortie/update/{id}",name="update")
      */
     public function update(Request $request,$id){
         return $this->render('sortie/newSortie.html.twig');
     }
-
     /**
      * @Route ("/sortie/delete/{id}",name="delete")
      */
     public function delete(Request $request,$id){
         return $this->render('sortie/newSortie.html.twig');
     }
-
-
-
 }

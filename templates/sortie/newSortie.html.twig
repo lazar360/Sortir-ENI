@@ -5,18 +5,44 @@
 {% block javascripts %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
+
         $(document).ready(function(){
-           $("#sortie_form_lieu").change(function(){
+
+            $("#lieu_form_ville").change(function(){
 
                var id = $(this).val();
-               $.get("/sortie/infosLieu/"+id, function(data, status){
-                   var infos=JSON.parse(data);
+                $.get("/sortie/lieu/"+id, function (data, status) {
+                    var infosVilleLieu=JSON.parse(data);
 
-                   $("#lieu_form_rue").val(infos.rue);
-                   $("#lieu_form_lat").val(infos.lat);
-                   $("#lieu_form_long").val(infos.long);
-               });
-           });
+                    let html = "<option>choisir un lieu</option>";
+                    for (let i = 0;i<infosVilleLieu.length;i++){
+                        //console.log(infos[i]);
+                        html+='<option value="'+infosVilleLieu[i].id+'" >'+infosVilleLieu[i].nom+'</option>';
+                    }
+                    $("#sortie_form_lieu").html(html).change(function(){
+
+                        var id = $(this).val();
+                        $.get("/sortie/infosLieu/"+id, function(data, status){
+
+                            var infosLieu=JSON.parse(data);
+                            console.log(infosLieu);
+                            $("#lieu_form_rue").val(infosLieu.rue);
+                            $("#lieu_form_lat").val(infosLieu.lat);
+                            $("#lieu_form_long").val(infosLieu.long);
+                        });
+                    });
+                })
+
+
+            })
+             /*  var id = $(this).val();
+               $.get("/sortie/ville/"+id, function(data, status){
+                   var infVille=JSON.parse(data);
+                       $("#ville_form").val(infVille.ville)
+
+               });*/
+
+
         });
     </script>
 {% endblock %}
@@ -25,12 +51,23 @@
     <h1>sortie</h1>
     {{ form(sortieForm) }}
 
-    {{ form(lieuForm) }}
-    <label> Rue</label>
+   {{ form(lieuForm) }}
+{#  <label>Lieu</label>
+    <select name="lieu">
+
+        {% for lieu in lieuTab %}
+        <option>{{ lieu.nomLieu }} </option>
+        {% endfor %}
+
+    </select>#}
+    <label>lieu</label>
+    <select  id="sortie_form_lieu" >
+    </select>
+    <label>Rue</label>
     <input type="text" readonly value="" id="lieu_form_rue"/>
-    <label> Latitude</label>
+    <label>Latitude</label>
     <input type="text" readonly value="" id="lieu_form_lat"/>
-    <label> longitude</label>
+    <label>Longitude</label>
     <input type="text" readonly value="" id="lieu_form_long"/>
 
 

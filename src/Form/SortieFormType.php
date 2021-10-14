@@ -6,6 +6,7 @@ use App\Entity\Etat;
 use App\Entity\Lieu;
 use App\Entity\Site;
 use App\Entity\Sortie;
+use App\Entity\Ville;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -26,10 +27,14 @@ class SortieFormType extends AbstractType
                 'choice_label'=>function($site){
                     return $site->getNomSite();
                     }])
-            ->add('lieu',EntityType::class,[ 'class'=>Lieu::class,
+        /*    ->add('lieu',EntityType::class,[ 'class'=>Lieu::class,
                 'choice_label'=>function($lieu){
                     return $lieu->getNomLieu();
-            }])
+            }])*/
+           /* ->add('ville',EntityType::class,[ 'class'=>Ville::class,
+                'choice_label'=>function($ville){
+                    return $ville->getNomVille();
+                }])*/
 
             //->add('etatSortie')
             /*->add('lieu',EntityType::class,[

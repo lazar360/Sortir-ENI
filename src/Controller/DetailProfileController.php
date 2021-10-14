@@ -12,16 +12,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DetailProfileController extends AbstractController
 {
-
     /**
-     * @Route("/profile/{id}", name="detail", requirements={"id":"\d+"})
-     * @param $id
-     * @param EntityManagerInterface $emi
-     * @return Response
+     * @Route("/profile", name="detail")
      */
-    public function detail($id, EntityManagerInterface $emi)
+    public function detail()
     {
-        $user = $emi->getRepository(Participant::class)->find($id);
+        $user = $this->getUser();
         if ($user==null){
             throw $this ->createNotFoundException("Le particiant est absent de la base de données.");
         }
@@ -30,5 +26,4 @@ class DetailProfileController extends AbstractController
                 'participant' => $user
         ]);
     }
-
 }

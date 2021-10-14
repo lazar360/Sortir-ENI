@@ -19,7 +19,7 @@ class EditUserType extends AbstractType
             ->add('nom', )
             ->add('prenom')
             ->add('telephone')
-            /*
+            /*TODO : modifier le password
              ->add('password')
              ->add('roles')
             ->add('administrateur')

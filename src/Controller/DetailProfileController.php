@@ -30,4 +30,5 @@ class DetailProfileController extends AbstractController
                 'participant' => $user
         ]);
     }
+
 }

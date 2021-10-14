@@ -33,12 +33,12 @@
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="{{ path('insert')  }}">Créer une sortie</a>
                         </li>
-
                     </ul>
-
                 </div>
             </div>
         </nav>
+
+
     </header>
     <main>
         {% for label, messages in app.flashes %}
@@ -50,7 +50,6 @@
         {% endfor %}
 
         {% block body %}
-
         {% endblock %}
     </main>
     <footer>

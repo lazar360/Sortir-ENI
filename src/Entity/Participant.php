@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=ParticipantRepository::class)
- * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
+ * @UniqueEntity(fields={"username"}, message="Mauvais pseudo. Merci d'en choisir un autre")
  */
 class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 {

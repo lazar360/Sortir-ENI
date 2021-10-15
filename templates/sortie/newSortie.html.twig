@@ -25,11 +25,22 @@
                         $.get("/sortie/infosLieu/"+id, function(data, status){
 
                             var infosLieu=JSON.parse(data);
-                            console.log(infosLieu);
+                            //console.log(infosLieu);
                             $("#lieu_form_rue").val(infosLieu.rue);
                             $("#lieu_form_lat").val(infosLieu.lat);
                             $("#lieu_form_long").val(infosLieu.long);
                         });
+
+
+
+                    });
+                    $.get("/sortie/lieu/cp/"+id, function(data, status) {
+
+                        var infosVilleCP = JSON.parse(data);
+
+                        //console.log(infosVilleCP);
+                        $("#ville_cp").val(infosVilleCP.codePostal);
+
                     });
                 })
             })
@@ -135,6 +146,9 @@
                     <label>Lieu : </label>
                     <select  id="sortie_form_lieu" ></select>
 
+                    <label>Code Postal</label>
+                    <input type="text" readonly value="" id="ville_cp"/>
+
                     <div class="group">
                         <label>Rue : </label>
                         <input type="text" readonly value="" id="lieu_form_rue"/>
@@ -155,6 +169,10 @@
                     <button class="btn btn-lg btn-primary" type="submit">Annuler</button>
                 </div>
                 {{ form_end(sortieForm) }}
+
+                {% for lieu in lieuTab %}
+                    <option>{{ lieu.nomLieu }} </option>
+                {% endfor %}
 
                 </div>
             </div>

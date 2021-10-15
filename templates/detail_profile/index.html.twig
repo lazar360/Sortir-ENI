@@ -23,7 +23,7 @@
 
                             <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
                                 <a class="btn btn-info" href="{{ path('main') }}">Retour</a>
-                                <a class="btn btn-info" href="#">Modifier</a>
+                                <a class="btn btn-info" href="{{ path('profile_update', {'id': app.user.id}) }}">Modifier</a>
                             </div>
 
                 </div>

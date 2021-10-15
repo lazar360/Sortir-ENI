@@ -4,12 +4,16 @@ namespace App\Controller;
 
 use App\Entity\Participant;
 use App\Form\RegistrationFormType;
+use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Form\UpdateParticipantType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+
 class ProfileController extends AbstractController
 {
     /**
@@ -39,4 +43,5 @@ class ProfileController extends AbstractController
         return $this->render('profile/newSortie.html.twig', [
                         'ProfileForm' => $form->createView(),
                     ]);
-    }}
+    }
+}

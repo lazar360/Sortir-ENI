@@ -3,29 +3,29 @@
 namespace App\Form;
 
 use App\Entity\Participant;
-use App\Entity\Site;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-class UpdateParticipantType extends AbstractType
+
+class EditUserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('username')
-/*            ->add('roles')*/
-            ->add('password')
-            ->add('nom')
+            ->add('mail', EmailType::class)
+            ->add('nom', )
             ->add('prenom')
             ->add('telephone')
-            ->add('mail')
+            /*TODO : modifier le password
+             ->add('password')
+             ->add('roles')
             ->add('administrateur')
             ->add('actif')
-            ->add('site',EntityType::class,[ 'class'=>Site::class,
-                'choice_label'=>function($site){
-                    return $site->getNomSite();
-                }])
+            ->add('site')*/
+            ->add('valider', SubmitType::class)
         ;
     }
 

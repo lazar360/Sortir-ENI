@@ -20,13 +20,13 @@ class EditUserType extends AbstractType
             ->add('prenom')
             ->add('telephone')
 
-             ->add('password')
             /*TODO : modifier le password avec envoi d'un email et nouveau hash
+             ->add('password')
              ->add('roles')
             ->add('administrateur')
             ->add('actif')
-            ->add('site')*/
-            ->add('valider', SubmitType::class)
+            ->add('site')
+            ->add('valider', SubmitType::class)*/
         ;
     }
 

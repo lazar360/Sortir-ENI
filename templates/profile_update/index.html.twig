@@ -1,14 +1,111 @@
 {% extends '/layout/base.html.twig' %}
 
-{% block title %}Update{% endblock %}
-
+{% block title %}Edit Profil{% endblock %}
 
 {% block body %}
-
+    <style>#success_message{ display: none;}</style>
     <h1>Modification du profil </h1>
 
+    <div class="container">
 
-{{ form(editUserType) }}
+        {{ form_start(editUserType) }}
+        {# Champ modification du pseudo #}
+        <div class="form-group">
+            <label for="{{ field_name(editUserType.username) }}" class="col-md-4 control-label"> Pseudo </label>
+            <div class="col-md-4 inputGroupContainer">
+                <div class="input-group">
+                    <span class="input-group-addon"></span>
+                    <input placeholder="Pseudo"
+                           class="form-control"
+                           type="text"
+                           id="{{ field_name(editUserType.username) }}"
+                    >
+                    {% for error in field_errors(editUserType.username) %}
+                    <div class="error">{{ error }}</div>
+                    {% endfor %}
 
+                </div>
+            </div>
+        </div>
+
+        {# Champ modification du mail #}
+        <div class="form-group">
+            <label for="{{ field_name(editUserType.mail) }}" class="col-md-4 control-label">E-Mail</label>
+            <div class="col-md-4 inputGroupContainer">
+                <div class="input-group">
+                    <span class="input-group-addon"></span>
+                    <input placeholder="E-Mail Address"
+                           class="form-control"
+                           type="text"
+                           id="{{ field_name(editUserType.mail) }}"
+                    >
+                    {% for error in field_errors(editUserType.mail) %}
+                        <div class="error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        {# Champ modification du nom #}
+        <div class="form-group">
+            <label for="{{ field_name(editUserType.nom) }}" class="col-md-4 control-label"> Nom </label>
+            <div class="col-md-4 inputGroupContainer">
+                <div class="input-group">
+                    <span class="input-group-addon"></span>
+                    <input placeholder="Pseudo"
+                           class="form-control"
+                           type="text"
+                           id="{{ field_name(editUserType.nom) }}"
+                    >
+                    {% for error in field_errors(editUserType.nom) %}
+                    <div class="error">{{ error }}</div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+
+        {# Champ modification du prénom #}
+        <div class="form-group">
+            <label for="{{ field_name(editUserType.prenom) }}" class="col-md-4 control-label"> Prénom </label>
+            <div class="col-md-4 inputGroupContainer">
+                <div class="input-group">
+                    <span class="input-group-addon"></span>
+                    <input placeholder="Pseudo"
+                           class="form-control"
+                           type="text"
+                           id="{{ field_name(editUserType.prenom) }}"
+                    >
+                    {% for error in field_errors(editUserType.prenom) %}
+                    <div class="error">{{ error }}</div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+
+        {# Champ modification du téléphone #}
+        <div class="form-group">
+            <label for="{{ field_name(editUserType.telephone) }}" class="col-md-4 control-label"> Téléphone </label>
+            <div class="col-md-4 inputGroupContainer">
+                <div class="input-group">
+                    <span class="input-group-addon"></span>
+                    <input placeholder="Pseudo"
+                           class="form-control"
+                           type="text"
+                           id="{{ field_name(editUserType.telephone) }}"
+                    >
+                    {% for error in field_errors(editUserType.telephone) %}
+                    <div class="error">{{ error }}</div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-lg btn-primary" type="submit">Enregister</button>
+        {{ form_end(editUserType) }}
+
+    </div>
 
 {% endblock %}

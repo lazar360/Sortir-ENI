@@ -29,11 +29,12 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-
+            // set ROLE : USER
+            $user->setRoles(["ROLE_USER"]);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
-            $this->addFlash("success", "Vous êtes enregistré(e).");
+            $this->addFlash("success", "Nouvel utilisateur enregistré(e).");
             // do anything else you need here, like send an email
 
             return $this->redirectToRoute('app_login');

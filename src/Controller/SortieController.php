@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Entity\Lieu;
 use App\Form\LieuFormType;
@@ -28,6 +29,11 @@ class SortieController extends AbstractController
      */
     public function insert(Request $request , EntityManagerInterface $em):Response{
         $sortie = new Sortie();
+
+        $sortie->setSite($this->getUser()->getSite());
+     /*   $organisateur = $this->getUser();
+        $sortie->setOrganisateur($organisateur);
+        $sortie->setSite();*/
         $sortieForm = $this->createForm(SortieFormType::class, $sortie);
         $sortieForm->handleRequest($request);
         if($sortieForm->isSubmitted() && $sortieForm->isValid()){
@@ -35,7 +41,7 @@ class SortieController extends AbstractController
             $em->flush();
         }
 
-   $lieu = new Lieu();
+        $lieu = new Lieu();
         $lieuForm = $this->createForm(LieuFormType::class, $lieu);
         $lieuForm->handleRequest($request);
         if($lieuForm->isSubmitted() && $lieuForm->isValid()){
@@ -43,9 +49,13 @@ class SortieController extends AbstractController
             $em->flush();
         }
 
+
+
         return $this->render('sortie/newSortie.html.twig',[
             'sortieForm'=>$sortieForm->createView(),
-            'lieuForm'=>$lieuForm->createView()
+            'lieuForm'=>$lieuForm->createView(),
+
+
 
         ]);
     }
@@ -58,8 +68,6 @@ class SortieController extends AbstractController
        return $this->json('{"rue":"'.$lieu->getRue().'","lat":"'.$lieu->getLatitude().'","long":"'.$lieu->getLongitude().'"}');
     }
 
-
-
     /**
      * @Route("/sortie/lieu/{id}", name="lieu")
      */
@@ -71,7 +79,6 @@ class SortieController extends AbstractController
         foreach ($lieuTab as $val){
             array_push($tab,array("id"=>$val->getId(),"nom"=>$val->getNomLieu()));
         }
-
        return $this->json(json_encode($tab));
     }
 

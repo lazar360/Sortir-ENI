@@ -14,16 +14,17 @@ class DetailProfileController extends AbstractController
 {
 
     /**
-     * @Route("/profile/{id}", name="detail", requirements={"id":"\d+"})
+     * @Route("/profile", name="detail", requirements={"id":"\d+"})
      * @param $id
      * @param EntityManagerInterface $emi
      * @return Response
      */
-    public function detail($id, EntityManagerInterface $emi)
+    public function detail()
     {
-        $user = $emi->getRepository(Participant::class)->find($id);
+        $user = $this->getUser();
+        //dd($user);
         if ($user==null){
-            throw $this ->createNotFoundException("Le particiant est absent de la base de données.");
+            throw $this ->createNotFoundException("Le participant est absent de la base de données.");
         }
 
             return $this->render('detail_profile/index.html.twig', [

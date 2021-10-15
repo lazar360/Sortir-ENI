@@ -15,25 +15,50 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">Sortir.com</a>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
+                <a class="navbar-brand" href="{{ path('main') }}">Sortir.com</a>
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{ path('main') }}">Accueil</a>
+                        </li>
+
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="{{ path('app_login') }}">Se Connecter</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{{ path('app_register') }}">Enregistrer un User</a>
+
+                        <li class="class nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">Liste des sorties</a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{{ path('detail') }} ">Mon Profil</a>
-                        </li>
+                        {% if is_granted('ROLE_USER') %}
 
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{{ path('insert')  }}">Créer une sortie</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{{ path('insert')  }}">Créer une sortie</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{{ path('detail') }} ">Mon Profil</a>
+                            </li>
+
+                            <li class="class nav-item">
+                                <a class="nav-link active" aria-current="page" href="{{ path('app_logout') }}">Se déconnecter</a>
+                            </li>
+
+                        {% else %}
+                            <li class="class nav-item">
+
+                            </li>
+                        {% endif %}
+
+                        {% if is_granted('ROLE_ADMIN') %}
+                            {# TODO : modifier en options users pour l'administrateur #}
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{{ path('app_register') }}">Enregistrer un User</a>
+                            </li>
+
+                        {% endif %}
+
+
                     </ul>
                 </div>
             </div>
@@ -53,8 +78,6 @@
         {% block body %}
         {% endblock %}
     </main>
-    <footer>
 
-    </footer>
     </body>
 </html>

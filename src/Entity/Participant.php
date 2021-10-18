@@ -80,6 +80,11 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $site;
 
+    /**
+     * @ORM\OneToOne(targetEntity=ParticipantPictureName::class, inversedBy="participant_name", cascade={"persist", "remove"})
+     */
+    private $picture;
+
     public function __construct()
     {
         $this->sorties = new ArrayCollection();
@@ -129,8 +134,8 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setRoles(array $roles): self
     {
-        $this->roles = $roles;
 
+        $this->roles = $roles;
         return $this;
     }
 
@@ -279,6 +284,18 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSite(?Site $site): self
     {
         $this->site = $site;
+
+        return $this;
+    }
+
+    public function getPicture(): ?ParticipantPictureName
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(?ParticipantPictureName $picture): self
+    {
+        $this->picture = $picture;
 
         return $this;
     }

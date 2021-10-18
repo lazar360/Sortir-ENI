@@ -52,7 +52,7 @@
             <div class="col-md-4 inputGroupContainer">
                 <div class="input-group">
                     <span class="input-group-addon"></span>
-                    <input placeholder="Pseudo"
+                    <input placeholder="Nom"
                            class="form-control"
                            type="text"
                            id="{{ field_name(editUserType.nom) }}"
@@ -71,7 +71,7 @@
             <div class="col-md-4 inputGroupContainer">
                 <div class="input-group">
                     <span class="input-group-addon"></span>
-                    <input placeholder="Pseudo"
+                    <input placeholder="Prénom"
                            class="form-control"
                            type="text"
                            id="{{ field_name(editUserType.prenom) }}"
@@ -90,11 +90,16 @@
             <div class="col-md-4 inputGroupContainer">
                 <div class="input-group">
                     <span class="input-group-addon"></span>
-                    <input placeholder="Pseudo"
+                    <input placeholder="Téléphone"
                            class="form-control"
                            type="text"
                            id="{{ field_name(editUserType.telephone) }}"
                     >
+
+                    <div class="form-group">
+                        {{ form_start(participantPictureFormView) }}
+                        {{ form_widget(participantPictureFormView) }}
+                        {{ form_end(participantPictureFormView) }}
                     {% for error in field_errors(editUserType.telephone) %}
                     <div class="error">{{ error }}</div>
                     {% endfor %}
@@ -102,10 +107,11 @@
                 </div>
             </div>
         </div>
-
+        <br>
         <button class="btn btn-lg btn-primary" type="submit">Enregister</button>
-        {{ form_end(editUserType) }}
+
+            {{ form_end(editUserType) }}
 
     </div>
-
+</div>
 {% endblock %}

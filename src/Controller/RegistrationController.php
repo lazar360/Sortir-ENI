@@ -29,7 +29,7 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-            // set ROLE : USER
+            // set ROLE : USER TODO add test role_admin Maybe in entity class
             $user->setRoles(["ROLE_USER"]);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);

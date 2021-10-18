@@ -21,12 +21,12 @@
                     <p class="lead mb-4">Nombre de place : {{infosSortie.nbInscriptionMax }}</p>
                     <p class="lead mb-4">Duree : {{ infosSortie.duree }}</p>
                     <p class="lead mb-4">Description et infos : {{ infosSortie.infoSortie }}</p>
-                    {#<p class="lead mb-4">Ville Organisatrice : {{ infosSite.nomSite }}</p>#}
-                    <p class="lead mb-4">Lieu : {{ infosLieu.nomlieu }}</p>
-                    <p class="lead mb-4">Rue :  {{ infosLieu.rue }}</p>
-                    <p class="lead mb-4">Code Postal : {{ infosVille.codePostal }}</p>
-                    <p class="lead mb-4">Latitude : {{ infosLieu.latitude }}</p>
-                    <p class="lead mb-4">Longitude : {{ infosLieu.longitude }}</p>
+                    <p class="lead mb-4">Ville Organisatrice : {{ infosSortie.site }}</p>
+                    <p class="lead mb-4">Lieu : {{ infosSortie.lieu.nomlieu }}</p>
+                    <p class="lead mb-4">Rue :  {{ infosSortie.lieu.rue }}</p>
+                    <p class="lead mb-4">Code Postal : {{ infosSortie.lieu.ville.codePostal}}</p>
+                    <p class="lead mb-4">Latitude : {{ infosSortie.lieu.latitude }}</p>
+                    <p class="lead mb-4">Longitude : {{ infosSortie.lieu.longitude }}</p>
                     <ul>
                         {% for participant in infosSortie.participant  %}
                             <li>{{ participant.username |e }}</li>

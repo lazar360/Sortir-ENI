@@ -23,18 +23,17 @@ class DetailSortieController extends AbstractController
     public function detailSortie ($id, EntityManagerInterface $emi)
     {
         $sortie = $emi->getRepository(Sortie::class)->find($id);
+
         $lieu = $emi->getRepository(Lieu::class)->find($id);
-        $ville =$emi->getRepository(Ville::class)->find($id);
-        $site =$emi->getRepository(Site::class)->find($id);
+
         $participant = $emi->getRepository(Participant::class)->find($id);
+
         if ($sortie ==null){
             throw $this ->createNotFoundException("La sortie est absente de la base de données.");
         }
         return $this->render('detail_sortie/index.html.twig', [
            'infosSortie' => $sortie,
             'infosLieu'=>$lieu,
-            'infosVille'=>$ville,
-            'infosSite'=>$site,
             'infosParticipant'=>$participant
         ]);
     }

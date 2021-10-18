@@ -16,15 +16,15 @@ class LieuFormType extends AbstractType
     {
         $builder
             ->add('ville',EntityType::class,[ 'class'=>Ville::class,
-                'placeholder'=>'test',
+                'placeholder'=>'Choisir une ville',
                 'choice_label'=>function($ville){
                     return $ville->getNomVille();
                 }])
 
 
             //->add('infosSup',TextType::class)
-/*
-            ->add('rue', EntityType::class,[
+
+    /*        ->add('rue', EntityType::class,[
                 'class'=>Lieu::class,
                 'choice_label'=>function($lieu) {
                     return $lieu->getRue();

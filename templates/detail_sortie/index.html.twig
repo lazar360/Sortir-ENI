@@ -27,12 +27,18 @@
                     <p class="lead mb-4">Code Postal : {{ infosVille.codePostal }}</p>
                     <p class="lead mb-4">Latitude : {{ infosLieu.latitude }}</p>
                     <p class="lead mb-4">Longitude : {{ infosLieu.longitude }}</p>
+                    <ul>
+                        {% for participant in infosSortie.participant  %}
+                            <li>{{ participant.username |e }}</li>
+                            <li>{{ participant.nom ~ ' ' ~ participant.prenom |e }} </li>
+                        {% endfor %}
+                    </ul>
 
 
 
 
 
-                   {# <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                    {# <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
                         <a class="btn btn-info" href="{{ path('main') }}">Retour</a>
                         <a class="btn btn-info" href="#">Modifier</a>
                     </div>#}

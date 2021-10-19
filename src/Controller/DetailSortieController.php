@@ -69,6 +69,27 @@ class DetailSortieController extends AbstractController
 
     }
 
+    /**
+     * @Route ("/desister_sortie/{id}", name="desister_sortie")
+     * @param EntityManagerInterface $emi
+     * @param Sortie $sortie
+     */
+    public function desister (EntityManagerInterface $emi, Sortie $sortie){
+
+        //récupérer la sortie en base de données et...
+        $sortieRepo = $this->getDoctrine()
+            ->getRepository(Rejoindre::class)
+            ->findOneBy(['sonParticipant'=>$this->getUser(), 'saSortie'=>$sortie]);
+
+        //l'annuler en base de données
+        $emi ->remove($sortieRepo);
+        $emi->flush();
+
+        $this->addFlash('success', 'Sortie annulée');
+
+        return $this->redirectToRoute('main');
+    }
+
 }
 
 

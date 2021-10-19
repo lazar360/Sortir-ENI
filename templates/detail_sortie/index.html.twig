@@ -27,6 +27,7 @@
                     <p class="lead mb-4">Code Postal : {{ infosSortie.lieu.ville.codePostal}}</p>
                     <p class="lead mb-4">Latitude : {{ infosSortie.lieu.latitude }}</p>
                     <p class="lead mb-4">Longitude : {{ infosSortie.lieu.longitude }}</p>
+                    <p class="lead mb-4"><a href="{{ path ('rejoindre_sortie',{'id':infosSortie.id}) }}">Rejoindre la sortie</a> </p>
                     <ul>
                         {% for participant in infosSortie.participant  %}
                             <li>{{ participant.username |e }}</li>

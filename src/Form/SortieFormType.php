@@ -8,9 +8,12 @@ use App\Entity\Site;
 use App\Entity\Sortie;
 use App\Entity\Ville;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
@@ -30,7 +33,7 @@ class SortieFormType extends AbstractType
                  'choice_label'=>function($ville){
                      return $ville->getNomVille();
                  }])*/
-               ->add('lieu', EntityType::class, [
+            ->add('lieu', EntityType::class, [
               'class' => Lieu::class])
 
             //->add('etatSortie')

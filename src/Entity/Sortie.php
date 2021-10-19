@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Sortie
 {
+
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -27,7 +29,7 @@ class Sortie
     /**
      * @ORM\Column(type="datetime")
      */
-    private $dateHeureDebut;
+    public $dateHeureDebut;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -272,6 +274,7 @@ class Sortie
         return $this;
     }
 
+<<<<<<< HEAD
     /**
      * @return Collection|Rejoindre[]
      */
@@ -300,5 +303,10 @@ class Sortie
         }
 
         return $this;
+=======
+    public function __toString()
+    {
+        return $this->getNomSortie();
+>>>>>>> b16eab9696c3c83a2f2c3f7ef93e02cfcc419f9e
     }
 }

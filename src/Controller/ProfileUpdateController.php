@@ -27,10 +27,10 @@ class ProfileUpdateController extends AbstractController
         $form = $this->createForm(EditUserType::class,$user);
         $form->handleRequest($request);
 
-        $participantPicture = new  ParticipantPictureName();
+       /* $participantPicture = new  ParticipantPictureName();
 
         $participantPictureFileType = $this->createForm(ParticipantPictureFileType::class, $participantPicture);
-        $participantPictureFileType ->handleRequest($request);
+        $participantPictureFileType ->handleRequest($request);*/
 
         $entityManager = $this->getDoctrine()->getManager();
 
@@ -42,7 +42,8 @@ class ProfileUpdateController extends AbstractController
                 return $this->redirectToRoute('main');
             }
 
-        if ($participantPictureFileType->isSubmitted() && $participantPictureFileType->isValid()){
+
+        /*if ($participantPictureFileType->isSubmitted() && $participantPictureFileType->isValid()){
 
             $participantPictureFile = $participantPictureFileType->get('participantpicturename')->getData();
             //this condition is needed because the picture field is not required
@@ -50,8 +51,8 @@ class ProfileUpdateController extends AbstractController
                 $originalFilename =pathinfo($participantPictureFile->getClientOriginalName(), PATHINFO_FILENAME);
 
                 $safeFilename = transliterator_transliterate(
-                  'Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()',
-                $originalFilename);
+                    'Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()',
+                    $originalFilename);
 
                 $newFilename = $safeFilename.'-'.uniqid().'.'.$participantPictureFile->guessExtension();
 
@@ -76,13 +77,12 @@ class ProfileUpdateController extends AbstractController
                 $entityManager->flush();
 
                 return $this->redirectToRoute('profile_update');
-            }
+            }*/
 
-        }
-
+        //}
         return $this->render('profile_update/index.html.twig', [
             'editUserType' => $form->createView(),
-            'participantPictureFormView' => $participantPictureFileType->createView(),
+            /*'participantPictureFormView' => $participantPictureFileType->createView(),*/
             'user' => $user,
         ]);
     }

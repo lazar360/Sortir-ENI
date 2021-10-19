@@ -24,11 +24,7 @@
                             <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
                                 <a class="btn btn-lg btn-primary" href="{{ path('main') }}">Retour</a>
 
-                                {% if is_granted('ROLE_ADMIN') %}
-
                                     <a class="btn btn-lg btn-primary" href="{{ path('profile_update', {'id': app.user.id}) }}">Modifier</a>
-
-                                {% endif %}
                             </div>
 
                 </div>

@@ -11,92 +11,39 @@
         {{ form_start(editUserType) }}
         {# Champ modification du pseudo #}
         <div class="form-group">
-            <label for="{{ field_name(editUserType.username) }}" class="col-md-4 control-label"> Pseudo </label>
-            <div class="col-md-4 inputGroupContainer">
-                <div class="input-group">
-                    <span class="input-group-addon"></span>
-                    <input placeholder="Pseudo"
-                           class="form-control"
-                           type="text"
-                           id="{{ field_name(editUserType.username) }}"
-                    >
-                    {% for error in field_errors(editUserType.username) %}
-                    <div class="error">{{ error }}</div>
-                    {% endfor %}
-
-                </div>
-            </div>
+            {{ form_label(editUserType.username) }}
+            {{ form_widget(editUserType.username) }}
+            {{ form_errors(editUserType.username) }}
         </div>
 
         {# Champ modification du mail #}
         <div class="form-group">
-            <label for="{{ field_name(editUserType.mail) }}" class="col-md-4 control-label">E-Mail</label>
-            <div class="col-md-4 inputGroupContainer">
-                <div class="input-group">
-                    <span class="input-group-addon"></span>
-                    <input placeholder="E-Mail Address"
-                           class="form-control"
-                           type="text"
-                           id="{{ field_name(editUserType.mail) }}"
-                    >
-                    {% for error in field_errors(editUserType.mail) %}
-                        <div class="error">{{ error }}</div>
-                    {% endfor %}
-                </div>
-            </div>
+            {{ form_label(editUserType.mail) }}
+            {{ form_widget(editUserType.mail) }}
+            {{ form_errors(editUserType.mail) }}
         </div>
 
         {# Champ modification du nom #}
         <div class="form-group">
-            <label for="{{ field_name(editUserType.nom) }}" class="col-md-4 control-label"> Nom </label>
-            <div class="col-md-4 inputGroupContainer">
-                <div class="input-group">
-                    <span class="input-group-addon"></span>
-                    <input placeholder="Nom"
-                           class="form-control"
-                           type="text"
-                           id="{{ field_name(editUserType.nom) }}"
-                    >
-                    {% for error in field_errors(editUserType.nom) %}
-                    <div class="error">{{ error }}</div>
-                    {% endfor %}
-
-                </div>
-            </div>
+            {{ form_label(editUserType.nom) }}
+            {{ form_widget(editUserType.nom) }}
+            {{ form_errors(editUserType.nom) }}
         </div>
 
         {# Champ modification du prénom #}
         <div class="form-group">
-            <label for="{{ field_name(editUserType.prenom) }}" class="col-md-4 control-label"> Prénom </label>
-            <div class="col-md-4 inputGroupContainer">
-                <div class="input-group">
-                    <span class="input-group-addon"></span>
-                    <input placeholder="Prénom"
-                           class="form-control"
-                           type="text"
-                           id="{{ field_name(editUserType.prenom) }}"
-                    >
-                    {% for error in field_errors(editUserType.prenom) %}
-                    <div class="error">{{ error }}</div>
-                    {% endfor %}
-
-                </div>
-            </div>
+            {{ form_label(editUserType.prenom) }}
+            {{ form_widget(editUserType.prenom) }}
+            {{ form_errors(editUserType.prenom) }}
         </div>
 
-        {# Champ modification du téléphone #}
+        {# Champ modification du telephone #}
         <div class="form-group">
-            <label for="{{ field_name(editUserType.telephone) }}" class="col-md-4 control-label"> Téléphone </label>
-            <div class="col-md-4 inputGroupContainer">
-                <div class="input-group">
-                    <span class="input-group-addon"></span>
-                    <input placeholder="Téléphone"
-                           class="form-control"
-                           type="text"
-                           id="{{ field_name(editUserType.telephone) }}"
-                    >
+            {{ form_label(editUserType.telephone) }}
+            {{ form_widget(editUserType.telephone) }}
+            {{ form_errors(editUserType.telephone) }}
 
-                    <div class="form-group">
+                   {# <div class="form-group">
                         {{ form_start(participantPictureFormView) }}
                         {{ form_widget(participantPictureFormView) }}
                         {{ form_end(participantPictureFormView) }}
@@ -104,7 +51,7 @@
                     <div class="error">{{ error }}</div>
                     {% endfor %}
 
-                </div>
+                </div>#}
             </div>
         </div>
         <br>

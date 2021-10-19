@@ -306,7 +306,6 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-<<<<<<< HEAD
     /**
      * @return Collection|Rejoindre[]
      */
@@ -335,10 +334,10 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
-=======
-    public function __toString()
-    {
-        return $this->getNom();
->>>>>>> b16eab9696c3c83a2f2c3f7ef93e02cfcc419f9e
     }
+
+    public function __toString() {
+        return $this->nom;
+    }
+
 }

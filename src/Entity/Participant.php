@@ -85,9 +85,15 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $picture;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Rejoindre::class, mappedBy="sonParticipant", orphanRemoval=true)
+     */
+    private $rejoindre_sorties;
+
     public function __construct()
     {
         $this->sorties = new ArrayCollection();
+        $this->rejoindre_sorties = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -296,6 +302,36 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPicture(?ParticipantPictureName $picture): self
     {
         $this->picture = $picture;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Rejoindre[]
+     */
+    public function getRejoindreSorties(): Collection
+    {
+        return $this->rejoindre_sorties;
+    }
+
+    public function addRejoindreSorty(Rejoindre $rejoindreSorty): self
+    {
+        if (!$this->rejoindre_sorties->contains($rejoindreSorty)) {
+            $this->rejoindre_sorties[] = $rejoindreSorty;
+            $rejoindreSorty->setSonParticipant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRejoindreSorty(Rejoindre $rejoindreSorty): self
+    {
+        if ($this->rejoindre_sorties->removeElement($rejoindreSorty)) {
+            // set the owning side to null (unless already changed)
+            if ($rejoindreSorty->getSonParticipant() === $this) {
+                $rejoindreSorty->setSonParticipant(null);
+            }
+        }
 
         return $this;
     }

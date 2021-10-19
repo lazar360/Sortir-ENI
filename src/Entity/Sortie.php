@@ -88,9 +88,15 @@ class Sortie
      */
     private $participant;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Rejoindre::class, mappedBy="saSortie", orphanRemoval=true)
+     */
+    private $rejoindres;
+
     public function __construct()
     {
         $this->participant = new ArrayCollection();
+        $this->rejoindres = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -262,6 +268,36 @@ class Sortie
     public function removeParticipant(Participant $participant): self
     {
         $this->participant->removeElement($participant);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Rejoindre[]
+     */
+    public function getRejoindres(): Collection
+    {
+        return $this->rejoindres;
+    }
+
+    public function addRejoindre(Rejoindre $rejoindre): self
+    {
+        if (!$this->rejoindres->contains($rejoindre)) {
+            $this->rejoindres[] = $rejoindre;
+            $rejoindre->setSaSortie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRejoindre(Rejoindre $rejoindre): self
+    {
+        if ($this->rejoindres->removeElement($rejoindre)) {
+            // set the owning side to null (unless already changed)
+            if ($rejoindre->getSaSortie() === $this) {
+                $rejoindre->setSaSortie(null);
+            }
+        }
 
         return $this;
     }

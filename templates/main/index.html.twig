@@ -74,8 +74,6 @@
 
                     {% if is_granted('ROLE_USER') %}
                         <td>
-                        {# TODO Actions : détail sortie m'inscrire annuler #}
-
                            <span>
                                <button type="button" class="btn btn-outline-success">
                                <a href="{{ path('detail_sortie', {'id':sortie.id}) }}">

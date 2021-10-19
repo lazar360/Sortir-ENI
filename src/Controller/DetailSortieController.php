@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Etat;
 use App\Entity\Rejoindre;
 use App\Entity\Sortie;
 use App\Entity\Lieu;
@@ -51,9 +52,29 @@ class DetailSortieController extends AbstractController
 
         //TODO vérifier si le participant est déjà inscrit, créer nombre d'inscrits et vérifier si le nombre max est atteint
         // Ajouter un participant à la sortie
+
+        $sortieRepo = $this->getDoctrine()->getRepository(Rejoindre::class)->findOneBy(['sonParticipant'=>$this->getUser(), 'saSortie'=>$sortie]);
+
+        // Test si le participant est déjà inscrit
+        if ($sortieRepo!==null){
+            $this->addFlash('alert', 'Participant déjà inscrit à la sortie');
+
+            return $this->redirectToRoute('main');
+        }
+
         $rejoindre = new Rejoindre();
 
         $rejoindre->setSonParticipant($this->getUser());
+
+        // Test si le nombre max est atteint et clotue la sortie
+        $sortie->setNbInscrits($sortie->getNbInscrits()+1);
+        if ($sortie->getNbInscrits() == $sortie->getNbInscriptionMax()){
+            $etatCloturee = $emi -> getRepository(Etat::class)->findOneBy(['libelle'=>'clôturée']);
+            $sortie->setEtat($etatCloturee);
+        }
+
+
+
 
         $rejoindre->setSaSortie($sortie);
 

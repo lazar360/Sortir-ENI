@@ -6,6 +6,81 @@
 
     <h1 class="text-center">Bienvenue sur Sortir.com</h1>
 
+    <div>
+        <p class="text-right">Date du jour : {{ "now"|date("d/m/Y") }}</p>
+        <p class="text-right">Participant : {{ app.User }}</p>
+    </div>
+
+    <div class="border border-dark bg-secondary text-white w-75 mx-auto rounded">
+        <h4>Filtrer les sorties</h4>
+
+
+        <div class="container">
+            <div class="row">
+                <div class="col-sm text-center">
+                    <p>Site : <select name="sites" id="sites">
+                                  {% for site in sites %}
+                                    <option value="{{ site.nomSite }}">
+                                        {{ site.nomSite }}
+                                    </option>
+                                  {% endfor %}
+                              </select>
+
+                    </p>
+                    <p>Le nom de la sortie contient : <input type="text" placeholder="search" class="rounded" id="searchSortie"/></p>
+                    <p>Entre <input type="date" class="rounded"/> et <input type="date" class="rounded"/> </p>
+                </div>
+                <div class="col-sm text-center">
+                    <div> <input type="checkbox" value="orga">Sorties dont je suis l'organisateur/trice</div>
+                    <div><input type="checkbox" value="inscrit">Sorties auxquelles je suis inscrit/e</div>
+                    <div><input type="checkbox" value="noInscrit">Sorties auxquelles je ne suis pas inscrit/e</div>
+                    <div><input type="checkbox" value="passées">Sorties passées</div>
+                </div>
+                <div class="col-sm text-center">
+                    <button type="submit" class="btn btn-lg btn-primary" id="search">Rechercher</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
    <p class="text-center"><img width="500" height="500" src="{{ asset('assets/img/accueil.png') }}"></p>
 
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="thead-dark">
+            <tr class="table-active">
+                <th scope="col">Nom de la sortie</th>
+                <th scope="col">Date de la sortie</th>
+                <th scope="col">Clôture</th>
+                <th scope="col">Inscrits/Places</th>
+                <th scope="col">Etat</th>
+                <th scope="col">Inscrit</th>
+                <th scope="col">Organisateur</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+
+            <tbody class="thead-light">
+
+            {% for sortie in sorties %}
+                <tr>
+                    <td>{{ sortie.nomSortie }}</td>
+                    <td>{{ sortie.dateHeureDebut |date('d/m/Y H:i') }}</td>
+                    <td>{{ sortie.dateLimiteInscription |date('d/m/Y') }}</td>
+                    <td>{{ sortie.nbInscriptionMax }}</td>
+                    <td>{{ sortie.etat }}</td>
+                    <td>x</td>
+                    <td>{{ sortie.organisateur }}</td>
+                    <td>actions</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row  m-5">
+        <div class="group">
+            <a type="button" value="Créer une sortie" class="btn btn-lg btn-primary" href="{{ path('insert') }}">Créer une sortie</a>
+        </div>
+    </div>
 {% endblock %}

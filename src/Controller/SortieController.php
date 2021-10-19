@@ -41,15 +41,12 @@ class SortieController extends AbstractController
             return $this->redirectToRoute("app_login");
         }
 
-        if($request->request->get('cancel')){
-            return $this->redirectToRoute('main');
-        }
-
         $sortie = new Sortie();
         $sortie->setDateHeureDebut(new \DateTime($request->request->get("dateDebut")));
-  /*      dd($request->request->get("dateDebut"));*/
+        /*      dd($request->request->get("dateDebut"));*/
         $sortie->setDateLimiteInscription(new \DateTime($request->request->get("dateLimiteInscription")));
         $sortieForm = $this->createForm(SortieFormType::class, $sortie);
+
 
         $sortieForm->handleRequest($request);
 
@@ -61,8 +58,8 @@ class SortieController extends AbstractController
 
         //vérifie la validation des formulaires avant d'envoyer
 
-        if ($sortieForm->isSubmitted() && $sortieForm->isValid() ){
-            $sortie->setEtat($er->find(1));
+        if ($sortieForm->isSubmitted() && $sortieForm->isValid()){
+            $sortie->setEtat($er->find('1'));
             $sortie->setSite($this->getUser()->getSite());
             $participant = $this->getUser();
             $sortie->setOrganisateur($participant);

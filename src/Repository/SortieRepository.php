@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+
 use App\Entity\Sortie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,22 +20,34 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
-    // /**
-    //  * @return Sortie[] Returns an array of Sortie objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Sortie[]
+     */
+    public function findBySite($value){
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.site = :val')
+            ->getQuery()
+            ->getResult();
+    }
+
+
+
+
+
+     /**
+      * @return Sortie[] Returns an array of Sortie objects
+     */
+    public function findBySearch($value)
     {
         return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
+            ->andWhere('s.searchSortie = :val')
             ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
+            ->orderBy('s.dateHeureDebut', 'ASC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Sortie
@@ -47,4 +60,5 @@ class SortieRepository extends ServiceEntityRepository
         ;
     }
     */
+
 }

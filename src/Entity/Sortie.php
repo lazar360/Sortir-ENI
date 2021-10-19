@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Sortie
 {
+
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -27,7 +29,7 @@ class Sortie
     /**
      * @ORM\Column(type="datetime")
      */
-    private $dateHeureDebut;
+    public $dateHeureDebut;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -264,5 +266,10 @@ class Sortie
         $this->participant->removeElement($participant);
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getNomSortie();
     }
 }

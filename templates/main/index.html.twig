@@ -2,6 +2,38 @@
 
 {% block title %}Bienvenue !{% endblock %}
 
+{% block javascripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+
+        $(document).ready(function(){
+
+            $("#sites").change(function(){
+                var id = $(this).val();
+                $.get("/index/selectSite/"+id, function (data, status) {
+                    var selectSite=JSON.parse(data);
+                     console.log(selectSite); /*Ressort bien les bonnes valeurs*/
+                    let html = "";
+                    for (let i=0; i<selectSite.length; i++){
+                      /*  console.log(selectSite[i]);*/
+                        html += '<tr><td>'+selectSite[i].nomSortie+'</td>'+
+                                    '<td>'+selectSite[i].dateHeureDebut.date+'</td>'+
+                                    '<td>'+selectSite[i].dateLimiteInscription.date+'</td>'+
+                                    '<td>'+selectSite[i].nbInscriptionMax+'</td>'+
+                                    '<td>'+selectSite[i].etat+'</td>'+
+                                    '<td>x</td>'+
+                                    '<td>'+selectSite[i].organisateur+'</td>'+
+                                    '<td>actions</td></tr>';
+                    }
+                    $("#table").html(html);
+
+                });
+            })
+
+        });
+    </script>
+{% endblock %}
+
 {% block body %}
 
     <h1 class="text-center">Bienvenue sur Sortir.com</h1>
@@ -20,7 +52,7 @@
                 <div class="col-sm text-center">
                     <p>Site : <select name="sites" id="sites">
                                   {% for site in sites %}
-                                    <option value="{{ site.nomSite }}">
+                                    <option value="{{ site.id }}">
                                         {{ site.nomSite }}
                                     </option>
                                   {% endfor %}
@@ -43,9 +75,11 @@
         </div>
     </div>
 
+{#
    <p class="text-center"><img width="500" height="500" src="{{ asset('assets/img/accueil.png') }}"></p>
+#}
 
-    <div class="table-responsive">
+    <div class="table-responsive" >
         <table class="table table-hover">
             <thead class="thead-dark">
             <tr class="table-active">
@@ -60,7 +94,7 @@
             </tr>
             </thead>
 
-            <tbody class="thead-light">
+            <tbody class="thead-light" id="table">
 
             {% for sortie in sorties %}
                 <tr>

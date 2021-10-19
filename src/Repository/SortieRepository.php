@@ -20,15 +20,16 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
-    /**
-     * @return Sortie[]
-     */
-    public function findBySite($value){
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.site = :val')
-            ->getQuery()
-            ->getResult();
-    }
+/*
+    public function findBySite($id){
+        $qb = $this->createQueryBuilder('s')
+            ->andWhere('s.site.id = id')
+            ->orderBy('s.dateHeureDebut', 'ASC');
+
+        $query = $qb->getQuery();
+
+        return $query->getResult();
+    }*/
 
 
 
@@ -37,7 +38,7 @@ class SortieRepository extends ServiceEntityRepository
      /**
       * @return Sortie[] Returns an array of Sortie objects
      */
-    public function findBySearch($value)
+/*    public function findBySearch($value)
     {
         return $this->createQueryBuilder('s')
             ->andWhere('s.searchSortie = :val')
@@ -46,7 +47,7 @@ class SortieRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
-    }
+    }*/
 
 
     /*

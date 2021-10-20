@@ -54,12 +54,14 @@ class MainController extends AbstractController
         $tab = [];
         foreach ($sortieList as $val) {
             array_push($tab, [
+                "sortie_id"=> $val->getId(),
                 "nomSortie" => $val->getNomSortie(),
                 "dateHeureDebut" => $val->getDateHeureDebut(),
                 "dateLimiteInscription" => $val->getDateLimiteInscription(),
                 "nbInscriptionMax" => $val->getNbInscriptionMax(),
                 "etat" => $val->getEtat()->getLibelle(),
                 "organisateur" => $val->getOrganisateur()->getNom(),
+                "current_user_role"=>$this->getUser()->getRoles()
             ]);
         }
         return $this->json(json_encode($tab));
@@ -77,12 +79,14 @@ class MainController extends AbstractController
             $tab = [];
             foreach ($orgaList as $val) {
                 array_push($tab, [
+                    "sortie_id"=> $val->getId(),
                     "nomSortie" => $val->getNomSortie(),
                     "dateHeureDebut" => $val->getDateHeureDebut(),
                     "dateLimiteInscription" => $val->getDateLimiteInscription(),
                     "nbInscriptionMax" => $val->getNbInscriptionMax(),
                     "etat" => $val->getEtat()->getLibelle(),
                     "organisateur" => $val->getOrganisateur()->getNom(),
+                    "current_user_role"=>$this->getUser()->getRoles()
                 ]);
             }
             return $this->json(json_encode($tab));
@@ -93,12 +97,14 @@ class MainController extends AbstractController
             $tab = [];
             foreach ($orgaList as $val) {
                 array_push($tab, [
+                    "sortie_id"=> $val->getId(),
                     "nomSortie" => $val->getNomSortie(),
                     "dateHeureDebut" => $val->getDateHeureDebut(),
                     "dateLimiteInscription" => $val->getDateLimiteInscription(),
                     "nbInscriptionMax" => $val->getNbInscriptionMax(),
                     "etat" => $val->getEtat()->getLibelle(),
                     "organisateur" => $val->getOrganisateur()->getNom(),
+                    "current_user_role"=>$this->getUser()->getRoles()
                 ]);
             }
             return $this->json(json_encode($tab));
@@ -118,12 +124,14 @@ class MainController extends AbstractController
             $tab = [];
             foreach ($dactyloList as $val) {
                 array_push($tab, [
+                    "sortie_id"=> $val->getId(),
                     "nomSortie" => $val->getNomSortie(),
                     "dateHeureDebut" => $val->getDateHeureDebut(),
                     "dateLimiteInscription" => $val->getDateLimiteInscription(),
                     "nbInscriptionMax" => $val->getNbInscriptionMax(),
                     "etat" => $val->getEtat()->getLibelle(),
                     "organisateur" => $val->getOrganisateur()->getNom(),
+                    "current_user_role"=>$this->getUser()->getRoles()
                 ]);
             }
             return $this->json(json_encode($tab));
@@ -136,12 +144,14 @@ class MainController extends AbstractController
             $tab = [];
             foreach ($dactyloList as $val) {
                 array_push($tab, [
+                    "sortie_id"=> $val->getId(),
                     "nomSortie" => $val->getNomSortie(),
                     "dateHeureDebut" => $val->getDateHeureDebut(),
                     "dateLimiteInscription" => $val->getDateLimiteInscription(),
                     "nbInscriptionMax" => $val->getNbInscriptionMax(),
                     "etat" => $val->getEtat()->getLibelle(),
                     "organisateur" => $val->getOrganisateur()->getNom(),
+                    "current_user_role"=>$this->getUser()->getRoles()
                 ]);
             }
             return $this->json(json_encode($tab));
@@ -159,12 +169,14 @@ class MainController extends AbstractController
             $tab = [];
             foreach ($passeesList as $val) {
                 array_push($tab, [
+                    "sortie_id"=> $val->getId(),
                     "nomSortie" => $val->getNomSortie(),
                     "dateHeureDebut" => $val->getDateHeureDebut(),
                     "dateLimiteInscription" => $val->getDateLimiteInscription(),
                     "nbInscriptionMax" => $val->getNbInscriptionMax(),
                     "etat" => $val->getEtat()->getLibelle(),
                     "organisateur" => $val->getOrganisateur()->getNom(),
+                    "current_user_role"=>$this->getUser()->getRoles()
                 ]);
             }
             return $this->json(json_encode($tab));
@@ -175,12 +187,14 @@ class MainController extends AbstractController
             $tab = [];
             foreach ( $passeesList as $val) {
                 array_push($tab, [
+                    "sortie_id"=> $val->getId(),
                     "nomSortie" => $val->getNomSortie(),
                     "dateHeureDebut" => $val->getDateHeureDebut(),
                     "dateLimiteInscription" => $val->getDateLimiteInscription(),
                     "nbInscriptionMax" => $val->getNbInscriptionMax(),
                     "etat" => $val->getEtat()->getLibelle(),
                     "organisateur" => $val->getOrganisateur()->getNom(),
+                    "current_user_role"=>$this->getUser()->getRoles()
                 ]);
             }
             return $this->json(json_encode($tab));

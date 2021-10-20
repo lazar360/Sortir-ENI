@@ -3,12 +3,15 @@
 namespace App\Controller;
 
 
+use App\Entity\Participant;
 use App\Entity\Site;
 use App\Entity\Sortie;
 
 
 use App\Form\SortieFormType;
+use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,11 +40,7 @@ class MainController extends AbstractController
             'controller_name' => 'MainController',
             'sorties'=>$sorties,
             'sites'=>$sites,
-
-
         ]);
-
-
     }
 
 
@@ -51,7 +50,7 @@ class MainController extends AbstractController
     public function select(Request $request, SortieRepository $sr, $id): Response {
 
         $sortieList = $sr->findBy(["site"=>$id]);
-           /*     dd($sortieList);*/
+             /*   dd($sortieList);*/
         $tab=[];
         foreach ($sortieList as $val){
             array_push($tab, [
@@ -63,8 +62,46 @@ class MainController extends AbstractController
                 "organisateur"=>$val->getOrganisateur()->getNom(),
             ]);
         }
-
         return $this->json(json_encode($tab));
 
+    }
+
+    /**
+     * @Route("/index/selectOrga/{bool}", name="selectOrga")
+     */
+    public function selectOrga(Request $request, SortieRepository $sr, $bool): Response {
+        if($bool == "true"){
+            $orgaList = $sr->findBy(["organisateur"=>$this->getUser()]);
+  /*          dd("1er if");*/
+            $tab=[];
+            foreach ($orgaList as $val){
+                array_push($tab, [
+                    "nomSortie" => $val->getNomSortie(),
+                    "dateHeureDebut" => $val->getDateHeureDebut(),
+                    "dateLimiteInscription" => $val->getDateLimiteInscription(),
+                    "nbInscriptionMax" => $val->getNbInscriptionMax(),
+                    "etat"=>$val->getEtat()->getLibelle(),
+                    "organisateur"=>$val->getOrganisateur()->getNom(),
+                ]);
+
+            }
+            return $this->json(json_encode($tab));
+        }
+        if($bool == "false") {
+            $orgaList = $sr->findAll();
+      /*      dd("2eme if");*/
+            $tab=[];
+            foreach ($orgaList as $val){
+                array_push($tab, [
+                    "nomSortie" => $val->getNomSortie(),
+                    "dateHeureDebut" => $val->getDateHeureDebut(),
+                    "dateLimiteInscription" => $val->getDateLimiteInscription(),
+                    "nbInscriptionMax" => $val->getNbInscriptionMax(),
+                    "etat"=>$val->getEtat()->getLibelle(),
+                    "organisateur"=>$val->getOrganisateur()->getNom(),
+                ]);
+            }
+            return $this->json(json_encode($tab));
+        }
     }
 }

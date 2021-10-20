@@ -50,16 +50,17 @@ class SortieRepository extends ServiceEntityRepository
     }*/
 
 
-    /*
-    public function findOneBySomeField($value): ?Sortie
+
+    public function findByFormer($value): ?Sortie
     {
         return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
+            ->andWhere('(s.dateHeureDebut <= now()) = :val')
             ->setParameter('val', $value)
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getResult()
         ;
     }
-    */
+
+
 
 }

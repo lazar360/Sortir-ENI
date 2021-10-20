@@ -42,20 +42,20 @@
             {{ form_label(editUserType.telephone) }}
             {{ form_widget(editUserType.telephone) }}
             {{ form_errors(editUserType.telephone) }}
+        </div>
 
-                   {# <div class="form-group">
-                        {{ form_start(participantPictureFormView) }}
-                        {{ form_widget(participantPictureFormView) }}
-                        {{ form_end(participantPictureFormView) }}
-                    {% for error in field_errors(editUserType.telephone) %}
-                    <div class="error">{{ error }}</div>
-                    {% endfor %}
+        <div class="form-group">
+            {{ form_label(editUserType.password) }}
+            {{ form_widget(editUserType.password) }}
+            {{ form_errors(editUserType.password) }}
+        </div>
 
-                </div>#}
-            </div>
         </div>
         <br>
-        <button class="btn btn-lg btn-primary" type="submit">Enregister</button>
+
+    <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+
+    <button class="btn btn-lg btn-primary" type="submit">Enregister</button>
 
             {{ form_end(editUserType) }}
 

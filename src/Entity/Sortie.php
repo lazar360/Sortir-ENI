@@ -95,6 +95,11 @@ class Sortie
      */
     private $rejoindres;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $nbInscrits;
+
     public function __construct()
     {
         $this->participant = new ArrayCollection();
@@ -300,6 +305,18 @@ class Sortie
                 $rejoindre->setSaSortie(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNbInscrits(): ?int
+    {
+        return $this->nbInscrits;
+    }
+
+    public function setNbInscrits(?int $nbInscrits): self
+    {
+        $this->nbInscrits = $nbInscrits;
 
         return $this;
     }

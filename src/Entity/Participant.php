@@ -340,4 +340,14 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->nom;
     }
 
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword($password)
+    {
+        $this->plainPassword = $password;
+    }
+
 }

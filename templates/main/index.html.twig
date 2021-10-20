@@ -2,25 +2,119 @@
 
 {% block title %}Bienvenue !{% endblock %}
 
+{% block javascripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+
+        $(document).ready(function() {
+            /*Changement des sorties en fonction des sites*/
+            $("#sites").change(function () {
+                var id = $(this).val();
+                $.get("/index/selectSite/" + id, function (data, status) {
+                    var selectSite = JSON.parse(data);
+                    console.log(selectSite); /*Ressort bien les bonnes valeurs*/
+                    let html = "";
+                    for (let i = 0; i < selectSite.length; i++) {
+                        /*  console.log(selectSite[i]);*/
+                        html += '<tr><td>' + selectSite[i].nomSortie + '</td>' +
+                            '<td>' + selectSite[i].dateHeureDebut.date.slice(0, 16) + '</td>' +
+                            '<td>' + selectSite[i].dateLimiteInscription.date.slice(0, 10) + '</td>' +
+                            '<td>' + selectSite[i].nbInscriptionMax + '</td>' +
+                            '<td>' + selectSite[i].etat + '</td>' +
+                            '<td>x</td>' +
+                            '<td>' + selectSite[i].organisateur + '</td>' +
+                            '<td>actions</td></tr>';
+                    }
+                    $("#table").html(html);
+
+                });
+            })
+            /*Changement des sorties en fonction de l'organisateur*/
+            $('#orga').change(function () {
+                $.get("/index/selectOrga/" + $(this).is(':checked'), function (data, status) {
+                    var selectOrga = JSON.parse(data);
+                    console.log(selectOrga);
+                    let html = "";
+                    for (let i = 0; i < selectOrga.length; i++) {
+                        html += '<tr><td>' + selectOrga[i].nomSortie + '</td>' +
+                            '<td>' + selectOrga[i].dateHeureDebut.date.slice(0, 16) + '</td>' +
+                            '<td>' + selectOrga[i].dateLimiteInscription.date.slice(0, 10) + '</td>' +
+                            '<td>' + selectOrga[i].nbInscriptionMax + '</td>' +
+                            '<td>' + selectOrga[i].etat + '</td>' +
+                            '<td>x</td>' +
+                            '<td>' + selectOrga[i].organisateur + '</td>' +
+                            '<td>actions</td></tr>';
+                    }
+                    $("#table").html(html);
+                })
+
+            });
+            /*Changement des sorties en fonction de la recherche*/
+            $('#searchSortie').keyup(function () {
+                $.get("/index/selectDactylo/" + $(this).val(), function (data, status) {
+                    var selectDactylo = JSON.parse(data);
+                    console.log(selectDactylo);
+                    let html = "";
+                    for (let i = 0; i < selectDactylo.length; i++) {
+                        html += '<tr><td>' + selectDactylo[i].nomSortie + '</td>' +
+                            '<td>' + selectDactylo[i].dateHeureDebut.date.slice(0, 16) + '</td>' +
+                            '<td>' + selectDactylo[i].dateLimiteInscription.date.slice(0, 10) + '</td>' +
+                            '<td>' + selectDactylo[i].nbInscriptionMax + '</td>' +
+                            '<td>' + selectDactylo[i].etat + '</td>' +git
+                            '<td>x</td>' +
+                            '<td>' + selectDactylo[i].organisateur + '</td>' +
+                            '<td>actions</td></tr>';
+                    }
+                    $("#table").html(html);
+                })
+            })
+
+            /*Changement des sorties en fonction de la date passée*/
+            $('#passees').change(function () {
+                $.get("/index/selectPassees/" + $(this).is(':checked'), function (data, status) {
+                    var selectPassees = JSON.parse(data);
+                    console.log(selectPassees);
+                    let html = "";
+                    for (let i = 0; i < selectPassees.length; i++) {
+                        html += '<tr><td>' + selectPassees[i].nomSortie + '</td>' +
+                            '<td>' + selectPassees[i].dateHeureDebut.date.slice(0, 16) + '</td>' +
+                            '<td>' + selectPassees[i].dateLimiteInscription.date.slice(0, 10) + '</td>' +
+                            '<td>' + selectPassees[i].nbInscriptionMax + '</td>' +
+                            '<td>' + selectPassees[i].etat + '</td>' +
+                            '<td>x</td>' +
+                            '<td>' + selectPassees[i].organisateur + '</td>' +
+                            '<td>actions</td></tr>';
+                    }
+                    $("#table").html(html);
+
+                });
+            });
+        });
+
+
+    </script>
+{% endblock %}
+
 {% block body %}
 
     <h1 class="text-center">Bienvenue sur Sortir.com</h1>
 
-    <div>
+    <div class="text-right m-2 ">
         <p class="text-right">Date du jour : {{ "now"|date("d/m/Y") }}</p>
         <p class="text-right">Participant : {{ app.User }}</p>
     </div>
 
-    <div class="border border-dark bg-secondary text-white w-75 mx-auto rounded">
-        <h4>Filtrer les sorties</h4>
+    <div class="border border-dark bg-secondary text-white w-75 mx-auto rounded m-5">
+        <h5>Filtrer les sorties</h5>
 
 
-        <div class="container">
+        <div class="container m-2">
             <div class="row">
-                <div class="col-sm text-center">
+                <div class="col-5 text-left">
                     <p>Site : <select name="sites" id="sites">
+                                    <option>Choisir un lieu</option>
                                   {% for site in sites %}
-                                    <option value="{{ site.nomSite }}">
+                                    <option value="{{ site.id }}">
                                         {{ site.nomSite }}
                                     </option>
                                   {% endfor %}
@@ -28,24 +122,26 @@
 
                     </p>
                     <p>Le nom de la sortie contient : <input type="text" placeholder="search" class="rounded" id="searchSortie"/></p>
-                    <p>Entre <input type="date" class="rounded"/> et <input type="date" class="rounded"/> </p>
+                    <p>Entre <input type="date" class="rounded" id="dateMin"/> et <input type="date" class="rounded" id="dateMax"/> </p>
                 </div>
-                <div class="col-sm text-center">
-                    <div> <input type="checkbox" value="orga">Sorties dont je suis l'organisateur/trice</div>
-                    <div><input type="checkbox" value="inscrit">Sorties auxquelles je suis inscrit/e</div>
-                    <div><input type="checkbox" value="noInscrit">Sorties auxquelles je ne suis pas inscrit/e</div>
-                    <div><input type="checkbox" value="passées">Sorties passées</div>
+                <div class="col-5 text-center">
+                    <div> <input type="checkbox" value="orga" value="orga" id="orga">Sorties dont je suis l'organisateur/trice</div>
+                    <div><input type="checkbox" value="inscrit" value="inscrit" id="inscrit">Sorties auxquelles je suis inscrit/e</div>
+                    <div><input type="checkbox" value="noInscrit"  value="noInscrit" id="noInscrit">Sorties auxquelles je ne suis pas inscrit/e</div>
+                    <div><input type="checkbox" value="passees"   value="passees" id="passees">Sorties passées</div>
                 </div>
-                <div class="col-sm text-center">
-                    <button type="submit" class="btn btn-lg btn-primary" id="search">Rechercher</button>
+                <div class="col-2 text-center m-auto mt-4">
+                    <button type="submit" class="btn btn-lg btn-primary p-3" id="search">Rechercher</button>
                 </div>
             </div>
         </div>
     </div>
 
+{#
    <p class="text-center"><img width="500" height="500" src="{{ asset('assets/img/accueil.png') }}"></p>
+#}
 
-    <div class="table-responsive">
+    <div class="table-responsive m-5" >
         <table class="table table-hover">
             <thead class="thead-dark">
             <tr class="table-active">
@@ -60,7 +156,7 @@
             </tr>
             </thead>
 
-            <tbody class="thead-light">
+            <tbody class="thead-light" id="table">
 
             {% for sortie in sorties %}
                 <tr>

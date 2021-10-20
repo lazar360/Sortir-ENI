@@ -5,44 +5,56 @@
 {% block body %}
     <h1 class="text-center">Enregistrer un nouvel utilisateur</h1>
 
-
-
-        <div class="container-md border border-warning text-center p-3">
+        <div class="container-md border border-warning  p-3">
 
     {{ form_start(registrationForm) }}
+
         <div class="group p-1">
             {{ form_label(registrationForm.nom) }}
+            <div class="form-control">
             {{ form_widget(registrationForm.nom) }}
+            </div>
             {{ form_errors(registrationForm.nom) }}
+
         </div>
 
         <div class="group p-1">
             {{ form_label(registrationForm.prenom) }}
+            <div class="form-control">
             {{ form_widget(registrationForm.prenom) }}
+            </div>
             {{ form_errors(registrationForm.prenom) }}
         </div>
 
         <div class="group p-1">
             {{ form_label(registrationForm.username) }}
+            <div class="form-control">
             {{ form_widget(registrationForm.username) }}
+            </div>
             {{ form_errors(registrationForm.username) }}
         </div>
 
         <div class="group p-1">
-        {{ form_row(registrationForm.plainPassword, {
-                label: 'Password'
-        }) }}
+            <label>Password</label>
+            <div class="form-control">
+            {{ form_widget(registrationForm.plainPassword)}}
+            </div>
+            {{ form_errors(registrationForm.plainPassword)}}
         </div>
 
         <div class="group p-1">
             {{ form_label(registrationForm.telephone) }}
+            <div class="form-control">
             {{ form_widget(registrationForm.telephone) }}
+            </div>
             {{ form_errors(registrationForm.telephone) }}
         </div>
 
         <div class="group p-1">
             {{ form_label(registrationForm.mail) }}
+            <div class="form-control">
             {{ form_widget(registrationForm.mail) }}
+            </div>
             {{ form_errors(registrationForm.mail) }}
         </div>
         <div class="group p-1">
@@ -55,7 +67,9 @@
         </div>
         <div class="group p-1">
             {{ form_label(registrationForm.site) }}
+            <div class="form-control">
             {{ form_widget(registrationForm.site) }}
+            </div>
             {{ form_errors(registrationForm.site) }}
         </div>
 

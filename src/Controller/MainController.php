@@ -38,28 +38,28 @@ class MainController extends AbstractController
         }*/
         return $this->render('main/index.html.twig', [
             'controller_name' => 'MainController',
-            'sorties'=>$sorties,
-            'sites'=>$sites,
+            'sorties' => $sorties,
+            'sites' => $sites,
         ]);
     }
-
 
     /**
      * @Route("/index/selectSite/{id}", name="selectSite")
      */
-    public function select(Request $request, SortieRepository $sr, $id): Response {
+    public function select(Request $request, SortieRepository $sr, $id): Response
+    {
 
-        $sortieList = $sr->findBy(["site"=>$id]);
-             /*   dd($sortieList);*/
-        $tab=[];
-        foreach ($sortieList as $val){
+        $sortieList = $sr->findBy(["site" => $id]);
+        /*   dd($sortieList);*/
+        $tab = [];
+        foreach ($sortieList as $val) {
             array_push($tab, [
                 "nomSortie" => $val->getNomSortie(),
                 "dateHeureDebut" => $val->getDateHeureDebut(),
                 "dateLimiteInscription" => $val->getDateLimiteInscription(),
                 "nbInscriptionMax" => $val->getNbInscriptionMax(),
-                "etat"=>$val->getEtat()->getLibelle(),
-                "organisateur"=>$val->getOrganisateur()->getNom(),
+                "etat" => $val->getEtat()->getLibelle(),
+                "organisateur" => $val->getOrganisateur()->getNom(),
             ]);
         }
         return $this->json(json_encode($tab));
@@ -69,35 +69,36 @@ class MainController extends AbstractController
     /**
      * @Route("/index/selectOrga/{bool}", name="selectOrga")
      */
-    public function selectOrga(Request $request, SortieRepository $sr, $bool): Response {
-        if($bool == "true"){
-            $orgaList = $sr->findBy(["organisateur"=>$this->getUser()]);
-           /* dd("1er if");*/
-            $tab=[];
-            foreach ($orgaList as $val){
+    public function selectOrga(Request $request, SortieRepository $sr, $bool): Response
+    {
+        if ($bool == "true") {
+            $orgaList = $sr->findBy(["organisateur" => $this->getUser()]);
+            /* dd("1er if");*/
+            $tab = [];
+            foreach ($orgaList as $val) {
                 array_push($tab, [
                     "nomSortie" => $val->getNomSortie(),
                     "dateHeureDebut" => $val->getDateHeureDebut(),
                     "dateLimiteInscription" => $val->getDateLimiteInscription(),
                     "nbInscriptionMax" => $val->getNbInscriptionMax(),
-                    "etat"=>$val->getEtat()->getLibelle(),
-                    "organisateur"=>$val->getOrganisateur()->getNom(),
+                    "etat" => $val->getEtat()->getLibelle(),
+                    "organisateur" => $val->getOrganisateur()->getNom(),
                 ]);
             }
             return $this->json(json_encode($tab));
         }
-        if($bool == "false") {
+        if ($bool == "false") {
             $orgaList = $sr->findAll();
-           /* dd("2eme if");*/
-            $tab=[];
-            foreach ($orgaList as $val){
+            /* dd("2eme if");*/
+            $tab = [];
+            foreach ($orgaList as $val) {
                 array_push($tab, [
                     "nomSortie" => $val->getNomSortie(),
                     "dateHeureDebut" => $val->getDateHeureDebut(),
                     "dateLimiteInscription" => $val->getDateLimiteInscription(),
                     "nbInscriptionMax" => $val->getNbInscriptionMax(),
-                    "etat"=>$val->getEtat()->getLibelle(),
-                    "organisateur"=>$val->getOrganisateur()->getNom(),
+                    "etat" => $val->getEtat()->getLibelle(),
+                    "organisateur" => $val->getOrganisateur()->getNom(),
                 ]);
             }
             return $this->json(json_encode($tab));
@@ -107,44 +108,96 @@ class MainController extends AbstractController
     /**
      * @Route("/index/selectDactylo/{val}", name="selectDactylo")
      */
-    public function selectDactylo(Request $request, SortieRepository $sr, $val=""): Response {
+    public function selectDactylo(Request $request, SortieRepository $sr, $val = ""): Response
+    {
 
-        if (!$val == "" ){
-             /*dd($val);*/
+        if (!$val == "") {
+            /*dd($val);*/
             $dactyloList = $sr->findByName($val);
-             /* dd($dactyloList);*/
-            $tab=[];
-            foreach ($dactyloList as $val){
+            /* dd($dactyloList);*/
+            $tab = [];
+            foreach ($dactyloList as $val) {
                 array_push($tab, [
                     "nomSortie" => $val->getNomSortie(),
                     "dateHeureDebut" => $val->getDateHeureDebut(),
                     "dateLimiteInscription" => $val->getDateLimiteInscription(),
                     "nbInscriptionMax" => $val->getNbInscriptionMax(),
-                    "etat"=>$val->getEtat()->getLibelle(),
-                    "organisateur"=>$val->getOrganisateur()->getNom(),
+                    "etat" => $val->getEtat()->getLibelle(),
+                    "organisateur" => $val->getOrganisateur()->getNom(),
                 ]);
             }
             return $this->json(json_encode($tab));
         }
 
-        if($val == "") {
-    /*        dd($val);*/
+        if ($val == "") {
+            /*        dd($val);*/
             $dactyloList = $sr->findAll();
-          /*  dd($dactyloList);*/
-            $tab=[];
-            foreach ($dactyloList as $val){
+            /*  dd($dactyloList);*/
+            $tab = [];
+            foreach ($dactyloList as $val) {
                 array_push($tab, [
                     "nomSortie" => $val->getNomSortie(),
                     "dateHeureDebut" => $val->getDateHeureDebut(),
                     "dateLimiteInscription" => $val->getDateLimiteInscription(),
                     "nbInscriptionMax" => $val->getNbInscriptionMax(),
-                    "etat"=>$val->getEtat()->getLibelle(),
-                    "organisateur"=>$val->getOrganisateur()->getNom(),
+                    "etat" => $val->getEtat()->getLibelle(),
+                    "organisateur" => $val->getOrganisateur()->getNom(),
                 ]);
             }
             return $this->json(json_encode($tab));
         }
     }
+
+    /**
+    * @Route("/index/selectPassees/{bool}", name="selectPassees")
+    */
+    public function selectPassees(Request $request, SortieRepository $sr, $bool): Response
+    {
+        if($bool == 'true'){
+            $passeesList = $sr->findByFormer();
+            /* dd($passeesList);*/
+            $tab = [];
+            foreach ($passeesList as $val) {
+                array_push($tab, [
+                    "nomSortie" => $val->getNomSortie(),
+                    "dateHeureDebut" => $val->getDateHeureDebut(),
+                    "dateLimiteInscription" => $val->getDateLimiteInscription(),
+                    "nbInscriptionMax" => $val->getNbInscriptionMax(),
+                    "etat" => $val->getEtat()->getLibelle(),
+                    "organisateur" => $val->getOrganisateur()->getNom(),
+                ]);
+            }
+            return $this->json(json_encode($tab));
+        }
+        if ($bool == "false") {
+            $passeesList = $sr->findAll();
+            /* dd("2eme if");*/
+            $tab = [];
+            foreach ( $passeesList as $val) {
+                array_push($tab, [
+                    "nomSortie" => $val->getNomSortie(),
+                    "dateHeureDebut" => $val->getDateHeureDebut(),
+                    "dateLimiteInscription" => $val->getDateLimiteInscription(),
+                    "nbInscriptionMax" => $val->getNbInscriptionMax(),
+                    "etat" => $val->getEtat()->getLibelle(),
+                    "organisateur" => $val->getOrganisateur()->getNom(),
+                ]);
+            }
+            return $this->json(json_encode($tab));
+        }
+
+
+
+    }
+
+    /**
+     * @Route("/index/routeDuRhum/", name="routeDuRhum")
+     */
+    public function selectIntervalDate(Request $request, SortieRepository  $sr): Response{
+            $intervalDate = $sr->findByDates();
+            dd($intervalDate);
+    }
+
 
 
 }

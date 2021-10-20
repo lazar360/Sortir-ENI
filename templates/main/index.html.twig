@@ -6,68 +6,89 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
 
-        $(document).ready(function(){
+        $(document).ready(function() {
             /*Changement des sorties en fonction des sites*/
-            $("#sites").change(function(){
+            $("#sites").change(function () {
                 var id = $(this).val();
-                $.get("/index/selectSite/"+id, function (data, status) {
-                    var selectSite=JSON.parse(data);
-                     console.log(selectSite); /*Ressort bien les bonnes valeurs*/
+                $.get("/index/selectSite/" + id, function (data, status) {
+                    var selectSite = JSON.parse(data);
+                    console.log(selectSite); /*Ressort bien les bonnes valeurs*/
                     let html = "";
-                    for (let i=0; i<selectSite.length; i++){
-                      /*  console.log(selectSite[i]);*/
-                        html += '<tr><td>'+selectSite[i].nomSortie+'</td>'+
-                                    '<td>'+selectSite[i].dateHeureDebut.date.slice(0,16)+'</td>'+
-                                    '<td>'+selectSite[i].dateLimiteInscription.date.slice(0,10)+'</td>'+
-                                    '<td>'+selectSite[i].nbInscriptionMax+'</td>'+
-                                    '<td>'+selectSite[i].etat+'</td>'+
-                                    '<td>x</td>'+
-                                    '<td>'+selectSite[i].organisateur+'</td>'+
-                                    '<td>actions</td></tr>';
+                    for (let i = 0; i < selectSite.length; i++) {
+                        /*  console.log(selectSite[i]);*/
+                        html += '<tr><td>' + selectSite[i].nomSortie + '</td>' +
+                            '<td>' + selectSite[i].dateHeureDebut.date.slice(0, 16) + '</td>' +
+                            '<td>' + selectSite[i].dateLimiteInscription.date.slice(0, 10) + '</td>' +
+                            '<td>' + selectSite[i].nbInscriptionMax + '</td>' +
+                            '<td>' + selectSite[i].etat + '</td>' +
+                            '<td>x</td>' +
+                            '<td>' + selectSite[i].organisateur + '</td>' +
+                            '<td>actions</td></tr>';
                     }
                     $("#table").html(html);
 
                 });
             })
             /*Changement des sorties en fonction de l'organisateur*/
-            $('#orga').change(function(){
-                    $.get("/index/selectOrga/"+$(this).is(':checked'), function (data, status){
-                        var selectOrga = JSON.parse(data);
-                     console.log(selectOrga);
-                        let html = "";
-                        for (let i=0; i<selectOrga.length; i++){
-                            html += '<tr><td>'+selectOrga[i].nomSortie+'</td>'+
-                                '<td>'+selectOrga[i].dateHeureDebut.date.slice(0,16)+'</td>'+
-                                '<td>'+selectOrga[i].dateLimiteInscription.date.slice(0,10)+'</td>'+
-                                '<td>'+selectOrga[i].nbInscriptionMax+'</td>'+
-                                '<td>'+selectOrga[i].etat+'</td>'+
-                                '<td>x</td>'+
-                                '<td>'+selectOrga[i].organisateur+'</td>'+
-                                '<td>actions</td></tr>';
-                        }
-                        $("#table").html(html);
-                    })
-
-            });
-            /*Changement des sorties en fonction de la recherche*/
-            $('#searchSortie').keyup(function(){
-                $.get("/index/selectDactylo/"+$(this).val(), function (data, status){
-                    var selectDactylo = JSON.parse(data);
-                    console.log(selectDactylo);
+            $('#orga').change(function () {
+                $.get("/index/selectOrga/" + $(this).is(':checked'), function (data, status) {
+                    var selectOrga = JSON.parse(data);
+                    console.log(selectOrga);
                     let html = "";
-                    for (let i=0; i<selectDactylo.length; i++){
-                        html += '<tr><td>'+selectDactylo[i].nomSortie+'</td>'+
-                            '<td>'+selectDactylo[i].dateHeureDebut.date.slice(0,16)+'</td>'+
-                            '<td>'+selectDactylo[i].dateLimiteInscription.date.slice(0,10)+'</td>'+
-                            '<td>'+selectDactylo[i].nbInscriptionMax+'</td>'+
-                            '<td>'+selectDactylo[i].etat+'</td>'+
-                            '<td>x</td>'+
-                            '<td>'+selectDactylo[i].organisateur+'</td>'+
+                    for (let i = 0; i < selectOrga.length; i++) {
+                        html += '<tr><td>' + selectOrga[i].nomSortie + '</td>' +
+                            '<td>' + selectOrga[i].dateHeureDebut.date.slice(0, 16) + '</td>' +
+                            '<td>' + selectOrga[i].dateLimiteInscription.date.slice(0, 10) + '</td>' +
+                            '<td>' + selectOrga[i].nbInscriptionMax + '</td>' +
+                            '<td>' + selectOrga[i].etat + '</td>' +
+                            '<td>x</td>' +
+                            '<td>' + selectOrga[i].organisateur + '</td>' +
                             '<td>actions</td></tr>';
                     }
                     $("#table").html(html);
                 })
+
+            });
+            /*Changement des sorties en fonction de la recherche*/
+            $('#searchSortie').keyup(function () {
+                $.get("/index/selectDactylo/" + $(this).val(), function (data, status) {
+                    var selectDactylo = JSON.parse(data);
+                    console.log(selectDactylo);
+                    let html = "";
+                    for (let i = 0; i < selectDactylo.length; i++) {
+                        html += '<tr><td>' + selectDactylo[i].nomSortie + '</td>' +
+                            '<td>' + selectDactylo[i].dateHeureDebut.date.slice(0, 16) + '</td>' +
+                            '<td>' + selectDactylo[i].dateLimiteInscription.date.slice(0, 10) + '</td>' +
+                            '<td>' + selectDactylo[i].nbInscriptionMax + '</td>' +
+                            '<td>' + selectDactylo[i].etat + '</td>' +
+                            '<td>x</td>' +
+                            '<td>' + selectDactylo[i].organisateur + '</td>' +
+                            '<td>actions</td></tr>';
+                    }
+                    $("#table").html(html);
                 })
+            })
+
+            /*Changement des sorties en fonction de la date passée*/
+            $('#passees').change(function () {
+                $.get("/index/selectPassees/" + $(this).is(':checked'), function (data, status) {
+                    var selectPassees = JSON.parse(data);
+                    console.log(selectPassees);
+                    let html = "";
+                    for (let i = 0; i < selectPassees.length; i++) {
+                        html += '<tr><td>' + selectPassees[i].nomSortie + '</td>' +
+                            '<td>' + selectPassees[i].dateHeureDebut.date.slice(0, 16) + '</td>' +
+                            '<td>' + selectPassees[i].dateLimiteInscription.date.slice(0, 10) + '</td>' +
+                            '<td>' + selectPassees[i].nbInscriptionMax + '</td>' +
+                            '<td>' + selectPassees[i].etat + '</td>' +
+                            '<td>x</td>' +
+                            '<td>' + selectPassees[i].organisateur + '</td>' +
+                            '<td>actions</td></tr>';
+                    }
+                    $("#table").html(html);
+
+                });
+            });
         });
 
 
@@ -101,7 +122,7 @@
 
                     </p>
                     <p>Le nom de la sortie contient : <input type="text" placeholder="search" class="rounded" id="searchSortie"/></p>
-                    <p>Entre <input type="date" class="rounded"/> et <input type="date" class="rounded"/> </p>
+                    <p>Entre <input type="date" class="rounded" id="dateMin"/> et <input type="date" class="rounded" id="dateMax"/> </p>
                 </div>
                 <div class="col-5 text-center">
                     <div> <input type="checkbox" value="orga" value="orga" id="orga">Sorties dont je suis l'organisateur/trice</div>

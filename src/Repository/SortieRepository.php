@@ -20,22 +20,22 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
-/*
-    public function findBySite($id){
-        $qb = $this->createQueryBuilder('s')
-            ->andWhere('s.site.id = id')
-            ->orderBy('s.dateHeureDebut', 'ASC');
+    /*
+        public function findBySite($id){
+            $qb = $this->createQueryBuilder('s')
+                ->andWhere('s.site.id = id')
+                ->orderBy('s.dateHeureDebut', 'ASC');
 
-        $query = $qb->getQuery();
+            $query = $qb->getQuery();
 
-        return $query->getResult();
-    }*/
-
-
+            return $query->getResult();
+        }*/
 
 
 
-     /**
+
+
+    /**
       * @return Sortie[] Returns an array of Sortie objects
      */
 /*    public function findBySearch($value)
@@ -51,27 +51,40 @@ class SortieRepository extends ServiceEntityRepository
 
 
     /*tentative pour gérer les dates*/
-    public function findByFormer($value): ?Sortie
+    public function findByFormer(): array
     {
-        return $this->createQueryBuilder('s')
-            ->andWhere('(s.dateHeureDebut <= now()) = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getResult()
-        ;
+        $qb = $this->createQueryBuilder('s')
+            ->andWhere('(s.etat = 5)')
+            ->andWhere('(s.dateHeureDebut > :end)')
+            ->setParameter('end', new \DateTime('- 1 month'))
+            ->getQuery();
+         /*dd($qb->getResult());*/
+            return $qb->getResult();
     }
 
+
+
+    /*Filtre par mot recherché*/
     public function findByName($val): array{
-      $qb = $this->createQueryBuilder('s')
-          ->setParameter('searchTerm', "%".$val."%")
-          ->andWhere('s.nomSortie LIKE :searchTerm')
-          ->getQuery();
-    /* dd($qb->getResult());*/
-     return $qb->getResult();
+        $qb = $this->createQueryBuilder('s')
+            ->setParameter('searchTerm', "%".$val."%")
+            ->andWhere('s.nomSortie LIKE :searchTerm')
+            ->getQuery();
+        /* dd($qb->getResult());*/
+        return $qb->getResult();
+    }
 
 
-
-
+    /*Filtre par intervalle de date*/
+    public function findByDates($valStart, $valEnd): array{
+        $qb = $this->createQueryBuilder('s')
+            ->andWhere('(s.dateHeureDebut > :start)')
+            ->andWhere('(s.dateHeureDebut < :end)')
+            ->setParameter('start', $valStart)
+            ->setParameter('end', $valEnd)
+            ->getQuery();
+        /*dd($qb->getResult());*/
+        return $qb->getResult();
     }
 
 

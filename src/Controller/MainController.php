@@ -72,7 +72,7 @@ class MainController extends AbstractController
     public function selectOrga(Request $request, SortieRepository $sr, $bool): Response {
         if($bool == "true"){
             $orgaList = $sr->findBy(["organisateur"=>$this->getUser()]);
-  /*          dd("1er if");*/
+           /* dd("1er if");*/
             $tab=[];
             foreach ($orgaList as $val){
                 array_push($tab, [
@@ -83,13 +83,12 @@ class MainController extends AbstractController
                     "etat"=>$val->getEtat()->getLibelle(),
                     "organisateur"=>$val->getOrganisateur()->getNom(),
                 ]);
-
             }
             return $this->json(json_encode($tab));
         }
         if($bool == "false") {
             $orgaList = $sr->findAll();
-      /*      dd("2eme if");*/
+           /* dd("2eme if");*/
             $tab=[];
             foreach ($orgaList as $val){
                 array_push($tab, [
@@ -104,4 +103,48 @@ class MainController extends AbstractController
             return $this->json(json_encode($tab));
         }
     }
+
+    /**
+     * @Route("/index/selectDactylo/{val}", name="selectDactylo")
+     */
+    public function selectDactylo(Request $request, SortieRepository $sr, $val=""): Response {
+
+        if (!$val == "" ){
+             /*dd($val);*/
+            $dactyloList = $sr->findByName($val);
+             /* dd($dactyloList);*/
+            $tab=[];
+            foreach ($dactyloList as $val){
+                array_push($tab, [
+                    "nomSortie" => $val->getNomSortie(),
+                    "dateHeureDebut" => $val->getDateHeureDebut(),
+                    "dateLimiteInscription" => $val->getDateLimiteInscription(),
+                    "nbInscriptionMax" => $val->getNbInscriptionMax(),
+                    "etat"=>$val->getEtat()->getLibelle(),
+                    "organisateur"=>$val->getOrganisateur()->getNom(),
+                ]);
+            }
+            return $this->json(json_encode($tab));
+        }
+
+        if($val == "") {
+    /*        dd($val);*/
+            $dactyloList = $sr->findAll();
+          /*  dd($dactyloList);*/
+            $tab=[];
+            foreach ($dactyloList as $val){
+                array_push($tab, [
+                    "nomSortie" => $val->getNomSortie(),
+                    "dateHeureDebut" => $val->getDateHeureDebut(),
+                    "dateLimiteInscription" => $val->getDateLimiteInscription(),
+                    "nbInscriptionMax" => $val->getNbInscriptionMax(),
+                    "etat"=>$val->getEtat()->getLibelle(),
+                    "organisateur"=>$val->getOrganisateur()->getNom(),
+                ]);
+            }
+            return $this->json(json_encode($tab));
+        }
+    }
+
+
 }

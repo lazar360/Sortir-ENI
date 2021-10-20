@@ -6,13 +6,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
 
-
-console.log('ghvhbjkl');
-
-
-
-
-
         $(document).ready(function(){
             /*Changement des sorties en fonction des sites*/
             $("#sites").change(function(){
@@ -36,11 +29,11 @@ console.log('ghvhbjkl');
 
                 });
             })
-
+            /*Changement des sorties en fonction de l'organisateur*/
             $('#orga').change(function(){
                     $.get("/index/selectOrga/"+$(this).is(':checked'), function (data, status){
                         var selectOrga = JSON.parse(data);
-       /*                 console.log(selectOrga);*/
+                     console.log(selectOrga);
                         let html = "";
                         for (let i=0; i<selectOrga.length; i++){
                             html += '<tr><td>'+selectOrga[i].nomSortie+'</td>'+
@@ -56,6 +49,25 @@ console.log('ghvhbjkl');
                     })
 
             });
+            /*Changement des sorties en fonction de la recherche*/
+            $('#searchSortie').keyup(function(){
+                $.get("/index/selectDactylo/"+$(this).val(), function (data, status){
+                    var selectDactylo = JSON.parse(data);
+                    console.log(selectDactylo);
+                    let html = "";
+                    for (let i=0; i<selectDactylo.length; i++){
+                        html += '<tr><td>'+selectDactylo[i].nomSortie+'</td>'+
+                            '<td>'+selectDactylo[i].dateHeureDebut.date.slice(0,16)+'</td>'+
+                            '<td>'+selectDactylo[i].dateLimiteInscription.date.slice(0,10)+'</td>'+
+                            '<td>'+selectDactylo[i].nbInscriptionMax+'</td>'+
+                            '<td>'+selectDactylo[i].etat+'</td>'+
+                            '<td>x</td>'+
+                            '<td>'+selectDactylo[i].organisateur+'</td>'+
+                            '<td>actions</td></tr>';
+                    }
+                    $("#table").html(html);
+                })
+                })
         });
 
 

@@ -50,7 +50,7 @@ class SortieRepository extends ServiceEntityRepository
     }*/
 
 
-
+    /*tentative pour gérer les dates*/
     public function findByFormer($value): ?Sortie
     {
         return $this->createQueryBuilder('s')
@@ -61,6 +61,18 @@ class SortieRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findByName($val): array{
+      $qb = $this->createQueryBuilder('s')
+          ->setParameter('searchTerm', "%".$val."%")
+          ->andWhere('s.nomSortie LIKE :searchTerm')
+          ->getQuery();
+    /* dd($qb->getResult());*/
+     return $qb->getResult();
+
+
+
+
+    }
 
 
 }

@@ -28,18 +28,22 @@ class DetailSortieController extends AbstractController
     public function detailSortie ($id, EntityManagerInterface $emi)
     {
         $sortie = $emi->getRepository(Sortie::class)->find($id);
+        $rejoindre = $emi->getRepository(Rejoindre::class)->findAll();
 
+/*    dd($rejoindre);*/
         $lieu = $emi->getRepository(Lieu::class)->find($id);
 
-        $participant = $emi->getRepository(Participant::class)->find($id);
+        $sonParticipant = $emi->getRepository(Rejoindre::class)->find($id);
+
 
         if ($sortie ==null){
             throw $this ->createNotFoundException("La sortie est absente de la base de données.");
         }
         return $this->render('detail_sortie/index.html.twig', [
-           'infosSortie' => $sortie,
+            'infosSortie' => $sortie,
             'infosLieu'=>$lieu,
-            'infosParticipant'=>$participant
+            'infosParticipant'=>$sonParticipant,
+            'rejoindre'=>$rejoindre,
         ]);
     }
 
@@ -48,7 +52,7 @@ class DetailSortieController extends AbstractController
      * @param EntityManagerInterface $emi
      * @param Sortie $sortie
      */
-    public function rejoindre (EntityManagerInterface $emi, Sortie $sortie){
+    public function rejoindre(EntityManagerInterface $emi, Sortie $sortie){
 
         //TODO vérifier si le participant est déjà inscrit, créer nombre d'inscrits et vérifier si le nombre max est atteint
         // Ajouter un participant à la sortie
@@ -66,7 +70,7 @@ class DetailSortieController extends AbstractController
 
         $rejoindre->setSonParticipant($this->getUser());
 
-        // Test si le nombre max est atteint et clotue la sortie
+        // Test si le nombre max est atteint et cloture la sortie
         $sortie->setNbInscrits($sortie->getNbInscrits()+1);
         if ($sortie->getNbInscrits() == $sortie->getNbInscriptionMax()){
             $etatCloturee = $emi -> getRepository(Etat::class)->findOneBy(['libelle'=>'clôturée']);
@@ -106,7 +110,7 @@ class DetailSortieController extends AbstractController
         $emi ->remove($sortieRepo);
         $emi->flush();
 
-        $this->addFlash('success', 'Sortie annulée');
+        $this->addFlash('success', 'Participation à la sortie annulée');
 
         return $this->redirectToRoute('main');
     }

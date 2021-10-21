@@ -27,26 +27,30 @@
                     var selectSite = JSON.parse(data);
                     /*console.log(selectSite);*/ /*Ressort bien les bonnes valeurs*/
                     let html = "";
-                    for (let i = 0; i < selectSite.length; i++) {
-                        var action = iconSearch;
 
-           /*             console.log(selectSite[i].current_user_role);*/
+                       for (let i = 0; i < selectSite.length; i++) {
 
-                        if((selectSite[i].current_user_role) == "ROLE_ADMIN,ROLE_USER" || (selectSite[i].current_user_role) == "ROLE_USER"  ){
-                            action = iconSearch+iconUnregister+iconRegister;
-                        }
-                        action=action.replace("***id****",selectSite[i].sortie_id);
-                        /*  console.log(selectSite[i]);*/
-                        html += '<tr><td>' + selectSite[i].nomSortie + '</td>' +
-                            '<td>' + selectSite[i].dateHeureDebut.date.slice(0, 16) + '</td>' +
-                            '<td>' + selectSite[i].dateLimiteInscription.date.slice(0, 10) + '</td>' +
-                            '<td>' + selectSite[i].nbInscriptionMax + '</td>' +
-                            '<td>' + selectSite[i].etat + '</td>' +
-                            '<td>x</td>' +
-                            '<td>' + selectSite[i].organisateur + '</td>' +
-                            '<td>'+action+'</td></tr>';
-                    }
-                    $("#table").html(html);
+                               var action = iconSearch;
+
+                                /*             console.log(selectSite[i].current_user_role);*/
+
+                                if ((selectSite[i].current_user_role) == "ROLE_ADMIN,ROLE_USER" || (selectSite[i].current_user_role) == "ROLE_USER") {
+                                    action = iconSearch + iconUnregister + iconRegister;
+                                }
+                                action = action.replace("***id****", selectSite[i].sortie_id);
+                                /*  console.log(selectSite[i]);*/
+
+                                html += '<tr><td>' + selectSite[i].nomSortie + '</td>' +
+                                    '<td>' + selectSite[i].dateHeureDebut.date.slice(0, 16) + '</td>' +
+                                    '<td>' + selectSite[i].dateLimiteInscription.date.slice(0, 10) + '</td>' +
+                                    '<td>' + selectSite[i].nbInscriptionMax + '</td>' +
+                                    '<td>' + selectSite[i].etat + '</td>' +
+                                    '<td>x</td>' +
+                                    '<td>' + selectSite[i].organisateur + '</td>' +
+                                    '<td>' + action + '</td></tr>';
+                            }
+                       $("#table").html(html);
+
 
                 });
             })
@@ -82,30 +86,32 @@
 
             /*Changement des sorties en fonction de la recherche*/
             $('#searchSortie').keyup(function () {
-                $.get("/index/selectDactylo/" + $(this).val(), function (data, status) {
-                    var selectDactylo = JSON.parse(data);
-                    console.log(selectDactylo);
-                    let html = "";
-                    for (let i = 0; i < selectDactylo.length; i++) {
-                        var action = iconSearch;
+                if($(this).val().length > 3) {
+                    $.get("/index/selectDactylo/" + $(this).val(), function (data, status) {
+                        var selectDactylo = JSON.parse(data);
+                        console.log(selectDactylo);
+                        let html = "";
+                        for (let i = 0; i < selectDactylo.length; i++) {
+                            var action = iconSearch;
 
-                        /*             console.log(selectSite[i].current_user_role);*/
+                            /*             console.log(selectSite[i].current_user_role);*/
 
-                        if((selectDactylo[i].current_user_role) == "ROLE_ADMIN,ROLE_USER" || (selectDactylo[i].current_user_role) == "ROLE_USER"  ){
-                            action = iconSearch+iconUnregister+iconRegister;
+                            if ((selectDactylo[i].current_user_role) == "ROLE_ADMIN,ROLE_USER" || (selectDactylo[i].current_user_role) == "ROLE_USER") {
+                                action = iconSearch + iconUnregister + iconRegister;
+                            }
+                            action = action.replace("***id****", selectDactylo[i].sortie_id);
+                            html += '<tr><td>' + selectDactylo[i].nomSortie + '</td>' +
+                                '<td>' + selectDactylo[i].dateHeureDebut.date.slice(0, 16) + '</td>' +
+                                '<td>' + selectDactylo[i].dateLimiteInscription.date.slice(0, 10) + '</td>' +
+                                '<td>' + selectDactylo[i].nbInscriptionMax + '</td>' +
+                                '<td>' + selectDactylo[i].etat + '</td>' +
+                                '<td>x</td>' +
+                                '<td>' + selectDactylo[i].organisateur + '</td>' +
+                                '<td>' + action + '</td></tr>';
                         }
-                        action=action.replace("***id****",selectDactylo[i].sortie_id);
-                        html += '<tr><td>' + selectDactylo[i].nomSortie + '</td>' +
-                            '<td>' + selectDactylo[i].dateHeureDebut.date.slice(0, 16) + '</td>' +
-                            '<td>' + selectDactylo[i].dateLimiteInscription.date.slice(0, 10) + '</td>' +
-                            '<td>' + selectDactylo[i].nbInscriptionMax + '</td>' +
-                            '<td>' + selectDactylo[i].etat + '</td>' +
-                            '<td>x</td>' +
-                            '<td>' + selectDactylo[i].organisateur + '</td>' +
-                            '<td>' +  action +'</td></tr>';
-                    }
-                    $("#table").html(html);
-                })
+                        $("#table").html(html);
+                    })
+                }
             })
 
             /*Changement des sorties en fonction de la date passée*/
@@ -230,11 +236,12 @@
             <tbody class="thead-light" id="table">
 
             {% for sortie in sorties %}
+                {% if sortie.etat.id == 2 or sortie.etat.id == 3 or sortie.etat.id == 4 %}
                 <tr>
                     <td>{{ sortie.nomSortie }}</td>
                     <td>{{ sortie.dateHeureDebut |date('d/m/Y H:i') }}</td>
                     <td>{{ sortie.dateLimiteInscription |date('d/m/Y') }}</td>
-                    <td>{{ sortie.nbInscriptionMax }}</td>
+                    <td>{{ sortie.nbInscrits }} / {{ sortie.nbInscriptionMax }}</td>
                     <td>{{ sortie.etat }}</td>
                     <td>x</td>
                     <td>{{ sortie.organisateur }}</td>
@@ -288,6 +295,7 @@
 
                             {% endif %}
                 </tr>
+                {% endif %}
             {% endfor %}
             </td>
             </tbody>

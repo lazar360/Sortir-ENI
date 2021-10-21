@@ -162,13 +162,15 @@
                         </thead>
                         <tbody>
 
-                        {% for participant in infosSortie.participant %}
 
-                            <tr>
-                                <td><a href="{{ path('detail_id', { 'id': participant.id }) }}">{{ participant.username |e }}</a>  </td>
-                                <td> {{ participant.nom ~ ' ' ~ participant.prenom |e }}</td>
-                            </tr>
-                        {% endfor %}
+                            {% for item in rejoindre %}
+
+                                <tr>
+                                    <td><a href="{{ path('detail_id', { 'id': item.sonParticipant.id }) }}">{{ item.sonParticipant.username |e }}</a>  </td>
+                                    <td> {{ item.sonParticipant.nom ~ ' ' ~ item.sonParticipant.prenom |e }}</td>
+                                </tr>
+                            {% endfor %}
+
 
                         </tbody>
                     </table>

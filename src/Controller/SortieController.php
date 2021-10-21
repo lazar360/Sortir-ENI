@@ -60,15 +60,24 @@ class SortieController extends AbstractController
 
         if ($request->request->get('save')){
 
-            $etat = $em->getRepository(Etat::class)->findOneBy(['libelle'=>'brouillon']);
-            $this->addFlash('warning', "La sortie a été ajouté à vos brouillons !");
+            $etat = $em->getRepository(Etat::class)->findOneBy(['libelle'=>'créée']);
+            $this->addFlash('warning', "La sortie a été ajouté à vos créations, pensez à publier !");
 
+        } else if ($request->request->get('cancel')){
+            $etat = $em->getRepository(Etat::class)->findOneBy(['libelle'=>'annulée']);
+            $this->addFlash('warning', "La création de la sortie a été annulé!");
         } else {
 
             //vérifie la validation des formulaires avant d'envoyer
 
             if ($sortieForm->isSubmitted() && $sortieForm->isValid()){
-                $sortie->setEtat($er->find('1'));
+                $now = new \DateTime();
+                if($sortie->getDateLimiteInscription() < $now || $sortie->getNbInscriptionMax() == $sortie->getNbInscrits()){
+                    $sortie->setEtat($er->find('3'));       /*si date limite d'inscription est passée ou que le nb d'inscrits est atteint, cloturee*/
+                }else{
+                    $sortie->setEtat($er->find('2'));
+                }
+
                 $sortie->setSite($this->getUser()->getSite());
                 $participant = $this->getUser();
                 $sortie->setOrganisateur($participant);

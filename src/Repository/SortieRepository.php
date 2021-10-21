@@ -50,7 +50,7 @@ class SortieRepository extends ServiceEntityRepository
     }*/
 
 
-    /*tentative pour gérer les dates*/
+    /*Filtre pour gérer les dates*/
     public function findByFormer(): array
     {
         $qb = $this->createQueryBuilder('s')
@@ -73,7 +73,6 @@ class SortieRepository extends ServiceEntityRepository
         /* dd($qb->getResult());*/
         return $qb->getResult();
     }
-
 
     /*Filtre par intervalle de date*/
     public function findByDates($valStart, $valEnd): array{

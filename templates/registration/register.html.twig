@@ -9,62 +9,83 @@
 
     {{ form_start(registrationForm) }}
 
-        <div class="group p-1">
-            {{ form_label(registrationForm.nom) }}
-            <div class="form-control">
-            {{ form_widget(registrationForm.nom) }}
-            </div>
-            {{ form_errors(registrationForm.nom) }}
 
-        </div>
+            <div class="group p-1">
+                <label for="{{ field_name(registrationForm.nom)}}"> Nom : </label>
+                <input type="text"
+                       id="{{ field_name(registrationForm.nom)}}"
+                       name="{{ field_name(registrationForm.nom)}}"
+                       value="{{ field_value(registrationForm.nom)}}"
+                       placeholder="{{ field_label(registrationForm.nom)}}"
+                       class="form-control"
+                >
+            </div>
+
+            <div class="group p-1">
+                <label for="{{ field_name(registrationForm.prenom)}}"> Prenom : </label>
+                <input type="text"
+                       id="{{ field_name(registrationForm.prenom)}}"
+                       name="{{ field_name(registrationForm.prenom)}}"
+                       value="{{ field_value(registrationForm.prenom)}}"
+                       placeholder="{{ field_label(registrationForm.prenom)}}"
+                       class="form-control"
+                >
+            </div>
+
+            <div class="group p-1">
+                <label for="{{ field_name(registrationForm.username)}}"> Pseudo : </label>
+                <input type="text"
+                       id="{{ field_name(registrationForm.username)}}"
+                       name="{{ field_name(registrationForm.username)}}"
+                       value="{{ field_value(registrationForm.username)}}"
+                       placeholder="{{ field_label(registrationForm.username)}}"
+                       class="form-control"
+                >
+            </div>
+
+            <div class="group p-1">
+                <label for="{{ field_name(registrationForm.plainPassword)}}"> Password : </label>
+                <input type="text"
+                       id="{{ field_name(registrationForm.plainPassword)}}"
+                       name="{{ field_name(registrationForm.plainPassword)}}"
+                       value="{{ field_value(registrationForm.plainPassword)}}"
+                       placeholder="{{ field_label(registrationForm.plainPassword)}}"
+                       class="form-control"
+                >
+            </div>
+
+
+            <div class="group p-1">
+                <label for="{{ field_name(registrationForm.telephone)}}"> Telephone : </label>
+                <input type="text"
+                       id="{{ field_name(registrationForm.telephone)}}"
+                       name="{{ field_name(registrationForm.telephone)}}"
+                       value="{{ field_value(registrationForm.telephone)}}"
+                       placeholder="{{ field_label(registrationForm.telephone)}}"
+                       class="form-control"
+                >
+            </div>
+
+            <div class="group p-1">
+                <label for="{{ field_name(registrationForm.mail)}}"> Mail : </label>
+                <input type="text"
+                       id="{{ field_name(registrationForm.mail)}}"
+                       name="{{ field_name(registrationForm.mail)}}"
+                       value="{{ field_value(registrationForm.mail)}}"
+                       placeholder="{{ field_label(registrationForm.mail)}}"
+                       class="form-control"
+                >
+            </div>
 
         <div class="group p-1">
-            {{ form_label(registrationForm.prenom) }}
-            <div class="form-control">
-            {{ form_widget(registrationForm.prenom) }}
-            </div>
-            {{ form_errors(registrationForm.prenom) }}
+           <p>{{ form_label(registrationForm.administrateur) }}
+            {{ form_widget(registrationForm.administrateur) }}</p>
+
+
+            <p>{{ form_label(registrationForm.actif) }}
+            {{ form_widget(registrationForm.actif) }}</p>
         </div>
 
-        <div class="group p-1">
-            {{ form_label(registrationForm.username) }}
-            <div class="form-control">
-            {{ form_widget(registrationForm.username) }}
-            </div>
-            {{ form_errors(registrationForm.username) }}
-        </div>
-
-        <div class="group p-1">
-            <label>Password</label>
-            <div class="form-control">
-            {{ form_widget(registrationForm.plainPassword)}}
-            </div>
-            {{ form_errors(registrationForm.plainPassword)}}
-        </div>
-
-        <div class="group p-1">
-            {{ form_label(registrationForm.telephone) }}
-            <div class="form-control">
-            {{ form_widget(registrationForm.telephone) }}
-            </div>
-            {{ form_errors(registrationForm.telephone) }}
-        </div>
-
-        <div class="group p-1">
-            {{ form_label(registrationForm.mail) }}
-            <div class="form-control">
-            {{ form_widget(registrationForm.mail) }}
-            </div>
-            {{ form_errors(registrationForm.mail) }}
-        </div>
-        <div class="group p-1">
-            {{ form_label(registrationForm.administrateur) }}
-            {{ form_widget(registrationForm.administrateur) }}
-        </div>
-        <div class="group p-1">
-            {{ form_label(registrationForm.actif) }}
-            {{ form_widget(registrationForm.actif) }}
-        </div>
         <div class="group p-1">
             {{ form_label(registrationForm.site) }}
             <div class="form-control">
@@ -73,10 +94,10 @@
             {{ form_errors(registrationForm.site) }}
         </div>
 
-
+            <div class="group p-1">
         {{ form_row(registrationForm.agreeTerms) }}
-
-        <button class="btn btn-lg btn-primary" type="submit">Register</button>
+            </div>
+        <button class="btn btn-lg btn-primary" type="submit">Enregistrer un nouvel utilisateur</button>
     {{ form_end(registrationForm) }}
 </div>
 </div>

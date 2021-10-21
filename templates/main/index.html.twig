@@ -50,6 +50,7 @@
 
                 });
             })
+
             /*Changement des sorties en fonction de l'organisateur*/
             $('#orga').change(function () {
                 $.get("/index/selectOrga/" + $(this).is(':checked'), function (data, status) {
@@ -78,6 +79,7 @@
                 })
 
             });
+
             /*Changement des sorties en fonction de la recherche*/
             $('#searchSortie').keyup(function () {
                 $.get("/index/selectDactylo/" + $(this).val(), function (data, status) {
@@ -132,6 +134,32 @@
 
                 });
             });
+
+            /*Changement des sorties en fonction des dates choisies*/
+            $('#dateMax').change(function () {
+                $.get("/index/selectInterDate/" + $(this).val() + '/' + $(this).val(), function (data, status) {
+                    var selectInterDate = JSON.parse(data);
+                    console.log(selectInterDate);
+                    let html = "";
+                    for (let i = 0; i < selectInterDate.length; i++) {
+                        var action = iconSearch;
+
+                        if((selectInterDate[i].current_user_role) == "ROLE_ADMIN,ROLE_USER" || (selectInterDate[i].current_user_role) == "ROLE_USER"  ){
+                            action = iconSearch+iconUnregister+iconRegister;
+                        }
+                        action=action.replace("***id****",selectInterDate[i].sortie_id);
+                        html += '<tr><td>' + selectInterDate[i].nomSortie + '</td>' +
+                            '<td>' + selectInterDate[i].dateHeureDebut.date.slice(0, 16) + '</td>' +
+                            '<td>' + selectInterDate[i].dateLimiteInscription.date.slice(0, 10) + '</td>' +
+                            '<td>' + selectInterDate[i].nbInscriptionMax + '</td>' +
+                            '<td>' + selectInterDate[i].etat + '</td>' +
+                            '<td>' + selectInterDate[i].organisateur + '</td>' +
+                            '<td>' + action +' </td></tr>';
+                    }
+                    $("#table").html(html);
+
+                });
+            });
         });
 
 
@@ -165,7 +193,7 @@
 
                     </p>
                     <p>Le nom de la sortie contient : <input type="text" placeholder="search" class="rounded" id="searchSortie"/></p>
-                    <p>Entre <input type="date" class="rounded" id="dateMin"/> et <input type="date" class="rounded" id="dateMax"/> </p>
+                    <p>Entre <input type="date" class="rounded" name="dateMin" id="dateMin"/> et <input type="date" class="rounded" name="dateMax" id="dateMax"/> </p>
                 </div>
                 <div class="col-5 text-center">
                     <div> <input type="checkbox" value="orga" value="orga" id="orga">Sorties dont je suis l'organisateur/trice</div>
@@ -174,7 +202,7 @@
                     <div><input type="checkbox" value="passees"   value="passees" id="passees">Sorties passées</div>
                 </div>
                 <div class="col-2 text-center m-auto mt-4">
-                    <button type="submit" class="btn btn-lg btn-primary p-3" id="search">Rechercher</button>
+                    <button type="submit" class="btn btn-lg btn-primary p-3" id="search" ><a class="text-white-50"href="#">Rechercher</a></button>
                 </div>
             </div>
         </div>
@@ -214,7 +242,7 @@
                         <td>
                             {% if is_granted('ROLE_USER') %}
                                 <span>
-                               <button type="button" class="btn btn-outline-success">
+                                    <button type="button" class="btn btn-outline-success">
                                <a href="{{ path('detail_sortie', {'id':sortie.id}) }}">
                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
@@ -222,21 +250,20 @@
                                    </svg>
                                </a>
                                </button>
-                           </span>
+                                </span>
 
                                 <span>
-                               <button type="button" class="btn btn-outline-success">
+                                    <button type="button" class="btn btn-outline-success">
                                    <a href="{{ path('rejoindre_sortie', {'id':sortie.id}) }}">
                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
                                 <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
                                 </svg>
                                     </a>
                                    </button>
-                           </span>
-
+                                </span>
 
                                 <span>
-                               <button type="button" class="btn btn-outline-success">
+                                    <button type="button" class="btn btn-outline-success">
                                    <a href="{{ path('desister_sortie', {'id':sortie.id}) }}">
                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                                   <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
@@ -244,14 +271,12 @@
                                 </svg>
                                     </a>
                                    </button>
-                           </span>
-
+                                </span>
 
                             {% else %}
 
-
                                 <span>
-                               <button type="button" class="btn btn-outline-success">
+                                    <button type="button" class="btn btn-outline-success">
                                <a href="{{ path('detail_sortie', {'id':sortie.id}) }}">
                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
@@ -259,8 +284,7 @@
                                    </svg>
                                </a>
                                </button>
-                           </span>
-
+                                </span>
 
                             {% endif %}
                 </tr>

@@ -205,11 +205,26 @@ class MainController extends AbstractController
     }
 
     /**
-     * @Route("/index/routeDuRhum/", name="routeDuRhum")
+     * @Route("/index/selectInterDate/{dateMin}/{dateMax}", name="selectInterDate")
      */
-    public function selectIntervalDate(Request $request, SortieRepository  $sr): Response{
-            $intervalDate = $sr->findByDates();
-            dd($intervalDate);
+    public function selectIntervalDate(Request $request, SortieRepository  $sr, $dateMin="", $dateMax=""): Response{
+
+        $intervalDate = $sr->findByDates($dateMin |date ('yyyy-MM-dd'), $dateMax |date ('yyyy-MM-dd'));
+
+        $tab = [];
+        foreach ($intervalDate as $val) {
+            array_push($tab, [
+                "sortie_id"=> $val->getId(),
+                "nomSortie" => $val->getNomSortie(),
+                "dateHeureDebut" => $val->getDateHeureDebut(),
+                "dateLimiteInscription" => $val->getDateLimiteInscription(),
+                "nbInscriptionMax" => $val->getNbInscriptionMax(),
+                "etat" => $val->getEtat()->getLibelle(),
+                "organisateur" => $val->getOrganisateur()->getNom(),
+                "current_user_role"=>$this->getUser()->getRoles()
+            ]);
+        }
+        return $this->json(json_encode($tab));
     }
 
 

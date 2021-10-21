@@ -83,7 +83,7 @@ class SortieRepository extends ServiceEntityRepository
             ->setParameter('start', $valStart)
             ->setParameter('end', $valEnd)
             ->getQuery();
-        /*dd($qb->getResult());*/
+   /*     dd($qb->getResult());*/
         return $qb->getResult();
     }
 

@@ -56,21 +56,32 @@ class SortieController extends AbstractController
         $lieuForm = $this->createForm(LieuFormType::class, $lieu);
 
 
-        //vérifie la validation des formulaires avant d'envoyer
+        //Vérifie si le bouton enregistrer est cliqué
 
-        if ($sortieForm->isSubmitted() && $sortieForm->isValid()){
-            $sortie->setEtat($er->find('1'));
-            $sortie->setSite($this->getUser()->getSite());
-            $participant = $this->getUser();
-            $sortie->setOrganisateur($participant);
-            $em->persist($sortie);
-   /*         $etat = $this->em->getRepository(Etat::class)->findByLibel(Etat::created());
-            //Set status
-            $sortie->setEtat($etat);*/
-            $em->flush();
-            $this->addFlash("success", "Votre sortie est bien enregistrée");
+        if ($request->request->get('save')){
 
-            return $this->redirectToRoute('detail_sortie', ["id"=>$sortie->getId()]);
+            $etat = $em->getRepository(Etat::class)->findOneBy(['libelle'=>'brouillon']);
+            $this->addFlash('warning', "La sortie a été ajouté à vos brouillons !");
+
+        } else {
+
+            //vérifie la validation des formulaires avant d'envoyer
+
+            if ($sortieForm->isSubmitted() && $sortieForm->isValid()){
+                $sortie->setEtat($er->find('1'));
+                $sortie->setSite($this->getUser()->getSite());
+                $participant = $this->getUser();
+                $sortie->setOrganisateur($participant);
+                $em->persist($sortie);
+                /*         $etat = $this->em->getRepository(Etat::class)->findByLibel(Etat::created());
+                         //Set status
+                         $sortie->setEtat($etat);*/
+                $em->flush();
+                $this->addFlash("success", "Votre sortie est bien enregistrée");
+
+                return $this->redirectToRoute('detail_sortie', ["id"=>$sortie->getId()]);
+            }
+
         }
 
 
@@ -123,4 +134,6 @@ class SortieController extends AbstractController
     public function delete(Request $request,$id){
         return $this->render('sortie/newSortie.html.twig');
     }
+
+
 }

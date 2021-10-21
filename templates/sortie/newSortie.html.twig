@@ -183,12 +183,14 @@
 
         <div class="row text-center m-5">
             <div class="group">
-                <button class="btn btn-lg btn-primary" type="submit" name="save">Enregistrer</button>
-                <button class="btn btn-lg btn-primary" type="submit" name="pusblish">Publier une sortie</button>
+                <button class="btn btn-lg btn-primary" type="submit" value="save"  name="save">Enregistrer</button>
+                <button class="btn btn-lg btn-primary" type="submit" value="publish" name="pusblish">Publier une sortie</button>
                 <input type="button" value="Annuler" class="btn btn-lg btn-primary" onclick="history.back()" />
 
             </div>
         </div>
+
+
 
     </div>
     {{ form_end(sortieForm) }}

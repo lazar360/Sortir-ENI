@@ -15,6 +15,9 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
+
+                <p class="text-center"><img width="100" height="100" src="{{ asset('assets/img/accueil.png') }}"></p>
+
                 <a class="navbar-brand" href="{{ path('main') }}">Sortir.com</a>
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
@@ -26,9 +29,6 @@
                             <a class="nav-link active" aria-current="page" href="{{ path('app_login') }}">Se Connecter</a>
                         </li>
 
-                        <li class="class nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Liste des sorties</a>
-                        </li>
 
                         {% if is_granted('ROLE_USER') %}
 
@@ -40,9 +40,6 @@
                                 <a class="nav-link active" aria-current="page" href="{{ path('detail') }} ">Mon Profil</a>
                             </li>
 
-                            <li class="class nav-item">
-                                <a class="nav-link active" aria-current="page" href="{{ path('app_logout') }}">Se déconnecter</a>
-                            </li>
 
                         {% else %}
                             <li class="class nav-item">
@@ -57,9 +54,19 @@
                             </li>
 
                         {% endif %}
-
-
                     </ul>
+                        <ul>
+
+                            {% if app.user %}
+                                <div class="mb-3">
+                                    Vous êtes connecté {{ app.user.username }}, <a class="nav-link active" aria-current="page" href="{{ path('app_logout') }}">se déconnecter</a>
+                                </div>
+                            {% endif %}
+
+                        </ul>
+
+
+
                 </div>
             </div>
         </nav>

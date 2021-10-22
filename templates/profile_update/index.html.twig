@@ -4,54 +4,69 @@
 
 {% block body %}
     <style>#success_message{ display: none;}</style>
-    <h1>Modification du profil </h1>
+    <h1 class="text-center "><em>Modification du profil</em> </h1>
 
-    <div class="container">
+    <div class="container-md border border-warning ">
 
         {{ form_start(editUserType) }}
         {# Champ modification du pseudo #}
-        <div class="form-group">
-            {{ form_label(editUserType.username) }}
-            <div class="form-control">
-            {{ form_widget(editUserType.username) }}
-            </div>
-            {{ form_errors(editUserType.username) }}
+        <div class="group p-1">
+            <label for="{{ field_name(editUserType.username)}}"> Username : </label>
+            <input type="text"
+                   id="{{ field_name(editUserType.username)}}"
+                   name="{{ field_name(editUserType.username)}}"
+                   value="{{ field_value(editUserType.username)}}"
+                   placeholder="{{ field_label(editUserType.username)}}"
+                   class="form-control"
+            >
         </div>
 
         {# Champ modification du mail #}
-        <div class="form-group">
-            {{ form_label(editUserType.mail) }}
-            <div class="form-control">
-            {{ form_widget(editUserType.mail) }}
-            </div>
-            {{ form_errors(editUserType.mail) }}
+        <div class="group p-1">
+            <label for="{{ field_name(editUserType.mail)}}"> Mail : </label>
+            <input type="text"
+                   id="{{ field_name(editUserType.mail)}}"
+                   name="{{ field_name(editUserType.mail)}}"
+                   value="{{ field_value(editUserType.mail)}}"
+                   placeholder="{{ field_label(editUserType.mail)}}"
+                   class="form-control"
+            >
         </div>
 
         {# Champ modification du nom #}
-        <div class="form-group">
-            {{ form_label(editUserType.nom) }}
-            <div class="form-control">
-            {{ form_widget(editUserType.nom) }}
-            </div>
-            {{ form_errors(editUserType.nom) }}
+        <div class="group p-1">
+            <label for="{{ field_name(editUserType.nom)}}"> Nom : </label>
+            <input type="text"
+                   id="{{ field_name(editUserType.nom)}}"
+                   name="{{ field_name(editUserType.nom)}}"
+                   value="{{ field_value(editUserType.nom)}}"
+                   placeholder="{{ field_label(editUserType.nom)}}"
+                   class="form-control"
+            >
         </div>
 
         {# Champ modification du prénom #}
-        <div class="form-group">
-            {{ form_label(editUserType.prenom) }}
-            <div class="form-control">
-            {{ form_widget(editUserType.prenom) }}
-            </div>
-            {{ form_errors(editUserType.prenom) }}
+        <div class="group p-1">
+            <label for="{{ field_name(editUserType.prenom)}}"> Prénom : </label>
+            <input type="text"
+                   id="{{ field_name(editUserType.prenom)}}"
+                   name="{{ field_name(editUserType.prenom)}}"
+                   value="{{ field_value(editUserType.prenom)}}"
+                   placeholder="{{ field_label(editUserType.prenom)}}"
+                   class="form-control"
+            >
         </div>
 
         {# Champ modification du telephone #}
-        <div class="form-group">
-            {{ form_label(editUserType.telephone) }}
-            <div class="form-control">
-            {{ form_widget(editUserType.telephone) }}
-            </div>
-            {{ form_errors(editUserType.telephone) }}
+        <div class="group p-1">
+            <label for="{{ field_name(editUserType.telephone)}}"> Téléphone : </label>
+            <input type="text"
+                   id="{{ field_name(editUserType.telephone)}}"
+                   name="{{ field_name(editUserType.telephone)}}"
+                   value="{{ field_value(editUserType.telephone)}}"
+                   placeholder="{{ field_label(editUserType.telephone)}}"
+                   class="form-control"
+            >
         </div>
 
         <div class="form-group">
@@ -62,15 +77,16 @@
             {{ form_errors(editUserType.password) }}
         </div>
 
-        </div>
+
         <br>
 
     <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
 
-    <button class="btn btn-lg btn-primary" type="submit">Enregister</button>
+    <button class="btn  btn-outline-success m-3" type="submit">Enregister</button>
 
             {{ form_end(editUserType) }}
 
+    </div>
     </div>
 </div>
 {% endblock %}

@@ -27,26 +27,30 @@
                     var selectSite = JSON.parse(data);
                     /*console.log(selectSite);*/ /*Ressort bien les bonnes valeurs*/
                     let html = "";
-
                        for (let i = 0; i < selectSite.length; i++) {
-
                                var action = iconSearch;
-
                                 /*             console.log(selectSite[i].current_user_role);*/
-
                                 if ((selectSite[i].current_user_role) == "ROLE_ADMIN,ROLE_USER" || (selectSite[i].current_user_role) == "ROLE_USER") {
                                     action = iconSearch + iconUnregister + iconRegister;
                                 }
                                 action = action.replace("***id****", selectSite[i].sortie_id);
                                 /*  console.log(selectSite[i]);*/
-
                                 html += '<tr><td>' + selectSite[i].nomSortie + '</td>' +
                                     '<td>' + selectSite[i].dateHeureDebut.date.slice(0, 16) + '</td>' +
                                     '<td>' + selectSite[i].dateLimiteInscription.date.slice(0, 10) + '</td>' +
                                     '<td>' + selectSite[i].nbInscriptionMax + '</td>' +
-                                    '<td>' + selectSite[i].etat + '</td>' +
-                                    '<td>x</td>' +
-                                    '<td>' + selectSite[i].organisateur + '</td>' +
+                                    '<td>' + selectSite[i].etat + '</td>' ;
+                                /*console.log(selectSite[i].rejoindre);*/
+                                    /* debut boucle for */
+                             /*        for( let item of selectSite[i].rejoindre ){
+                                       if(app.user.id == item.sonParticipant.id){}
+                                            X
+                                         break;
+                                         console.log(item);
+                                     }*/
+                                    /* fin boucle for */
+                                    html +='<td>X</td>';
+                                    html +='<td>' + selectSite[i].organisateur + '</td>' +
                                     '<td>' + action + '</td></tr>';
                             }
                        $("#table").html(html);
@@ -159,6 +163,7 @@
                             '<td>' + selectInterDate[i].dateLimiteInscription.date.slice(0, 10) + '</td>' +
                             '<td>' + selectInterDate[i].nbInscriptionMax + '</td>' +
                             '<td>' + selectInterDate[i].etat + '</td>' +
+                            '<td>' + x+ '</td>' +
                             '<td>' + selectInterDate[i].organisateur + '</td>' +
                             '<td>' + action +' </td></tr>';
                     }
@@ -166,6 +171,65 @@
 
                 });
             });
+
+            /*Changement des sorties en fonction de l'inscription*/
+            $('#inscrit').change(function () {
+                $.get("/index/selectInscrit/" + $(this).is(':checked'), function (data, status) {
+                    var selectInscrits = JSON.parse(data);
+                    console.log(selectInscrits);
+                    let html = "";
+                    for (let i = 0; i < selectInscrits.length; i++) {
+                        var action = iconSearch;
+
+                        /*             console.log(selectSite[i].current_user_role);*/
+
+                        if((selectInscrits[i].current_user_role) == "ROLE_ADMIN,ROLE_USER" || (selectInscrits[i].current_user_role) == "ROLE_USER"  ){
+                            action = iconSearch+iconUnregister+iconRegister;
+                        }
+                        action=action.replace("***id****",selectInscrits[i].sortie_id);
+                        html += '<tr><td>' + selectInscrits[i].nomSortie + '</td>' +
+                            '<td>' + selectInscrits[i].dateHeureDebut.date.slice(0, 16) + '</td>' +
+                            '<td>' + selectInscrits[i].dateLimiteInscription.date.slice(0, 10) + '</td>' +
+                            '<td>' + selectInscrits[i].nbInscriptionMax + '</td>' +
+                            '<td>' + selectInscrits[i].etat + '</td>' +
+                            '<td>x</td>' +
+                            '<td>' + selectInscrits[i].organisateur + '</td>' +
+                            '<td>' + action +' </td></tr>';
+                    }
+                    $("#table").html(html);
+                })
+
+            });
+
+            /*Changement des sorties en fonction du non inscription*/
+        /*    $('#noInscrit').change(function () {
+                $.get("/index/selectInscrit/" + $(this).is(':checked'), function (data, status) {
+                    var selectInscrits = JSON.parse(data);
+                    console.log(selectInscrits);
+                    let html = "";
+                    for (let i = 0; i < selectInscrits.length; i++) {
+                        var action = iconSearch;
+
+                        /!*             console.log(selectSite[i].current_user_role);*!/
+
+                        if((selectInscrits[i].current_user_role) == "ROLE_ADMIN,ROLE_USER" || (selectInscrits[i].current_user_role) == "ROLE_USER"  ){
+                            action = iconSearch+iconUnregister+iconRegister;
+                        }
+                        action=action.replace("***id****",selectInscrits[i].sortie_id);
+                        html += '<tr><td>' + selectInscrits[i].nomSortie + '</td>' +
+                            '<td>' + selectInscrits[i].dateHeureDebut.date.slice(0, 16) + '</td>' +
+                            '<td>' + selectInscrits[i].dateLimiteInscription.date.slice(0, 10) + '</td>' +
+                            '<td>' + selectInscrits[i].nbInscriptionMax + '</td>' +
+                            '<td>' + selectInscrits[i].etat + '</td>' +
+                            '<td>x</td>' +
+                            '<td>' + selectInscrits[i].organisateur + '</td>' +
+                            '<td>' + action +' </td></tr>';
+                    }
+                    $("#table").html(html);
+                })
+
+            });*/
+
         });
 
 
@@ -174,15 +238,15 @@
 
 {% block body %}
 
-    <h1 class="text-center">Bienvenue sur Sortir.com</h1>
+    <h1 class="text-center text-warning"><em>Ready to have fun ?</em></h1>
 
-    <div class="text-right m-2 ">
-        <p class="text-right">Date du jour : {{ "now"|date("d/m/Y") }}</p>
-        <p class="text-right">Participant : {{ app.User }}</p>
+    <div class="row text-right" style="text-align: right;">
+        <p class="text-right">Date du jour : {{ "now"|date("d/m/Y") }}   </p>
     </div>
 
-    <div class="border border-dark bg-secondary text-white w-75 mx-auto rounded m-5">
-        <h5>Filtrer les sorties</h5>
+
+    <div class="border  bg-white text-black w-75 mx-auto rounded m-5">
+        <h5 class="p-2 text-center">Filtrer les sorties</h5>
 
 
         <div class="container m-2">
@@ -202,13 +266,13 @@
                     <p>Entre <input type="date" class="rounded" name="dateMin" id="dateMin"/> et <input type="date" class="rounded" name="dateMax" id="dateMax"/> </p>
                 </div>
                 <div class="col-5 text-center">
-                    <div> <input type="checkbox" value="orga" value="orga" id="orga">Sorties dont je suis l'organisateur/trice</div>
-                    <div><input type="checkbox" value="inscrit" value="inscrit" id="inscrit">Sorties auxquelles je suis inscrit/e</div>
-                    <div><input type="checkbox" value="noInscrit"  value="noInscrit" id="noInscrit">Sorties auxquelles je ne suis pas inscrit/e</div>
-                    <div><input type="checkbox" value="passees"   value="passees" id="passees">Sorties passées</div>
+                    <div> <input type="checkbox" value="orga" value="orga" id="orga"> Sorties dont je suis l'organisateur/trice</div>
+                    <div><input type="checkbox" value="inscrit" value="inscrit" id="inscrit"> Sorties auxquelles je suis inscrit/e</div>
+                    <div><input type="checkbox" value="noInscrit"  value="noInscrit" id="noInscrit"> Sorties auxquelles je ne suis pas inscrit/e</div>
+                    <div><input type="checkbox" value="passees"   value="passees" id="passees"> Sorties passées</div>
                 </div>
                 <div class="col-2 text-center m-auto mt-4">
-                    <button type="submit" class="btn btn-lg btn-primary p-3" id="search" ><a class="text-white-50"href="#">Rechercher</a></button>
+                    <button type="submit" class="btn btn-outline-success" id="search" ><a href="#">Rechercher</a></button>
                 </div>
             </div>
         </div>
@@ -217,10 +281,10 @@
 {#
    <p class="text-center"><img width="500" height="500" src="{{ asset('assets/img/accueil.png') }}"></p>
 #}
-
-    <div class="table-responsive m-5" >
+<div class="border  bg-white text-black w-75 mx-auto rounded m-1">
+    <div class="table-responsive m-4" >
         <table class="table table-hover">
-            <thead class="thead-dark">
+            <thead class="thead-white">
             <tr class="table-active">
                 <th scope="col">Nom de la sortie</th>
                 <th scope="col">Date de la sortie</th>
@@ -243,7 +307,14 @@
                     <td>{{ sortie.dateLimiteInscription |date('d/m/Y') }}</td>
                     <td>{{ sortie.nbInscrits }} / {{ sortie.nbInscriptionMax }}</td>
                     <td>{{ sortie.etat }}</td>
-                    <td>x</td>
+                    <td>{%  for item in sortie.rejoindres %}
+                            {%  if item.sonParticipant.id is null %}
+                            {% if app.user.id == item.sonParticipant.id %}
+                                X
+                                {% set break = true %}
+                            {% endif %}
+                            {% endif %}
+                            {% endfor %}</td>
                     <td>{{ sortie.organisateur }}</td>
 
                         <td>
@@ -301,10 +372,12 @@
             </tbody>
         </table>
     </div>
+</div>
+
 
     <div class="row  m-5">
-        <div class="group">
-            <a type="button" value="Créer une sortie" class="btn btn-lg btn-primary" href="{{ path('insert') }}">Créer une sortie</a>
+        <div class="group text-center mb-5">
+            <a type="button" value="Créer une sortie" class="btn btn-outline-success"  href="{{ path('insert') }}">Créer une sortie</a>
         </div>
     </div>
 {% endblock %}

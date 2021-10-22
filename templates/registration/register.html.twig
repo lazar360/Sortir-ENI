@@ -3,7 +3,7 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    <h1 class="text-center">Enregistrer un nouvel utilisateur</h1>
+    <h1 class="text-center"><em>Enregistrer un nouvel utilisateur</em></h1>
 
         <div class="container-md border border-warning  p-3">
 
@@ -97,7 +97,9 @@
             <div class="group p-1">
         {{ form_row(registrationForm.agreeTerms) }}
             </div>
-        <button class="btn btn-lg btn-primary" type="submit">Enregistrer un nouvel utilisateur</button>
+            <div class="text-center">
+        <button class="btn  btn-outline-success" type="submit">Enregistrer un nouvel utilisateur</button>
+            </div>
     {{ form_end(registrationForm) }}
 </div>
 </div>

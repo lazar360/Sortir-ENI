@@ -47,7 +47,7 @@
 {% endblock %}
 
 {% block body %}
-    <h1 class="text-center">Organiser une sortie</h1>
+    <h1 class="text-center "><em>Organiser une sortie</em></h1>
     {{ form_start(sortieForm) }}
     <div class="container-md border border-warning ">
 
@@ -155,7 +155,7 @@
 
 
                 <div class="group">
-                    <label>Lieu : </label><a href="#"> <img src="{{ asset('images/plus.png')}}" style="width: 25px; height: 25px;"/></a>
+                    <label>Lieu : </label><a href="#"> <img src="{{ asset('images/plus.png')}}" class="plus"/></a>
                     <select  id="sortie_form_lieu" name="{{ field_name(sortieForm.lieu) }}" class="form-control"></select>
                 </div>
 
@@ -183,9 +183,9 @@
 
         <div class="row text-center m-5">
             <div class="group">
-                <button class="btn btn-lg btn-primary" type="submit" value="save"  name="save">Enregistrer</button>
-                <button class="btn btn-lg btn-primary" type="submit" value="publish" name="pusblish">Publier une sortie</button>
-                <input type="button" value="Annuler" class="btn btn-lg btn-primary" onclick="history.back()" />
+                <button class="btn  btn-outline-success" type="submit" value="save"  name="save">Enregistrer</button>
+                <button class="btn  btn-outline-success" type="submit" value="publish" name="pusblish">Publier une sortie</button>
+                <input type="button" value="Annuler" class="btn  btn-outline-success" onclick="history.back()" />
 
             </div>
         </div>

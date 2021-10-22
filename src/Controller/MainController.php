@@ -41,7 +41,7 @@ class MainController extends AbstractController
             'controller_name' => 'MainController',
             'sorties' => $sorties,
             'sites' => $sites,
-            "rejoindre"=>$rejoindre
+            "rejoindre" => $rejoindre
         ]);
     }
 
@@ -50,13 +50,14 @@ class MainController extends AbstractController
      */
     public function select(Request $request, SortieRepository $sr, $id): Response
     {
-
+        $sorties = $this->getDoctrine()->getRepository(Sortie::class)->findAll();
+        $rejoindre = $this->getDoctrine()->getRepository(Rejoindre::class)->findAll();
         $sortieList = $sr->findBy(["site" => $id]);
         /*   dd($sortieList);*/
         $tab = [];
         foreach ($sortieList as $val) {
             array_push($tab, [
-                "sortie_id"=> $val->getId(),
+                "sortie_id" => $val->getId(),
                 "nomSortie" => $val->getNomSortie(),
                 "dateHeureDebut" => $val->getDateHeureDebut(),
                 "dateLimiteInscription" => $val->getDateLimiteInscription(),
@@ -64,7 +65,9 @@ class MainController extends AbstractController
                 "etat" => $val->getEtat()->getLibelle(),
                 "etatId" => $val->getEtat()->getId(),
                 "organisateur" => $val->getOrganisateur()->getNom(),
-                "current_user_role"=>$this->getUser()->getRoles()
+                "current_user_role" => $this->getUser()->getRoles(),
+                'sorties' => $sorties,
+                "rejoindre" => $rejoindre
             ]);
         }
         return $this->json(json_encode($tab));
@@ -82,7 +85,7 @@ class MainController extends AbstractController
             $tab = [];
             foreach ($orgaList as $val) {
                 array_push($tab, [
-                    "sortie_id"=> $val->getId(),
+                    "sortie_id" => $val->getId(),
                     "nomSortie" => $val->getNomSortie(),
                     "dateHeureDebut" => $val->getDateHeureDebut(),
                     "dateLimiteInscription" => $val->getDateLimiteInscription(),
@@ -90,7 +93,7 @@ class MainController extends AbstractController
                     "etat" => $val->getEtat()->getLibelle(),
                     "etatId" => $val->getEtat()->getId(),
                     "organisateur" => $val->getOrganisateur()->getNom(),
-                    "current_user_role"=>$this->getUser()->getRoles()
+                    "current_user_role" => $this->getUser()->getRoles()
                 ]);
             }
             return $this->json(json_encode($tab));
@@ -101,10 +104,10 @@ class MainController extends AbstractController
             /* dd("2eme if");*/
             $tab = [];
             foreach ($orgaList as $val) {
-                if ($val->getEtat()->getId() == 2 || $val->getEtat()->getId() ==3 || $val->getEtat()->getId() == 4){
+                if ($val->getEtat()->getId() == 2 || $val->getEtat()->getId() == 3 || $val->getEtat()->getId() == 4) {
                     array_push($tab, [
 
-                        "sortie_id"=> $val->getId(),
+                        "sortie_id" => $val->getId(),
                         "nomSortie" => $val->getNomSortie(),
                         "dateHeureDebut" => $val->getDateHeureDebut(),
                         "dateLimiteInscription" => $val->getDateLimiteInscription(),
@@ -112,7 +115,7 @@ class MainController extends AbstractController
                         "etat" => $val->getEtat()->getLibelle(),
                         "etatId" => $val->getEtat()->getId(),
                         "organisateur" => $val->getOrganisateur()->getNom(),
-                        "current_user_role"=>$this->getUser()->getRoles()
+                        "current_user_role" => $this->getUser()->getRoles()
                     ]);
                 }
             }
@@ -133,14 +136,14 @@ class MainController extends AbstractController
             $tab = [];
             foreach ($dactyloList as $val) {
                 array_push($tab, [
-                    "sortie_id"=> $val->getId(),
+                    "sortie_id" => $val->getId(),
                     "nomSortie" => $val->getNomSortie(),
                     "dateHeureDebut" => $val->getDateHeureDebut(),
                     "dateLimiteInscription" => $val->getDateLimiteInscription(),
                     "nbInscriptionMax" => $val->getNbInscriptionMax(),
                     "etat" => $val->getEtat()->getLibelle(),
                     "organisateur" => $val->getOrganisateur()->getNom(),
-                    "current_user_role"=>$this->getUser()->getRoles()
+                    "current_user_role" => $this->getUser()->getRoles()
                 ]);
             }
             return $this->json(json_encode($tab));
@@ -152,7 +155,7 @@ class MainController extends AbstractController
             /*  dd($dactyloList);*/
             $tab = [];
             foreach ($dactyloList as $val) {
-                if ($val->getEtat()->getId() == 2 || $val->getEtat()->getId() ==3 || $val->getEtat()->getId() == 4) {
+                if ($val->getEtat()->getId() == 2 || $val->getEtat()->getId() == 3 || $val->getEtat()->getId() == 4) {
                     array_push($tab, [
                         "sortie_id" => $val->getId(),
                         "nomSortie" => $val->getNomSortie(),
@@ -170,24 +173,24 @@ class MainController extends AbstractController
     }
 
     /**
-    * @Route("/index/selectPassees/{bool}", name="selectPassees")
-    */
+     * @Route("/index/selectPassees/{bool}", name="selectPassees")
+     */
     public function selectPassees(Request $request, SortieRepository $sr, $bool): Response
     {
-        if($bool == 'true'){
+        if ($bool == 'true') {
             $passeesList = $sr->findByFormer();
             /* dd($passeesList);*/
             $tab = [];
             foreach ($passeesList as $val) {
                 array_push($tab, [
-                    "sortie_id"=> $val->getId(),
+                    "sortie_id" => $val->getId(),
                     "nomSortie" => $val->getNomSortie(),
                     "dateHeureDebut" => $val->getDateHeureDebut(),
                     "dateLimiteInscription" => $val->getDateLimiteInscription(),
                     "nbInscriptionMax" => $val->getNbInscriptionMax(),
                     "etat" => $val->getEtat()->getLibelle(),
                     "organisateur" => $val->getOrganisateur()->getNom(),
-                    "current_user_role"=>$this->getUser()->getRoles()
+                    "current_user_role" => $this->getUser()->getRoles()
                 ]);
             }
             return $this->json(json_encode($tab));
@@ -197,8 +200,8 @@ class MainController extends AbstractController
             $passeesList = $sr->findAll();
             /* dd("2eme if");*/
             $tab = [];
-            foreach ( $passeesList as $val) {
-                if ($val->getEtat()->getId() == 2 || $val->getEtat()->getId() ==3 || $val->getEtat()->getId() == 4) {
+            foreach ($passeesList as $val) {
+                if ($val->getEtat()->getId() == 2 || $val->getEtat()->getId() == 3 || $val->getEtat()->getId() == 4) {
                     array_push($tab, [
                         "sortie_id" => $val->getId(),
                         "nomSortie" => $val->getNomSortie(),
@@ -215,32 +218,90 @@ class MainController extends AbstractController
         }
 
 
-
     }
 
     /**
      * @Route("/index/selectInterDate/{dateMin}/{dateMax}", name="selectInterDate")
      */
-    public function selectIntervalDate(Request $request, SortieRepository  $sr, $dateMin="", $dateMax=""): Response{
+    public function selectIntervalDate(Request $request, SortieRepository $sr, $dateMin = "", $dateMax = ""): Response
+    {
 
-        $intervalDate = $sr->findByDates($dateMin |date ('yyyy-MM-dd'), $dateMax |date ('yyyy-MM-dd'));
+        $intervalDate = $sr->findByDates($dateMin | date('yyyy-MM-dd'), $dateMax | date('yyyy-MM-dd'));
 
         $tab = [];
         foreach ($intervalDate as $val) {
             array_push($tab, [
-                "sortie_id"=> $val->getId(),
+                "sortie_id" => $val->getId(),
                 "nomSortie" => $val->getNomSortie(),
                 "dateHeureDebut" => $val->getDateHeureDebut(),
                 "dateLimiteInscription" => $val->getDateLimiteInscription(),
                 "nbInscriptionMax" => $val->getNbInscriptionMax(),
                 "etat" => $val->getEtat()->getLibelle(),
                 "organisateur" => $val->getOrganisateur()->getNom(),
-                "current_user_role"=>$this->getUser()->getRoles()
+                "current_user_role" => $this->getUser()->getRoles()
             ]);
         }
         return $this->json(json_encode($tab));
     }
 
+
+    /**
+     * @Route("/index/selectInscrit/{bool}", name="selectInscrits")
+     */
+    public function selectInscrits(Request $request, SortieRepository $sr, $bool): Response
+    {
+        $sorties = $this->getDoctrine()->getRepository(Sortie::class)->findAll();
+     /*   dd($sorties);*/
+
+
+        if($bool == 'true'){
+        $tab = [];
+        foreach ($sorties as $val){
+            foreach ($val->getRejoindres() as $rejoindre) {
+                $inscritsList = $rejoindre->getSonParticipant()->getId();
+              /*  dd($inscritsList);*/
+                if ($inscritsList == $this->getUser()->getId()) {
+                        array_push($tab, [
+                            "sortie_id" => $val->getId(),
+                            "nomSortie" => $val->getNomSortie(),
+                            "dateHeureDebut" => $val->getDateHeureDebut(),
+                            "dateLimiteInscription" => $val->getDateLimiteInscription(),
+                            "nbInscriptionMax" => $val->getNbInscriptionMax(),
+                            "etat" => $val->getEtat()->getLibelle(),
+                            "etatId" => $val->getEtat()->getId(),
+                            "inscrits" => 'x',
+                            "organisateur" => $val->getOrganisateur()->getNom(),
+                            "current_user_role" => $this->getUser()->getRoles()
+                        ]);
+                    }
+                }
+            return $this->json(json_encode($tab));
+            }
+        }
+        if($bool == 'false'){
+
+            $sorties = $this->getDoctrine()->getRepository(Sortie::class)->findAll();
+            $tab = [];
+            foreach ($sorties as $val) {
+                if ($val->getEtat()->getId() == 2 || $val->getEtat()->getId() == 3 || $val->getEtat()->getId() == 4) {
+                    array_push($tab, [
+                        "sortie_id" => $val->getId(),
+                        "nomSortie" => $val->getNomSortie(),
+                        "dateHeureDebut" => $val->getDateHeureDebut(),
+                        "dateLimiteInscription" => $val->getDateLimiteInscription(),
+                        "nbInscriptionMax" => $val->getNbInscriptionMax(),
+                        "etat" => $val->getEtat()->getLibelle(),
+                        "etatId" => $val->getEtat()->getId(),
+                        "inscrits" => 'x',
+                        "organisateur" => $val->getOrganisateur()->getNom(),
+                        "current_user_role" => $this->getUser()->getRoles()
+                    ]);
+                }
+            }
+                return $this->json(json_encode($tab));
+
+        }
+    }
 
 
 }

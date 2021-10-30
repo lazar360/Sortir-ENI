@@ -1,0 +1,383 @@
+{% extends '/layout/base.html.twig' %}
+
+{% block title %}Bienvenue !{% endblock %}
+
+{% block javascripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+
+
+        var iconSearch ='<button type="button" class="btn btn-outline-success"> <a href="/sortie/***id****"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"\
+                           fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">\
+                           <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>\
+                           </svg> </a></button>';
+        var iconUnregister='<button type="button" class="btn btn-outline-success"> <a href="/rejoindre/***id***"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">\
+                            <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>\
+                            </svg></a></button>';
+        var iconRegister='<button type="button" class="btn btn-outline-success"> <a href="/desister/***id***"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">\
+                            <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>\
+                            <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>\
+                            </svg></a></button>';
+
+        $(document).ready(function() {
+            /*Changement des sorties en fonction des sites*/
+            $("#sites").change(function () {
+                var id = $(this).val();
+                $.get("/index/selectSite/" + id, function (data, status) {
+                    var selectSite = JSON.parse(data);
+                    /*console.log(selectSite);*/ /*Ressort bien les bonnes valeurs*/
+                    let html = "";
+                       for (let i = 0; i < selectSite.length; i++) {
+                               var action = iconSearch;
+                                /*             console.log(selectSite[i].current_user_role);*/
+                                if ((selectSite[i].current_user_role) == "ROLE_ADMIN,ROLE_USER" || (selectSite[i].current_user_role) == "ROLE_USER") {
+                                    action = iconSearch + iconUnregister + iconRegister;
+                                }
+                                action = action.replace("***id****", selectSite[i].sortie_id);
+                                /*  console.log(selectSite[i]);*/
+                                html += '<tr><td>' + selectSite[i].nomSortie + '</td>' +
+                                    '<td>' + selectSite[i].dateHeureDebut.date.slice(0, 16) + '</td>' +
+                                    '<td>' + selectSite[i].dateLimiteInscription.date.slice(0, 10) + '</td>' +
+                                    '<td>' + selectSite[i].nbInscriptionMax + '</td>' +
+                                    '<td>' + selectSite[i].etat + '</td>' ;
+                                /*console.log(selectSite[i].rejoindre);*/
+                                    /* debut boucle for */
+                             /*        for( let item of selectSite[i].rejoindre ){
+                                       if(app.user.id == item.sonParticipant.id){}
+                                            X
+                                         break;
+                                         console.log(item);
+                                     }*/
+                                    /* fin boucle for */
+                                    html +='<td>X</td>';
+                                    html +='<td>' + selectSite[i].organisateur + '</td>' +
+                                    '<td>' + action + '</td></tr>';
+                            }
+                       $("#table").html(html);
+
+
+                });
+            })
+
+            /*Changement des sorties en fonction de l'organisateur*/
+            $('#orga').change(function () {
+                $.get("/index/selectOrga/" + $(this).is(':checked'), function (data, status) {
+                    var selectOrga = JSON.parse(data);
+                    console.log(selectOrga);
+                    let html = "";
+                    for (let i = 0; i < selectOrga.length; i++) {
+                        var action = iconSearch;
+
+                        /*             console.log(selectSite[i].current_user_role);*/
+
+                        if((selectOrga[i].current_user_role) == "ROLE_ADMIN,ROLE_USER" || (selectOrga[i].current_user_role) == "ROLE_USER"  ){
+                            action = iconSearch+iconUnregister+iconRegister;
+                        }
+                        action=action.replace("***id****",selectOrga[i].sortie_id);
+                        html += '<tr><td>' + selectOrga[i].nomSortie + '</td>' +
+                            '<td>' + selectOrga[i].dateHeureDebut.date.slice(0, 16) + '</td>' +
+                            '<td>' + selectOrga[i].dateLimiteInscription.date.slice(0, 10) + '</td>' +
+                            '<td>' + selectOrga[i].nbInscriptionMax + '</td>' +
+                            '<td>' + selectOrga[i].etat + '</td>' +
+                            '<td>x</td>' +
+                            '<td>' + selectOrga[i].organisateur + '</td>' +
+                            '<td>' + action +' </td></tr>';
+                    }
+                    $("#table").html(html);
+                })
+
+            });
+
+            /*Changement des sorties en fonction de la recherche*/
+            $('#searchSortie').keyup(function () {
+                if($(this).val().length > 3) {
+                    $.get("/index/selectDactylo/" + $(this).val(), function (data, status) {
+                        var selectDactylo = JSON.parse(data);
+                        console.log(selectDactylo);
+                        let html = "";
+                        for (let i = 0; i < selectDactylo.length; i++) {
+                            var action = iconSearch;
+
+                            /*             console.log(selectSite[i].current_user_role);*/
+
+                            if ((selectDactylo[i].current_user_role) == "ROLE_ADMIN,ROLE_USER" || (selectDactylo[i].current_user_role) == "ROLE_USER") {
+                                action = iconSearch + iconUnregister + iconRegister;
+                            }
+                            action = action.replace("***id****", selectDactylo[i].sortie_id);
+                            html += '<tr><td>' + selectDactylo[i].nomSortie + '</td>' +
+                                '<td>' + selectDactylo[i].dateHeureDebut.date.slice(0, 16) + '</td>' +
+                                '<td>' + selectDactylo[i].dateLimiteInscription.date.slice(0, 10) + '</td>' +
+                                '<td>' + selectDactylo[i].nbInscriptionMax + '</td>' +
+                                '<td>' + selectDactylo[i].etat + '</td>' +
+                                '<td>x</td>' +
+                                '<td>' + selectDactylo[i].organisateur + '</td>' +
+                                '<td>' + action + '</td></tr>';
+                        }
+                        $("#table").html(html);
+                    })
+                }
+            })
+
+            /*Changement des sorties en fonction de la date passée*/
+            $('#passees').change(function () {
+                $.get("/index/selectPassees/" + $(this).is(':checked'), function (data, status) {
+                    var selectPassees = JSON.parse(data);
+                    console.log(selectPassees);
+                    let html = "";
+                    for (let i = 0; i < selectPassees.length; i++) {
+                        var action = iconSearch;
+
+                        if((selectPassees[i].current_user_role) == "ROLE_ADMIN,ROLE_USER" || (selectPassees[i].current_user_role) == "ROLE_USER"  ){
+                            action = iconSearch+iconUnregister+iconRegister;
+                        }
+                        action=action.replace("***id****",selectPassees[i].sortie_id);
+                        html += '<tr><td>' + selectPassees[i].nomSortie + '</td>' +
+                            '<td>' + selectPassees[i].dateHeureDebut.date.slice(0, 16) + '</td>' +
+                            '<td>' + selectPassees[i].dateLimiteInscription.date.slice(0, 10) + '</td>' +
+                            '<td>' + selectPassees[i].nbInscriptionMax + '</td>' +
+                            '<td>' + selectPassees[i].etat + '</td>' +
+                            '<td>x</td>' +
+                            '<td>' + selectPassees[i].organisateur + '</td>' +
+                            '<td>' + action +' </td></tr>';
+                    }
+                    $("#table").html(html);
+
+                });
+            });
+
+            /*Changement des sorties en fonction des dates choisies*/
+            $('#dateMax').change(function () {
+                $.get("/index/selectInterDate/" + $(this).val() + '/' + $(this).val(), function (data, status) {
+                    var selectInterDate = JSON.parse(data);
+                    console.log(selectInterDate);
+                    let html = "";
+                    for (let i = 0; i < selectInterDate.length; i++) {
+                        var action = iconSearch;
+
+                        if((selectInterDate[i].current_user_role) == "ROLE_ADMIN,ROLE_USER" || (selectInterDate[i].current_user_role) == "ROLE_USER"  ){
+                            action = iconSearch+iconUnregister+iconRegister;
+                        }
+                        action=action.replace("***id****",selectInterDate[i].sortie_id);
+                        html += '<tr><td>' + selectInterDate[i].nomSortie + '</td>' +
+                            '<td>' + selectInterDate[i].dateHeureDebut.date.slice(0, 16) + '</td>' +
+                            '<td>' + selectInterDate[i].dateLimiteInscription.date.slice(0, 10) + '</td>' +
+                            '<td>' + selectInterDate[i].nbInscriptionMax + '</td>' +
+                            '<td>' + selectInterDate[i].etat + '</td>' +
+                            '<td>' + x+ '</td>' +
+                            '<td>' + selectInterDate[i].organisateur + '</td>' +
+                            '<td>' + action +' </td></tr>';
+                    }
+                    $("#table").html(html);
+
+                });
+            });
+
+            /*Changement des sorties en fonction de l'inscription*/
+            $('#inscrit').change(function () {
+                $.get("/index/selectInscrit/" + $(this).is(':checked'), function (data, status) {
+                    var selectInscrits = JSON.parse(data);
+                    console.log(selectInscrits);
+                    let html = "";
+                    for (let i = 0; i < selectInscrits.length; i++) {
+                        var action = iconSearch;
+
+                        /*             console.log(selectSite[i].current_user_role);*/
+
+                        if((selectInscrits[i].current_user_role) == "ROLE_ADMIN,ROLE_USER" || (selectInscrits[i].current_user_role) == "ROLE_USER"  ){
+                            action = iconSearch+iconUnregister+iconRegister;
+                        }
+                        action=action.replace("***id****",selectInscrits[i].sortie_id);
+                        html += '<tr><td>' + selectInscrits[i].nomSortie + '</td>' +
+                            '<td>' + selectInscrits[i].dateHeureDebut.date.slice(0, 16) + '</td>' +
+                            '<td>' + selectInscrits[i].dateLimiteInscription.date.slice(0, 10) + '</td>' +
+                            '<td>' + selectInscrits[i].nbInscriptionMax + '</td>' +
+                            '<td>' + selectInscrits[i].etat + '</td>' +
+                            '<td>x</td>' +
+                            '<td>' + selectInscrits[i].organisateur + '</td>' +
+                            '<td>' + action +' </td></tr>';
+                    }
+                    $("#table").html(html);
+                })
+
+            });
+
+            /*Changement des sorties en fonction du non inscription*/
+        /*    $('#noInscrit').change(function () {
+                $.get("/index/selectInscrit/" + $(this).is(':checked'), function (data, status) {
+                    var selectInscrits = JSON.parse(data);
+                    console.log(selectInscrits);
+                    let html = "";
+                    for (let i = 0; i < selectInscrits.length; i++) {
+                        var action = iconSearch;
+
+                        /!*             console.log(selectSite[i].current_user_role);*!/
+
+                        if((selectInscrits[i].current_user_role) == "ROLE_ADMIN,ROLE_USER" || (selectInscrits[i].current_user_role) == "ROLE_USER"  ){
+                            action = iconSearch+iconUnregister+iconRegister;
+                        }
+                        action=action.replace("***id****",selectInscrits[i].sortie_id);
+                        html += '<tr><td>' + selectInscrits[i].nomSortie + '</td>' +
+                            '<td>' + selectInscrits[i].dateHeureDebut.date.slice(0, 16) + '</td>' +
+                            '<td>' + selectInscrits[i].dateLimiteInscription.date.slice(0, 10) + '</td>' +
+                            '<td>' + selectInscrits[i].nbInscriptionMax + '</td>' +
+                            '<td>' + selectInscrits[i].etat + '</td>' +
+                            '<td>x</td>' +
+                            '<td>' + selectInscrits[i].organisateur + '</td>' +
+                            '<td>' + action +' </td></tr>';
+                    }
+                    $("#table").html(html);
+                })
+
+            });*/
+
+        });
+
+
+    </script>
+{% endblock %}
+
+{% block body %}
+
+    <h1 class="text-center text-warning"><em>Ready to have fun ?</em></h1>
+
+    <div class="row text-right" style="text-align: right;">
+        <p class="text-right">Date du jour : {{ "now"|date("d/m/Y") }}   </p>
+    </div>
+
+
+    <div class="border  bg-white text-black w-75 mx-auto rounded m-5">
+        <h5 class="p-2 text-center">Filtrer les sorties</h5>
+
+
+        <div class="container m-2">
+            <div class="row">
+                <div class="col-5 text-left">
+                    <p>Site : <select name="sites" id="sites">
+                                    <option>Choisir un lieu</option>
+                                  {% for site in sites %}
+                                    <option value="{{ site.id }}">
+                                        {{ site.nomSite }}
+                                    </option>
+                                  {% endfor %}
+                              </select>
+
+                    </p>
+                    <p>Le nom de la sortie contient : <input type="text" placeholder="search" class="rounded" id="searchSortie"/></p>
+                    <p>Entre <input type="date" class="rounded" name="dateMin" id="dateMin"/> et <input type="date" class="rounded" name="dateMax" id="dateMax"/> </p>
+                </div>
+                <div class="col-5 text-center">
+                    <div> <input type="checkbox" value="orga" value="orga" id="orga"> Sorties dont je suis l'organisateur/trice</div>
+                    <div><input type="checkbox" value="inscrit" value="inscrit" id="inscrit"> Sorties auxquelles je suis inscrit/e</div>
+                    <div><input type="checkbox" value="noInscrit"  value="noInscrit" id="noInscrit"> Sorties auxquelles je ne suis pas inscrit/e</div>
+                    <div><input type="checkbox" value="passees"   value="passees" id="passees"> Sorties passées</div>
+                </div>
+                <div class="col-2 text-center m-auto mt-4">
+                    <button type="submit" class="btn btn-outline-success" id="search" ><a href="#">Rechercher</a></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{#
+   <p class="text-center"><img width="500" height="500" src="{{ asset('assets/img/accueil.png') }}"></p>
+#}
+<div class="border  bg-white text-black w-75 mx-auto rounded m-1">
+    <div class="table-responsive m-4" >
+        <table class="table table-hover">
+            <thead class="thead-white">
+            <tr class="table-active">
+                <th scope="col">Nom de la sortie</th>
+                <th scope="col">Date de la sortie</th>
+                <th scope="col">Clôture</th>
+                <th scope="col">Inscrits/Places</th>
+                <th scope="col">Etat</th>
+                <th scope="col">Inscrit</th>
+                <th scope="col">Organisateur</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+
+            <tbody class="thead-light" id="table">
+
+            {% for sortie in sorties %}
+                {% if sortie.etat.id == 2 or sortie.etat.id == 3 or sortie.etat.id == 4 %}
+                <tr>
+                    <td>{{ sortie.nomSortie }}</td>
+                    <td>{{ sortie.dateHeureDebut |date('d/m/Y H:i') }}</td>
+                    <td>{{ sortie.dateLimiteInscription |date('d/m/Y') }}</td>
+                    <td>{{ sortie.nbInscrits }} / {{ sortie.nbInscriptionMax }}</td>
+                    <td>{{ sortie.etat }}</td>
+                    <td>{%  for item in sortie.rejoindres %}
+                            {%  if item.sonParticipant.id is null %}
+                            {% if app.user.id == item.sonParticipant.id %}
+                                X
+                                {% set break = true %}
+                            {% endif %}
+                            {% endif %}
+                            {% endfor %}</td>
+                    <td>{{ sortie.organisateur }}</td>
+
+                        <td>
+                            {% if is_granted('ROLE_USER') %}
+                                <span>
+                                    <button type="button" class="btn btn-outline-success">
+                               <a href="{{ path('detail_sortie', {'id':sortie.id}) }}">
+                                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                       <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                   </svg>
+                               </a>
+                               </button>
+                                </span>
+
+                                <span>
+                                    <button type="button" class="btn btn-outline-success">
+                                   <a href="{{ path('rejoindre_sortie', {'id':sortie.id}) }}">
+                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                                <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                                </svg>
+                                    </a>
+                                   </button>
+                                </span>
+
+                                <span>
+                                    <button type="button" class="btn btn-outline-success">
+                                   <a href="{{ path('desister_sortie', {'id':sortie.id}) }}">
+                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                  <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
+                                  <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
+                                </svg>
+                                    </a>
+                                   </button>
+                                </span>
+
+                            {% else %}
+
+                                <span>
+                                    <button type="button" class="btn btn-outline-success">
+                               <a href="{{ path('detail_sortie', {'id':sortie.id}) }}">
+                                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                       <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                   </svg>
+                               </a>
+                               </button>
+                                </span>
+
+                            {% endif %}
+                </tr>
+                {% endif %}
+            {% endfor %}
+            </td>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+    <div class="row  m-5">
+        <div class="group text-center mb-5">
+            <a type="button" value="Créer une sortie" class="btn btn-outline-success"  href="{{ path('insert') }}">Créer une sortie</a>
+        </div>
+    </div>
+{% endblock %}

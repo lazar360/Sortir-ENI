@@ -1,0 +1,21 @@
+.login {
+
+    width: 30%;
+}
+
+.sortieGauche{
+    width: 50%;
+}
+
+.sortieDroite{
+    width: 50%;
+}
+
+#navbar:hover{
+    background-color: aquamarine;
+}
+
+.plus{
+    width : 25px;
+    height: 25px;
+}

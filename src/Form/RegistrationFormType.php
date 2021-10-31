@@ -59,6 +59,9 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
+
+            ->add('image', ParticipantPictureFileType::class)
+
         ;
     }
 

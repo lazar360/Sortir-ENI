@@ -23,7 +23,8 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
-            $user->setPassword(
+            $user
+                ->setPassword(
             $userPasswordHasherInterface->hashPassword(
                     $user,
                     $form->get('plainPassword')->getData()
@@ -32,6 +33,28 @@ class RegistrationController extends AbstractController
             // set ROLE : USER TODO add test role_admin Maybe in entity class
             $user->setRoles(["ROLE_USER"]);
             $entityManager = $this->getDoctrine()->getManager();
+
+            //Création du chemin d'enregistrement de picture
+            $path = $this->getParameter('kernel.project_dir').'/public/images';
+
+            //Récupération des valeurs soumises sous forme d'objet User
+            $user = $form->getData();
+
+            //Récupération de picture
+            $picture = $user->getPicture();
+
+            //Récupération du file soumis
+            $file = $picture->getFile();
+
+            // Création d'un nom unique
+            $name = md5(uniqid()).'.'.$file->guessExtension();
+
+            // Déplacement du fichier
+            $file->move($path, $name);
+
+            //Donner le nom à picture
+            $picture->setName($name);
+
             $entityManager->persist($user);
             $entityManager->flush();
             $this->addFlash("success", "Nouvel utilisateur enregistré(e).");

@@ -28,7 +28,6 @@ class RegistrationFormType extends AbstractType
             ->add('mail')
             ->add('administrateur')
             ->add('actif')
-            /*->add('site', TextType::class)*/
             ->add('site',EntityType::class,[ 'class'=>Site::class,
                 'choice_label'=>function($site){
                     return $site->getNomSite();
@@ -60,8 +59,7 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
 
-            ->add('image', ParticipantPictureFileType::class)
-
+            ->add('picture', ParticipantPictureFileType::class, ['label'=> false])
         ;
     }
 

@@ -110,12 +110,16 @@ class DetailSortieController extends AbstractController
         $emi ->remove($sortieRepo);
         $emi->flush();
 
-        $this->addFlash('success', 'Participation à la sortie annulée');
+            $this->addFlash('success', 'Participation à la sortie annulée');
 
-        return $this->redirectToRoute('main');
+            return $this->redirectToRoute('main');
+
         }else{
 
             $this->addFlash('alert', "Participant non inscrit à la sortie");
+
+            return $this->redirectToRoute('main');
+
 
         }
     }

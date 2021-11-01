@@ -33,6 +33,9 @@ class SortieController extends AbstractController
 
 
     /**
+     *
+     * Insertion d'une sortie en base de données en état "créée" ou "publiée"
+     *
      * @Route ("/sortie/insert",name="insert")
      */
     public function insert(Request $request , EntityManagerInterface $em, EtatRepository $er): Response{
@@ -55,14 +58,25 @@ class SortieController extends AbstractController
 
 
         //Vérifie si le formulaire est soumis
-
+        if ($sortieForm->isSubmitted() && $sortieForm->isValid()){
 
         //Vérifie si le bouton enregistrer est cliqué
 
         if ($request->request->get('save')){
 
             $etat = $em->getRepository(Etat::class)->findOneBy(['libelle'=>'créée']);
+            $sortie->setEtat($etat);
+
+            $sortie->setSite($this->getUser()->getSite());
+            $participant = $this->getUser();
+            $sortie->setOrganisateur($participant);
+
+            $em->persist($sortie);
+            $em->flush();
+
             $this->addFlash('warning', "La sortie a été ajouté à vos créations, pensez à publier !");
+            return $this->redirectToRoute('detail_sortie', ["id"=>$sortie->getId()]);
+
 
         } else if ($request->request->get('cancel')){
             $etat = $em->getRepository(Etat::class)->findOneBy(['libelle'=>'annulée']);
@@ -71,7 +85,7 @@ class SortieController extends AbstractController
 
             //vérifie la validation des formulaires avant d'envoyer
 
-            if ($sortieForm->isSubmitted() && $sortieForm->isValid()){
+/*            if ($sortieForm->isSubmitted() && $sortieForm->isValid()){*/
                 $now = new \DateTime();
                 if($sortie->getDateLimiteInscription() < $now || $sortie->getNbInscriptionMax() == $sortie->getNbInscrits()){
                     $sortie->setEtat($er->findOneBy(['libelle'=>'clôturée']));       /*si date limite d'inscription est passée ou que le nb d'inscrits est atteint, cloturee*/

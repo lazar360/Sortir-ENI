@@ -1,0 +1,189 @@
+{% extends '/layout/base.html.twig' %}
+
+{% block title %}Modifier une sortie{% endblock %}
+
+{% block body %}
+    <h1 class="text-center "><em>Modifier une sortie</em></h1>
+
+    {{ form(editSortieType) }}
+
+
+    {#{{ form_start(sortieForm) }}
+    <div class="container-md border border-warning ">
+
+        <div class="row">
+            <div class="col sortieGauche">
+
+                <div class="group p-1">
+                    <label for="{{ field_name(sortieForm.nomSortie)}}"> Nom de la sortie : </label>
+                    <input type="text"
+                           id="{{ field_name(sortieForm.nomSortie)}}"
+                           name="{{ field_name(sortieForm.nomSortie)}}"
+                           value="{{ field_value(sortieForm.nomSortie)}}"
+                           placeholder="{{ field_label(sortieForm.nomSortie)}}"
+                           class="form-control"
+                    >
+                </div>
+
+                {{ form_widget(sortieForm._token) }}
+
+                #}{# <div class="group p-1">
+                    <label for="{{ field_name(sortieForm.dateHeureDebut)}}"> Date et heure de la sortie : </label>
+                    <input type="datetime-local"
+                           id="{{ field_name(sortieForm.dateHeureDebut)}}"
+                           name="{{ field_name(sortieForm.dateHeureDebut)}}"
+                           value=""
+                           placeholder="dd/mm/yyyy hh:mm"
+                           class="form-control"
+                    >
+                </div>#}{#
+
+                #}{# <div class="group p-1">
+                    <label for="{{ field_name(sortieForm.dateLimiteInscription)}}"> Date limite d'inscription : </label>
+                    <input type="date"
+                           id="{{ field_name(sortieForm.dateLimiteInscription)}}"
+                           name="{{ field_name(sortieForm.dateLimiteInscription)}}"
+                           value=""
+                           placeholder="dd/mm/yyyy"
+                           class="form-control"
+                    >
+                </div>#}{#
+
+                   <div class="group p-1">
+                    <label> Date et heure de la sortie : </label>
+                    <input type="datetime-local"
+                           name="dateDebut"
+                           class="form-control"
+                    >
+                </div>
+
+
+                <div class="group p-1">
+                    <label> Date limite d'inscription : </label>
+                    <input type="date"
+                           name="dateLimiteInscription"
+                           class="form-control">
+                </div>
+
+                <div class="group p-1">
+                    <label for="{{ field_name(sortieForm.nbInscriptionMax)}}"> Nombre de places : </label>
+                    <input type="text"
+                           id="{{ field_name(sortieForm.nbInscriptionMax)}}"
+                           name="{{ field_name(sortieForm.nbInscriptionMax)}}"
+                           value="{{ field_value(sortieForm.nbInscriptionMax)}}"
+                           placeholder="{{ field_label(sortieForm.nbInscriptionMax)}}"
+                           class="form-control"
+                    >
+                </div>
+
+                <div class="group p-1 ">
+                    <label for="{{ field_name(sortieForm.duree)}}"> Durée : </label>
+
+                    <input type="number"
+                           id="{{ field_name(sortieForm.duree)}}"
+                           name="{{ field_name(sortieForm.duree)}}"
+                           value="{{ field_value(sortieForm.duree)}}"
+                           placeholder="{{ field_label(sortieForm.duree)}}"
+                           class="form-control"
+                    >
+                </div>
+
+                <div class="group p-1">
+                    <label for="{{ field_name(sortieForm.infoSortie)}}"> Description et infos : </label>
+                    <textarea type="textarea"
+                              id="{{ field_name(sortieForm.infoSortie)}}"
+                              name="{{ field_name(sortieForm.infoSortie)}}"
+                              value="{{ field_value(sortieForm.infoSortie)}}"
+                              placeholder="{{ field_label(sortieForm.infoSortie)}}"
+                              class="form-control"
+                    ></textarea>
+                </div>
+            </div>
+
+            <div class="col sortieDroite">
+                <div class="group p-1 ">
+                    <label> Site :
+                        <div class="form-control" readonly>{{ site.nomSite }}</label> </div>
+                </div>
+
+                <div class="group p-1 ">
+                        <label> Ville :
+                            <div class="form-control">{{ form(lieuForm.ville) }}</div>
+                        </label>
+                </div>
+
+
+
+                <div class="group">
+                    <label>Lieu : </label><a href="#"> <img src="{{ asset('images/plus.png')}}" class="plus"/></a>
+                    <select  id="sortie_form_lieu" name="{{ field_name(sortieForm.lieu) }}" class="form-control"></select>
+                </div>
+
+                <div class="group">
+                    <label>Rue : </label>
+                    <input type="text" readonly value="" name="#}{#{{ form(lieuForm.rue) }}#}{#" class="form-control" id="lieu_form_rue"/>
+                </div>
+
+                <div class="group">
+                    <label>Code Postal : </label>
+                    <input type="text" readonly value=""  name="#}{#{{ form(lieuForm.ville.codePostal) }}#}{#" class="form-control" id="ville_cp"/>
+                </div>
+
+                <div class="group">
+                    <label>Latitude : </label>
+                    <input type="text" readonly value="" name="#}{#{{ form(lieuForm.latitude) }}#}{#" class="form-control" id="lieu_form_lat"/>
+                </div>
+
+                <div class="group">
+                    <label>Longitude : </label>
+                    <input type="text" readonly value="" name="#}{#{{ form(lieuForm.longitude) }}#}{#" class="form-control" id="lieu_form_long"/>
+                </div>
+        </div>
+        </div>
+
+        <div class="row text-center m-5">
+            <div class="group">
+                <button class="btn  btn-outline-success" type="submit" value="save"  name="save">Enregistrer</button>
+                <button class="btn  btn-outline-success" type="submit" value="publish" name="pusblish">Publier une sortie</button>
+                <input type="button" value="Annuler" class="btn  btn-outline-success" onclick="history.back()" />
+
+            </div>
+        </div>
+
+
+
+    </div>
+    {{ form_end(sortieForm) }}#}
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

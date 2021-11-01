@@ -7,12 +7,15 @@ use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Entity\Lieu;
 use App\Entity\Ville;
+use App\Form\EditSortieType;
 use App\Form\LieuFormType;
+use App\Form\RegistrationFormType;
 use App\Form\SortieFormType;
 use App\Repository\EtatRepository;
 use App\Repository\LieuRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\SiteRepository;
+use App\Repository\SortieRepository;
 use App\Repository\VilleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -143,6 +146,32 @@ class SortieController extends AbstractController
     public function afficherCP(VilleRepository $repo, $id):Response{
         $ville = $repo->find($id);
         return $this->json('{"codePostal":"'.$ville->getCodePostal().'"}');
+    }
+
+
+    /**
+     * Menu servant à modifier ou supprimer une sortie dont le participant est l'organisateur
+     *
+     *@Route("/sortie/edit/{id}", name="edit_sortie")
+     */
+    public function editSortie(Request $request , EntityManagerInterface $emi, SortieRepository $repo, $id): Response{
+
+        //TODO Teste si le participant est l'organisateur
+
+        //Instanciation de la classe Sortie
+        $sortie = $repo->find($id);
+        $form = $this->createForm(EditSortieType::class, $sortie);
+        $form->handleRequest($request);
+
+        //TODO soumettre le formulaire
+
+        //TODO insert en base de données
+
+        //TODO message
+
+        return $this->render('sortie/editSortie.html.twig',[
+            'editSortieType' => $form -> createView(),
+        ]);
     }
 
     /**

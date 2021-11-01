@@ -20,6 +20,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class DetailSortieController extends AbstractController
 {
     /**
+     *
+     * Afficher le détail d'une sortie
+     *
      * @Route("sortie/{id}", name="detail_sortie", requirements={"id":"\d+"})
      * @param $id
      * @param EntityManagerInterface $emi
@@ -48,14 +51,14 @@ class DetailSortieController extends AbstractController
     }
 
     /**
+     *
+     * Permet de s'inscrire à une sortie depuis l'accueil
+     *
      * @Route ("/rejoindre_sortie/{id}", name="rejoindre_sortie")
      * @param EntityManagerInterface $emi
      * @param Sortie $sortie
      */
     public function rejoindre(EntityManagerInterface $emi, Sortie $sortie){
-
-        //TODO vérifier si le participant est déjà inscrit, créer nombre d'inscrits et vérifier si le nombre max est atteint
-        // Ajouter un participant à la sortie
 
         $sortieRepo = $this->getDoctrine()->getRepository(Rejoindre::class)->findOneBy(['sonParticipant'=>$this->getUser(), 'saSortie'=>$sortie]);
 
@@ -92,6 +95,9 @@ class DetailSortieController extends AbstractController
     }
 
     /**
+     *
+     * Permet à un participant de se désister d'une sortie depuis l'accueil
+     *
      * @Route ("/desister_sortie/{id}", name="desister_sortie")
      * @param EntityManagerInterface $emi
      * @param Sortie $sortie
@@ -105,6 +111,9 @@ class DetailSortieController extends AbstractController
 
         //Test si le participant est inscrit à la sortie
         if ($sortieRepo !==null){
+
+            // Soustraire un participant
+            $sortie->setNbInscrits($sortie->getNbInscrits()-1);
 
         //l'annuler en base de données
         $emi ->remove($sortieRepo);

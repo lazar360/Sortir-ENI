@@ -54,6 +54,9 @@ class SortieController extends AbstractController
         $lieuForm = $this->createForm(LieuFormType::class, $lieu);
 
 
+        //Vérifie si le formulaire est soumis
+
+
         //Vérifie si le bouton enregistrer est cliqué
 
         if ($request->request->get('save')){

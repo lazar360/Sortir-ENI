@@ -52,7 +52,7 @@ class DetailSortieController extends AbstractController
 
     /**
      *
-     * Permet de s'inscrire à une sortie depuis l'accueil
+     * Permet de s'inscrire à une sortie
      *
      * @Route ("/rejoindre_sortie/{id}", name="rejoindre_sortie")
      * @param EntityManagerInterface $emi
@@ -96,7 +96,7 @@ class DetailSortieController extends AbstractController
 
     /**
      *
-     * Permet à un participant de se désister d'une sortie depuis l'accueil
+     * Permet à un participant de se désister d'une sortie
      *
      * @Route ("/desister_sortie/{id}", name="desister_sortie")
      * @param EntityManagerInterface $emi

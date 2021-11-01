@@ -43,10 +43,8 @@ class SortieController extends AbstractController
 
         $sortie = new Sortie();
         $sortie->setDateHeureDebut(new \DateTime($request->request->get("dateDebut")));
-        /*      dd($request->request->get("dateDebut"));*/
         $sortie->setDateLimiteInscription(new \DateTime($request->request->get("dateLimiteInscription")));
         $sortieForm = $this->createForm(SortieFormType::class, $sortie);
-
 
         $sortieForm->handleRequest($request);
 
@@ -73,9 +71,9 @@ class SortieController extends AbstractController
             if ($sortieForm->isSubmitted() && $sortieForm->isValid()){
                 $now = new \DateTime();
                 if($sortie->getDateLimiteInscription() < $now || $sortie->getNbInscriptionMax() == $sortie->getNbInscrits()){
-                    $sortie->setEtat($er->find('3'));       /*si date limite d'inscription est passée ou que le nb d'inscrits est atteint, cloturee*/
+                    $sortie->setEtat($er->findOneBy(['libelle'=>'clôturée']));       /*si date limite d'inscription est passée ou que le nb d'inscrits est atteint, cloturee*/
                 }else{
-                    $sortie->setEtat($er->find('2'));
+                    $sortie->setEtat($er->findOneBy(['libelle'=>'publiée']));
                 }
 
                 $sortie->setSite($this->getUser()->getSite());
@@ -92,7 +90,6 @@ class SortieController extends AbstractController
             }
 
         }
-
 
         return $this->render('sortie/newSortie.html.twig',[
             'sortieForm'=>$sortieForm->createView(),

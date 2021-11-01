@@ -28,9 +28,9 @@ class DetailSortieController extends AbstractController
     public function detailSortie ($id, EntityManagerInterface $emi)
     {
         $sortie = $emi->getRepository(Sortie::class)->find($id);
+
         $rejoindre = $emi->getRepository(Rejoindre::class)->findAll();
 
-/*    dd($rejoindre);*/
         $lieu = $emi->getRepository(Lieu::class)->find($id);
 
         $sonParticipant = $emi->getRepository(Rejoindre::class)->find($id);
@@ -77,9 +77,6 @@ class DetailSortieController extends AbstractController
             $sortie->setEtat($etatCloturee);
         }
 
-
-
-
         $rejoindre->setSaSortie($sortie);
 
         $rejoindre->setDateInscription(new \DateTime());
@@ -106,6 +103,9 @@ class DetailSortieController extends AbstractController
             ->getRepository(Rejoindre::class)
             ->findOneBy(['sonParticipant'=>$this->getUser(), 'saSortie'=>$sortie]);
 
+        //Test si le participant est inscrit à la sortie
+        if ($sortieRepo !==null){
+
         //l'annuler en base de données
         $emi ->remove($sortieRepo);
         $emi->flush();
@@ -113,6 +113,11 @@ class DetailSortieController extends AbstractController
         $this->addFlash('success', 'Participation à la sortie annulée');
 
         return $this->redirectToRoute('main');
+        }else{
+
+            $this->addFlash('alert', "Participant non inscrit à la sortie");
+
+        }
     }
 
 }

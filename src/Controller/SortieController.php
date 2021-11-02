@@ -154,13 +154,16 @@ class SortieController extends AbstractController
      *
      *@Route("/sortie/edit/{id}", name="edit_sortie")
      */
-    public function editSortie(Request $request , EntityManagerInterface $emi, SortieRepository $repo, $id): Response{
+    public function editSortie(Request $request, $id, EntityManagerInterface $emi): Response{
+
 
         //TODO Teste si le participant est l'organisateur
 
         //Instanciation de la classe Sortie
-        $sortie = $repo->find($id);
+        $sortie = $emi->getRepository(Sortie::class)->find($id);
+
         $form = $this->createForm(EditSortieType::class, $sortie);
+
         $form->handleRequest($request);
 
         //TODO soumettre le formulaire

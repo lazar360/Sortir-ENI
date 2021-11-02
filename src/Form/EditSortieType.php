@@ -14,18 +14,12 @@ class EditSortieType extends AbstractType
         $builder
             ->add('nomSortie')
             ->add('dateHeureDebut')
-            ->add('duree')
             ->add('dateLimiteInscription')
             ->add('nbInscriptionMax')
+            ->add('duree')
             ->add('infoSortie')
-            ->add('etatSortie')
-            ->add('urlPhoto')
-            ->add('nbInscrits')
             ->add('lieu')
-            ->add('etat')
             ->add('site')
-            ->add('organisateur')
-            ->add('participant')
         ;
     }
 

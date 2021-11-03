@@ -166,6 +166,10 @@ class SortieController extends AbstractController
 
         $form->handleRequest($request);
 
+        $lieu = new Lieu();
+
+        $lieuForm = $this->createForm(LieuFormType::class, $lieu);
+
         //TODO soumettre le formulaire
 
         //TODO insert en base de données
@@ -174,6 +178,8 @@ class SortieController extends AbstractController
 
         return $this->render('sortie/editSortie.html.twig',[
             'editSortieType' => $form -> createView(),
+            'lieuForm'=>$lieuForm->createView(),
+
         ]);
     }
 

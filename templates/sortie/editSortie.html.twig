@@ -3,6 +3,49 @@
 {% block title %}Modifier une sortie{% endblock %}
 
 {# TODO requête ajax pour afficher le lieu #}
+{% block javascripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+
+        $(document).ready(function(){
+
+            $("#lieu_form_ville").change(function(){
+
+                var id = $(this).val();
+                $.get("/sortie/lieu/"+id, function (data, status) {
+                    var infosVilleLieu=JSON.parse(data);
+
+                    let html = "<option>choisir un lieu</option>";
+                    for (let i = 0;i<infosVilleLieu.length;i++){
+                        //console.log(infos[i]);
+                        html+='<option value="'+infosVilleLieu[i].id+'" >'+infosVilleLieu[i].nom+'</option>';
+                    }
+                    $("#sortie_form_lieu").html(html).change(function(){
+
+                        var id = $(this).val();
+                        $.get("/sortie/infosLieu/"+id, function(data, status){
+
+                            var infosLieu=JSON.parse(data);
+                            //console.log(infosLieu);
+                            $("#lieu_form_rue").val(infosLieu.rue);
+                            $("#lieu_form_lat").val(infosLieu.lat);
+                            $("#lieu_form_long").val(infosLieu.long);
+                        });
+
+                    });
+                    $.get("/sortie/lieu/cp/"+id, function(data, status) {
+
+                        var infosVilleCP = JSON.parse(data);
+
+                        //console.log(infosVilleCP);
+                        $("#ville_cp").val(infosVilleCP.codePostal);
+
+                    });
+                })
+            })
+        });
+    </script>
+{% endblock %}
 
 {% block body %}
 
@@ -50,6 +93,18 @@
                     {{ form_errors(editSortieType.duree) }}
                 </div>
 
+                {# Champ modification infos sur la sortie #}
+                <div class="group p-1">
+                    <label for="{{ field_name(editSortieType.infoSortie)}}">
+                        Description et infos : </label>
+                    <input type="textarea"
+                           id="{{ field_name(editSortieType.infoSortie)}}"
+                           name="{{ field_name(editSortieType.infoSortie)}}"
+                           value="{{ field_value(editSortieType.infoSortie)}}"
+                           class="form-control"
+                           style="width: 500px; height: 100px"
+                    >
+                </div>
 
             </div>
             {# Champ modification du site #}
@@ -60,24 +115,42 @@
                     {{ form_errors(editSortieType.site) }}
                 </div>
 
-                {# Champ lieu #}
+                {# Champ lieu #}{#
                 <div class="group p-1">
                     {{ form_label(editSortieType.lieu) }} :
                     {{ form_widget(editSortieType.lieu) }}
                     {{ form_errors(editSortieType.lieu) }}
+                </div>#}
+
+                <div class="group p-1 ">
+                    <label> Ville :
+                        <div class="form-control">{{ form(lieuForm.ville) }}</div>
+                    </label>
                 </div>
 
-                {# Champ modification détail #}
-                <div class="group p-1">
-                    <label for="{{ field_name(editSortieType.infoSortie)}}">
-                        Description et infos : </label>
-                    <input type="textarea"
-                           id="{{ field_name(editSortieType.infoSortie)}}"
-                           name="{{ field_name(editSortieType.infoSortie)}}"
-                           value="{{ field_value(editSortieType.infoSortie)}}"
-                           class="form-control"
-                           style="width: 500px; height: 250px"
-                    >
+                <div class="group">
+                    <label>Lieu : </label>
+                    <select  id="sortie_form_lieu" name="{{ field_name(editSortieType.lieu) }}" class="form-control"></select>
+                </div>
+
+                <div class="group">
+                    <label>Rue : </label>
+                    <input type="text" readonly value="" name="{#{{ form(lieuForm.rue) }}#}" class="form-control" id="lieu_form_rue"/>
+                </div>
+
+                <div class="group">
+                    <label>Code Postal : </label>
+                    <input type="text" readonly value=""  name="{#{{ form(lieuForm.ville.codePostal) }}#}" class="form-control" id="ville_cp"/>
+                </div>
+
+                <div class="group">
+                    <label>Latitude : </label>
+                    <input type="text" readonly value="" name="{#{{ form(lieuForm.latitude) }}#}" class="form-control" id="lieu_form_lat"/>
+                </div>
+
+                <div class="group">
+                    <label>Longitude : </label>
+                    <input type="text" readonly value="" name="{#{{ form(lieuForm.longitude) }}#}" class="form-control" id="lieu_form_long"/>
                 </div>
 
         </div>

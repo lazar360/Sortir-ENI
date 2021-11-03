@@ -107,20 +107,14 @@
                 </div>
 
             </div>
-            {# Champ modification du site #}
+
+{# Champ modification du site #}
             <div class="col sortieDroite">
                 <div class="group p-1">
-                    {{ form_label(editSortieType.site) }} :
                     {{ form_widget(editSortieType.site) }}
                     {{ form_errors(editSortieType.site) }}
                 </div>
 
-                {# Champ lieu #}{#
-                <div class="group p-1">
-                    {{ form_label(editSortieType.lieu) }} :
-                    {{ form_widget(editSortieType.lieu) }}
-                    {{ form_errors(editSortieType.lieu) }}
-                </div>#}
 
                 <div class="group p-1 ">
                     <label> Ville :
@@ -158,13 +152,15 @@
 
     <div class="row text-center m-5">
         <div class="group">
-            <button class="btn  btn-outline-success m-3" type="submit" value="save"  name="save">Enregistrer</button>
+            <button class="btn  btn-outline-success m-3" type="submit" value="save"  name="save">Enregistrer les modifications</button>
             <button class="btn  btn-outline-success m-3" type="submit" value="publish" name="pusblish">Publier la sortie</button>
             <button class="btn  btn-outline-success m-3" type="submit" value="remove" name="remove">Supprimer la sortie</button>
             <input type="button" value="Annuler" class="btn  btn-outline-success m-3" onclick="history.back()" />
         </div>
     </div>
+
     {{ form_end(editSortieType) }}
+
 {% endblock %}
 
 

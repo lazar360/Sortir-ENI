@@ -17,6 +17,7 @@ use App\Repository\ParticipantRepository;
 use App\Repository\SiteRepository;
 use App\Repository\SortieRepository;
 use App\Repository\VilleRepository;
+use http\Client\Curl\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,6 +43,7 @@ class SortieController extends AbstractController
      * @Route ("/sortie/insert",name="insert")
      */
     public function insert(Request $request , EntityManagerInterface $em, EtatRepository $er): Response{
+
         //redirige vers le login si non connecté
         if(!$this->getUser()){
             return $this->redirectToRoute("app_login");
@@ -77,7 +79,7 @@ class SortieController extends AbstractController
             $em->persist($sortie);
             $em->flush();
 
-            $this->addFlash('warning', "La sortie a été ajouté à vos créations, pensez à publier !");
+            $this->addFlash('warning', "La sortie a été ajoutée à vos créations, pensez à publier !");
             return $this->redirectToRoute('detail_sortie', ["id"=>$sortie->getId()]);
 
 
@@ -100,10 +102,8 @@ class SortieController extends AbstractController
                 $participant = $this->getUser();
                 $sortie->setOrganisateur($participant);
                 $em->persist($sortie);
-                /*         $etat = $this->em->getRepository(Etat::class)->findByLibel(Etat::created());
-                         //Set status
-                         $sortie->setEtat($etat);*/
                 $em->flush();
+
                 $this->addFlash("success", "Votre sortie est bien enregistrée");
 
                 return $this->redirectToRoute('detail_sortie', ["id"=>$sortie->getId()]);
@@ -150,18 +150,38 @@ class SortieController extends AbstractController
 
 
     /**
-     * Menu servant à modifier ou supprimer une sortie dont le participant est l'organisateur
+     * Menu servant à modifier, publier ou supprimer une sortie dont le participant est l'organisateur
      *
      *@Route("/sortie/edit/{id}", name="edit_sortie")
      */
-    public function editSortie(Request $request, $id, EntityManagerInterface $emi): Response{
+    public function editSortie(Request $request, EntityManagerInterface $emi, $id): Response{
 
-
-        //TODO Teste si le participant est l'organisateur
-
-        //Instanciation de la classe Sortie
         $sortie = $emi->getRepository(Sortie::class)->find($id);
+        //Recherche de l'id organisateur et de l'id du user ['sonParticipant'=>$this->getUser(), 'saSortie'=>$sortie]
+        $participantId =$this -> getUser()->getId();
+        $organisateurId = $sortie->getOrganisateur()->getId();
+        //Recherche de l'état de la sortie
+        $etatCreee = $emi->getRepository(Etat::class)->findBy(["libelle"=>"créée"]);
+        $etatPubliee = $emi->getRepository(Etat::class)->findBy(["libelle"=>"publiée"]);
+        $etatSortie = $sortie->getEtat();
 
+        //Test de la qualité d'organisateur de la sortie
+        if($participantId !== $organisateurId){
+
+            $this->addFlash('warning', "vous n'êtes pas l'organisateur de la sortie");
+
+            return $this->redirectToRoute('detail_sortie', ["id"=>$sortie->getId()]);
+
+            //Test si la sortie est modifiable
+        } elseif($etatSortie === $etatCreee || $etatSortie === $etatPubliee){
+
+            $this->addFlash('warning', "La sortie n'est plus modifiable");
+
+            return $this->redirectToRoute('detail_sortie', ["id"=>$sortie->getId()]);
+
+        }
+
+        //Création du formulaire
         $form = $this->createForm(EditSortieType::class, $sortie);
 
         $form->handleRequest($request);
@@ -170,11 +190,36 @@ class SortieController extends AbstractController
 
         $lieuForm = $this->createForm(LieuFormType::class, $lieu);
 
-        //TODO soumettre le formulaire
+            if ($form->isSubmitted() && $form->isValid()) {
 
-        //TODO insert en base de données
+            if($request->request->get('save')){
+                //insert en base de données
+            $emi->persist($sortie);
+            $emi->flush();
 
-        //TODO message
+            $this->addFlash("success", "La sortie a été modifiée");
+
+            return $this->redirectToRoute('detail_sortie', ["id" => $sortie->getId()]);
+
+            }elseif ($request->request->get('publish')){
+
+            $sortie->setEtat($etatPubliee);
+
+            $emi->persist($sortie);
+            $emi->flush();
+
+            $this->addFlash("success", "La sortie a été publiée");
+
+            return $this->redirectToRoute('detail_sortie', ["id" => $sortie->getId()]);
+
+            }elseif ($request->request->get('remove')){
+
+                $emi->remove($sortie);
+
+                return $this->redirectToRoute('main');
+
+            }
+        }
 
         return $this->render('sortie/editSortie.html.twig',[
             'editSortieType' => $form -> createView(),
@@ -189,6 +234,7 @@ class SortieController extends AbstractController
     public function update(Request $request,$id){
         return $this->render('sortie/newSortie.html.twig');
     }
+
     /**
      * @Route ("/sortie/delete/{id}",name="delete")
      */

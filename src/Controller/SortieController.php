@@ -192,43 +192,67 @@ class SortieController extends AbstractController
 
             if ($form->isSubmitted() && $form->isValid()) {
 
-            if($request->request->get('save')){
                 //insert en base de données
-            $emi->persist($sortie);
-            $emi->flush();
+                $emi->persist($sortie);
+                $emi->flush();
 
-            $this->addFlash("success", "La sortie a été modifiée");
+                $this->addFlash("success", "La sortie a été modifiée");
 
-            return $this->redirectToRoute('detail_sortie', ["id" => $sortie->getId()]);
-
-            }elseif ($request->request->get('publish')){
-
-            $sortie->setEtat($etatPubliee);
-
-            $emi->persist($sortie);
-            $emi->flush();
-
-            $this->addFlash("success", "La sortie a été publiée");
-
-            return $this->redirectToRoute('detail_sortie', ["id" => $sortie->getId()]);
-
-            }elseif ($request->request->get('remove')){
-
-                $emi->remove($sortie);
-
-                return $this->redirectToRoute('main');
+                return $this->redirectToRoute('detail_sortie', ["id" => $sortie->getId()]);
 
             }
-        }
 
         return $this->render('sortie/editSortie.html.twig',[
             'editSortieType' => $form -> createView(),
             'lieuForm'=>$lieuForm->createView(),
-
+            'sortie'=>$sortie
         ]);
     }
 
     /**
+     * Supprimer la sortie
+     *
+     *@Route("/sortie/remove/{id}", name="remove")
+     */
+    public function validerEditSortie(Request $request, EntityManagerInterface $emi, $id): Response{
+
+        $sortie = $emi->getRepository(Sortie::class)->find($id);
+
+        //supprimer la sortie de la base de données
+        $emi->remove($sortie);
+        $emi->flush();
+
+        //TODO faire un message aux participants
+
+        $this->addFlash("success", "La sortie a été supprimée");
+
+        return $this->redirectToRoute('main');
+
+    }
+
+    /**
+     * Publier la sortie
+     *
+     *@Route("/sortie/publish/{id}", name="publish")
+     */
+    public function publierSortie(Request $request, EntityManagerInterface $emi, $id): Response{
+
+        $etatPubliee = $emi->getRepository(Etat::class)->find(2);
+
+        $sortie = $emi->getRepository(Sortie::class)->find($id);
+        $sortie->setEtat($etatPubliee);
+
+        $emi->persist($sortie);
+        $emi->flush();
+
+        $this->addFlash("success", "La sortie a été publiée");
+
+        return $this->redirectToRoute('main');
+
+    }
+
+
+        /**
      * @Route ("/sortie/update/{id}",name="update")
      */
     public function update(Request $request,$id){
@@ -241,6 +265,4 @@ class SortieController extends AbstractController
     public function delete(Request $request,$id){
         return $this->render('sortie/newSortie.html.twig');
     }
-
-
 }

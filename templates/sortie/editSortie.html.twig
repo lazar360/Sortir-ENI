@@ -56,7 +56,7 @@
 
     {# Champ modification du nom #}
 <div class="container-md border border-warning ">
-
+    {{ form_start(editSortieType) }}
     <div class="row">
             <div class="col sortieGauche">
                 <div class="group p-1">
@@ -152,14 +152,31 @@
 
     <div class="row text-center m-5">
         <div class="group">
-            <button class="btn  btn-outline-success m-3" type="submit" value="save"  name="save">Enregistrer les modifications</button>
-            <button class="btn  btn-outline-success m-3" type="submit" value="publish" name="pusblish">Publier la sortie</button>
-            <button class="btn  btn-outline-success m-3" type="submit" value="remove" name="remove">Supprimer la sortie</button>
+            <!--<button class="btn  btn-outline-success m-3" type="submit" value="save"  name="save">
+                Enregistrer les modifications
+            </button>-->
+            <span title="Attention !!! Supprime la sortie définitivement !" class="btn  btn-outline-danger m-3">
+                <a style="text-decoration: none" href="{{ path('remove', {'id':sortie.id}) }}">
+                    Supprimer la sortie</a> </span>
+
+            <span class="btn  btn-outline-success m-3">
+           <a style="text-decoration: none" href="{{ path('publish', {'id':sortie.id}) }}">Publier la sortie</a>
+            </span>
+
+            <span>
+            <!--<input type="submit" class="btn  btn-outline-success m-3" value="Modifier la sortie"
+                   name="save"/>-->
+                <button class="btn  btn-outline-success m-3" type="submit">Modifier la sortie</button>
+
+
+            </span>
+
             <input type="button" value="Annuler" class="btn  btn-outline-success m-3" onclick="history.back()" />
+            {{ form_end(editSortieType) }}
+
         </div>
     </div>
 
-    {{ form_end(editSortieType) }}
 
 {% endblock %}
 

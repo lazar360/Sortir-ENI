@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ParticipantPictureNameRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Entity(repositoryClass=ParticipantPictureNameRepository::class)
@@ -21,6 +22,8 @@ class ParticipantPictureName
      * @ORM\Column(type="string", length=255)
      */
     private $name;
+
+    private $file;
 
     /**
      * @ORM\OneToOne(targetEntity=Participant::class, inversedBy="participantPictureName", cascade={"persist", "remove"})
@@ -47,6 +50,16 @@ class ParticipantPictureName
         $this->name = $name;
 
         return $this;
+    }
+
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    public function setFile(UploadedFile $file): void
+    {
+         $this->file = $file;
     }
 
     public function getParticipant(): ?Participant

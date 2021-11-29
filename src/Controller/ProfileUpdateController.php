@@ -21,8 +21,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProfileUpdateController extends AbstractController
 {
     /**
+     * Modifier son profil
+     *
      * @Route("/profile/update/{id}", name="profile_update")
-     * */
+     */
     public function editUser (Request $request, EntityManagerInterface $em, ParticipantRepository $repo,
                               UserPasswordHasherInterface $userPasswordHasherInterface, $id) :Response
     {
@@ -32,10 +34,6 @@ class ProfileUpdateController extends AbstractController
         $participant = $repo->find($id);
         $form = $this->createForm(EditUserType::class, $participant);
         $form->handleRequest($request);
-
-        //$entityManager = $this->getDoctrine()->getManager();
-
-        //TODO Image upload
 
         if ($form->isSubmitted() && $form->isValid()){
 

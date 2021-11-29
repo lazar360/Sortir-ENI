@@ -81,7 +81,6 @@ class MainController extends AbstractController
     {
         if ($bool == "true") {
             $orgaList = $sr->findBy(["organisateur" => $this->getUser()]);
-            /* dd("1er if");*/
             $tab = [];
             foreach ($orgaList as $val) {
                 array_push($tab, [
@@ -101,7 +100,7 @@ class MainController extends AbstractController
         if ($bool == "false") {
 
             $orgaList = $sr->findAll();
-            /* dd("2eme if");*/
+
             $tab = [];
             foreach ($orgaList as $val) {
                 if ($val->getEtat()->getId() == 2 || $val->getEtat()->getId() == 3 || $val->getEtat()->getId() == 4) {

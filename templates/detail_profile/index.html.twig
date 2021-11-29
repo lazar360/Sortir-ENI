@@ -7,8 +7,13 @@
             <div class="row align-items-start">
         <div class="col">
 
+            {% if participant.picture.name is defined %}
+            <img src="{{ asset ('images/')~participant.picture.name }}">
+
+            {% else %}
             <img class="d-block mx-auto mb-4" src="{{ asset('assets/img/default_user.jpg') }}" alt="portrait" width="400" height="400">
 
+            {% endif %}
 
         </div>
 

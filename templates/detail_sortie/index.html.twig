@@ -14,9 +14,6 @@
                     readonly>
                 </div>
 
-                {# {{ form_widget(sortieForm._token) }} #}
-
-
                 <div class="group p-1">
                     <label> Date et heure de la sortie : </label>
                     <input type="text"
@@ -133,7 +130,9 @@
                            readonly>
                 </div>
 
-                <p class="lead mb-4"><a href="{{ path ('rejoindre_sortie',{'id':infosSortie.id}) }}">Rejoindre la sortie</a> </p>
+                <span title="S'inscrire à la sortie" class="btn  btn-warning m-3"><a href="{{ path ('rejoindre_sortie',{'id':infosSortie.id}) }}">Rejoindre la sortie</a> </span>
+                <span title="Modifier la sortie dont vous êtes l'orgab=nisateur" class="btn  btn-warning m-3"><a href="{{ path ('edit_sortie',{'id':infosSortie.id}) }}">Modifier la sortie</a> </span>
+
             </div>
             <style>
                 .my-custom-scrollbar {

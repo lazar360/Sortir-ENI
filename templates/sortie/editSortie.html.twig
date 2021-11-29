@@ -1,0 +1,213 @@
+{% extends '/layout/base.html.twig' %}
+
+{% block title %}Modifier une sortie{% endblock %}
+
+{# TODO requête ajax pour afficher le lieu #}
+{% block javascripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+
+        $(document).ready(function(){
+
+            $("#lieu_form_ville").change(function(){
+
+                var id = $(this).val();
+                $.get("/sortie/lieu/"+id, function (data, status) {
+                    var infosVilleLieu=JSON.parse(data);
+
+                    let html = "<option>choisir un lieu</option>";
+                    for (let i = 0;i<infosVilleLieu.length;i++){
+                        //console.log(infos[i]);
+                        html+='<option value="'+infosVilleLieu[i].id+'" >'+infosVilleLieu[i].nom+'</option>';
+                    }
+                    $("#sortie_form_lieu").html(html).change(function(){
+
+                        var id = $(this).val();
+                        $.get("/sortie/infosLieu/"+id, function(data, status){
+
+                            var infosLieu=JSON.parse(data);
+                            //console.log(infosLieu);
+                            $("#lieu_form_rue").val(infosLieu.rue);
+                            $("#lieu_form_lat").val(infosLieu.lat);
+                            $("#lieu_form_long").val(infosLieu.long);
+                        });
+
+                    });
+                    $.get("/sortie/lieu/cp/"+id, function(data, status) {
+
+                        var infosVilleCP = JSON.parse(data);
+
+                        //console.log(infosVilleCP);
+                        $("#ville_cp").val(infosVilleCP.codePostal);
+
+                    });
+                })
+            })
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+
+    <div class="d-flex justify-content-center">
+        <h1 class="text-warning"><em>Modifier une sortie</em></h1>
+    </div>
+
+
+    {# Champ modification du nom #}
+<div class="container-md border border-warning ">
+    {{ form_start(editSortieType) }}
+    <div class="row">
+            <div class="col sortieGauche">
+                <div class="group p-1">
+                    {{ form_label(editSortieType.nomSortie) }} :
+                    {{ form_widget(editSortieType.nomSortie) }}
+                    {{ form_errors(editSortieType.nomSortie) }}
+                </div>
+
+                {# Champ modification de la date début #}
+                <div class="group p-1">
+                    {{ form_label(editSortieType.dateHeureDebut) }} :
+                    {{ form_widget(editSortieType.dateHeureDebut) }}
+                    {{ form_errors(editSortieType.dateHeureDebut) }}
+                </div>
+
+                {# Champ modification de la date limite #}
+                <div class="group p-1">
+                    {{ form_label(editSortieType.dateLimiteInscription) }} :
+                    {{ form_widget(editSortieType.dateLimiteInscription) }}
+                    {{ form_errors(editSortieType.dateLimiteInscription) }}
+                </div>
+
+                {# Champ modification de nombre inscription max #}
+                <div class="group p-1">
+                    {{ form_label(editSortieType.nbInscriptionMax) }} :
+                    {{ form_widget(editSortieType.nbInscriptionMax) }}
+                    {{ form_errors(editSortieType.nbInscriptionMax) }}
+                </div>
+
+                {# Champ modification durée #}
+                <div class="group p-1">
+                    {{ form_label(editSortieType.duree) }} :
+                    {{ form_widget(editSortieType.duree) }}
+                    {{ form_errors(editSortieType.duree) }}
+                </div>
+
+                {# Champ modification infos sur la sortie #}
+                <div class="group p-1">
+                    <label for="{{ field_name(editSortieType.infoSortie)}}">
+                        Description et infos : </label>
+                    <input type="textarea"
+                           id="{{ field_name(editSortieType.infoSortie)}}"
+                           name="{{ field_name(editSortieType.infoSortie)}}"
+                           value="{{ field_value(editSortieType.infoSortie)}}"
+                           class="form-control"
+                           style="width: 500px; height: 100px"
+                    >
+                </div>
+
+            </div>
+
+{# Champ modification du site #}
+            <div class="col sortieDroite">
+                <div class="group p-1">
+                    {{ form_widget(editSortieType.site) }}
+                    {{ form_errors(editSortieType.site) }}
+                </div>
+
+
+                <div class="group p-1 ">
+                    <label> Ville :
+                        <div class="form-control">{{ form(lieuForm.ville) }}</div>
+                    </label>
+                </div>
+
+                <div class="group">
+                    <label>Lieu : </label>
+                    <select  id="sortie_form_lieu" name="{{ field_name(editSortieType.lieu) }}" class="form-control"></select>
+                </div>
+
+                <div class="group">
+                    <label>Rue : </label>
+                    <input type="text" readonly value="" name="{#{{ form(lieuForm.rue) }}#}" class="form-control" id="lieu_form_rue"/>
+                </div>
+
+                <div class="group">
+                    <label>Code Postal : </label>
+                    <input type="text" readonly value=""  name="{#{{ form(lieuForm.ville.codePostal) }}#}" class="form-control" id="ville_cp"/>
+                </div>
+
+                <div class="group">
+                    <label>Latitude : </label>
+                    <input type="text" readonly value="" name="{#{{ form(lieuForm.latitude) }}#}" class="form-control" id="lieu_form_lat"/>
+                </div>
+
+                <div class="group">
+                    <label>Longitude : </label>
+                    <input type="text" readonly value="" name="{#{{ form(lieuForm.longitude) }}#}" class="form-control" id="lieu_form_long"/>
+                </div>
+
+        </div>
+    </div>
+
+    <div class="row text-center m-5">
+        <div class="group">
+            <!--<button class="btn  btn-outline-success m-3" type="submit" value="save"  name="save">
+                Enregistrer les modifications
+            </button>-->
+            <span title="Attention !!! Supprime la sortie définitivement !" class="btn  btn-outline-danger m-3">
+                <a style="text-decoration: none" href="{{ path('remove', {'id':sortie.id}) }}">
+                    Supprimer la sortie</a> </span>
+
+            <span class="btn  btn-outline-success m-3">
+           <a style="text-decoration: none" href="{{ path('publish', {'id':sortie.id}) }}">Publier la sortie</a>
+            </span>
+
+            <span>
+            <!--<input type="submit" class="btn  btn-outline-success m-3" value="Modifier la sortie"
+                   name="save"/>-->
+                <button class="btn  btn-outline-success m-3" type="submit">Modifier la sortie</button>
+
+
+            </span>
+
+            <input type="button" value="Annuler" class="btn  btn-outline-success m-3" onclick="history.back()" />
+            {{ form_end(editSortieType) }}
+
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -13,7 +13,7 @@
 School Website built with symfony 5.3.
 
 <h2>Demo</h2>
-
+![sortir](https://user-images.githubusercontent.com/91179295/156686466-cf5b8b60-fb07-4878-8c35-80bba9d39b74.gif)
 
 <h2>Features</h2>
 You can manage activities with your friends.

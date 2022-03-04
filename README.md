@@ -13,6 +13,7 @@
 School Website built with symfony 5.3.
 
 <h2>Demo</h2>
+
 ![sortir](https://user-images.githubusercontent.com/91179295/156686633-7fff7c28-8ee0-494f-bc4e-d7f5942ac3e7.gif)
 
 <h2>Features</h2>
